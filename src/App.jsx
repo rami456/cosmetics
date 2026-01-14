@@ -501,11 +501,97 @@ export default function App() {
 
   const products = [
     // Cosmetics
-    { id: 1, name: "Velvet Lipstick", price: 15, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
+    {
+  id: 101,
+  name: "Max Factor X 55 Beige",
+  price: 13,
+  img: "/products/maxfactor-x-55-beige.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Smooth coverage foundation with a natural beige tone",
+    features: [
+      "Medium, buildable coverage",
+      "Evens skin tone without heaviness",
+      "Comfortable all-day wear",
+      "Ideal for normal to combination skin"
+    ],
+    howToUse: "Apply evenly with a sponge or brush, blending outward from the center of the face."
+  }
+}
+,
+   {
+  id: 102,
+  name: "Max Factor Foundation SPF 20",
+  price: 17,
+  img: "/products/maxfactor-spf-20.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Daily foundation with SPF 20 sun protection",
+    features: [
+      "Protects skin from UV damage",
+      "Lightweight, breathable texture",
+      "Natural radiant finish",
+      "Perfect for everyday wear"
+    ],
+    howToUse: "Apply in the morning after skincare. Blend evenly for smooth coverage."
+  }
+}
+,
+    {
+  id: 103,
+  name: "L’Oréal Paris Nude Foundation",
+  price: 20,
+  img: "/products/loreal-nude.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Bare-skin effect foundation with a nude finish",
+    features: [
+      "Ultra-light texture",
+      "Natural skin-like look",
+      "Does not clog pores",
+      "Comfortable for long wear"
+    ],
+    howToUse: "Apply with fingers or sponge for a second-skin effect."
+  }
+}
+,
+   {
+  id: 104,
+  name: "L’Oréal Paris 24H Cool",
+  price: 12,
+  img: "/products/loreal-24h-cool.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Long-lasting foundation with cool undertones",
+    features: [
+      "Up to 24-hour wear",
+      "Resists fading and shine",
+      "Smooth matte finish",
+      "Ideal for cool-toned skin"
+    ],
+    howToUse: "Blend evenly using a brush or sponge. Build coverage as needed."
+  }
+}
+
+,
+   {
+  id: 105,
+  name: "HD Luminous Foundation",
+  price: 10,
+  img: "/products/hd-luminous.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "High-definition luminous finish foundation",
+    features: [
+      "Soft glow effect",
+      "Blurs imperfections",
+      "Light-reflecting pigments",
+      "Great for photos and events"
+    ],
+    howToUse: "Apply lightly and blend well for a radiant finish."
+  }
+}
+,
 
     // ✅ Your Max Factor product (image in /public/products/)
     {
@@ -521,9 +607,81 @@ export default function App() {
         howToUse: "Apply a small amount and blend outward with a sponge/brush. Build coverage where needed.",
       },
     },
+{
+  id: 106,
+  name: "Miss Sporty Blush",
+  price: 5,
+  img: "/products/miss-sporty-blush.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Fresh color blush for a natural glow",
+    features: [
+      "Smooth powder texture",
+      "Easy to blend",
+      "Buildable color",
+      "Perfect for everyday makeup"
+    ],
+    howToUse: "Apply to the apples of the cheeks and blend outward."
+  }
+}
+,
+{
+  id: 107,
+  name: "Rimmel Mascara",
+  price: 11,
+  img: "/products/rimmel-mascara.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Volumizing mascara for bold lashes",
+    features: [
+      "Adds volume and length",
+      "Smudge-resistant formula",
+      "Deep black pigment",
+      "Long-lasting wear"
+    ],
+    howToUse: "Apply from lash roots to tips. Add extra coats for intensity."
+  }
+}
+,
+{
+  id: 108,
+  name: "Max Factor Color Elixir Lipstick",
+  price: 6,
+  img: "/products/maxfactor-color-elixir.png",
+  category: "cosmetics",
+  details: {
+    subtitle: "Moisturizing lipstick with rich color payoff",
+    features: [
+      "Nourishing formula",
+      "Smooth, creamy texture",
+      "Hydrating finish",
+      "Comfortable on lips"
+    ],
+    howToUse: "Apply directly to lips. Reapply as needed."
+  }
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Women
-    { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "women" },
+   , { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "women" },
     { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "women" },
     { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/900x900", category: "women" },
 
