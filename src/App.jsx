@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function App() {
+  // ✅ PUT YOUR CLIENT ID HERE
+  const GOOGLE_CLIENT_ID = "314819988108-qbrkln5dus1s209bv749oiq4kh53o094.apps.googleusercontent.com";
+
   // ✅ All styles included here (no separate CSS file needed)
   const styles = `
     :root{
@@ -20,15 +24,13 @@ export default function App() {
       color:var(--text);
       font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
-
     .app{ min-height:100vh; }
 
     /* Topbar */
     .topbar{
       position:sticky; top:0; z-index:50;
       height:72px;
-      display:flex; align-items:center; gap:14px;
-      padding:0 18px;
+      display:flex; align-items:center; gap:14px;      padding:0 18px;
       background:rgba(255,255,255,0.75);
       backdrop-filter:blur(14px);
       border-bottom:1px solid var(--line);
@@ -109,7 +111,7 @@ export default function App() {
       pointer-events:auto;
     }
 
-    /* Sidebar (desktop pinned, mobile drawer) */
+    /* Sidebar */
     .sidebar{
       position:fixed;
       top:72px; left:0; bottom:0;
@@ -121,7 +123,6 @@ export default function App() {
       transform:translateX(0);
       transition:transform 220ms ease;
     }
-
     .sidebarHeader{
       display:flex;
       align-items:flex-start;
@@ -143,14 +144,13 @@ export default function App() {
       color:var(--muted);
     }
     .closeBtn{
-      display:none; /* shown on mobile drawer */
+      display:none;
       width:42px; height:42px;
       border-radius:12px;
       border:1px solid var(--line);
       background:rgba(255,255,255,0.9);
       cursor:pointer;
     }
-
     .menuList{
       list-style:none;
       padding:0;
@@ -203,9 +203,8 @@ export default function App() {
       padding:22px;
       max-width:1280px;
       margin:0 auto;
-      margin-left:280px; /* space for pinned sidebar desktop */
+      margin-left:280px;
     }
-
     .sectionHeader{
       display:flex;
       align-items:flex-end;
@@ -217,7 +216,7 @@ export default function App() {
     .sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
     .sortHint{ font-size:13px; color:var(--muted); }
 
-    /* Products grid */
+    /* Products */
     .grid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -238,7 +237,6 @@ export default function App() {
     .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
-
     .btnPrimary{
       width:100%;
       padding:11px 12px;
@@ -291,7 +289,6 @@ export default function App() {
       cursor:pointer;
       font-weight:800;
     }
-
     .cartTotal{
       display:flex;
       justify-content:space-between;
@@ -314,7 +311,6 @@ export default function App() {
     }
     .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
     .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
-
     .footer{
       margin-left:280px;
       padding:18px;
@@ -336,15 +332,8 @@ export default function App() {
       pointer-events:none;
       transition:opacity 180ms ease;
     }
-    .modal.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-    .modalBackdrop{
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.45);
-    }
+    .modal.show{ opacity:1; pointer-events:auto; }
+    .modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
     .modalCard{
       position:relative;
       width:min(520px, 100%);
@@ -376,15 +365,8 @@ export default function App() {
       cursor:pointer;
       display:flex; align-items:center; justify-content:center;
     }
-    .modalBody{
-      padding:14px 16px 16px;
-    }
-    .tabs{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-      margin-bottom:12px;
-    }
+    .modalBody{ padding:14px 16px 16px; }
+    .tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
     .tab{
       flex:1;
       padding:10px 12px;
@@ -394,23 +376,9 @@ export default function App() {
       cursor:pointer;
       font-weight:900;
     }
-    .tab.active{
-      background:#0e0e10;
-      color:#fff;
-      border-color:rgba(0,0,0,0.2);
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-      margin-top:12px;
-    }
-    .label{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-      letter-spacing:0.02em;
-    }
+    .tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
+    .field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+    .label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
     .input{
       height:44px;
       border-radius:12px;
@@ -420,22 +388,9 @@ export default function App() {
       background:#fff;
       font-weight:700;
     }
-    .row2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .help{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .authActions{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top:14px;
-    }
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .help{ margin-top:10px; font-size:12px; color:var(--muted); }
+    .authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
     .btnGhost{
       width:100%;
       padding:11px 12px;
@@ -462,30 +417,27 @@ export default function App() {
       background:var(--line);
     }
 
+    /* Google button wrapper so it looks centered */
+    .googleWrap{
+      display:flex;
+      justify-content:center;
+      margin-top:6px;
+    }
+
     /* Responsive */
     @media (max-width: 1100px){
       .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .main{ grid-template-columns: 1fr 320px; }
     }
-
     @media (max-width: 900px){
-      .main{
-        margin-left:0;
-        grid-template-columns: 1fr;
-      }
+      .main{ margin-left:0; grid-template-columns: 1fr; }
       .cart{ position:relative; top:auto; }
       .footer{ margin-left:0; }
-
-      /* sidebar becomes drawer */
-      .sidebar{
-        transform:translateX(-105%);
-        box-shadow:var(--shadow);
-      }
+      .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
       .sidebar.open{ transform:translateX(0); }
       .closeBtn{ display:flex; align-items:center; justify-content:center; }
       .pill{ display:none; }
     }
-
     @media (max-width: 520px){
       .row2{ grid-template-columns: 1fr; }
     }
@@ -497,7 +449,6 @@ export default function App() {
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-
     { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "clothes" },
     { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "clothes" },
     { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/900x900", category: "clothes" },
@@ -561,7 +512,6 @@ export default function App() {
   };
 
   const signIn = () => {
-    // UI-only demo validation
     if (!authForm.email.trim() || !authForm.password.trim()) return;
 
     setUser({
@@ -574,7 +524,6 @@ export default function App() {
   };
 
   const signUp = () => {
-    // UI-only demo validation
     if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
     if (authForm.password !== authForm.confirmPassword) return;
 
@@ -595,342 +544,357 @@ export default function App() {
 
   const signOut = () => setUser(null);
 
+  // ✅ Decode Google JWT payload (client-side) for display only
+  const decodeJwtPayload = (jwt) => {
+    try {
+      const payload = jwt.split(".")[1];
+      const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+      const json = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join("")
+      );
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  };
+
+  // ✅ Google Sign-in handlers
+  const onGoogleSuccess = (credentialResponse) => {
+    const token = credentialResponse?.credential;
+    if (!token) return;
+
+    const payload = decodeJwtPayload(token);
+    const name = payload?.name || payload?.given_name || "Google User";
+    const email = payload?.email || "Verified by Google";
+
+    setUser({ name, email, mode: "user" });
+    setAuthOpen(false);
+    resetAuthForm();
+  };
+
+  const onGoogleError = () => {
+    alert("Google sign-in failed. Check Authorized JavaScript origins in Google Cloud.");
+  };
+
   return (
-    <div className="app">
-      <style>{styles}</style>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <div className="app">
+        <style>{styles}</style>
 
-      {/* Top Bar */}
-      <header className="topbar">
-        <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)}>
-          <span className="hamburger" />
-        </button>
-
-        <a className="brand" href="https://aurea.com">
-          auréa
-        </a>
-
-        <div className="topbarRight">
-          <div className="pill">
-            <span className="pillDot" />
-            <span>Free shipping over $75</span>
-          </div>
-
-          {/* ✅ Auth button */}
-          {user ? (
-            <button className="authBtn" onClick={signOut} aria-label="Sign out">
-              {user.mode === "guest" ? "Guest" : user.name} · Sign out
-            </button>
-          ) : (
-            <button
-              className="authBtn"
-              onClick={() => {
-                setAuthOpen(true);
-                setMode("signin");
-              }}
-              aria-label="Open sign in"
-            >
-              Sign in
-            </button>
-          )}
-        </div>
-      </header>
-
-      {/* Overlay (sidebar) */}
-      <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebarHeader">
-          <div>
-            <div className="sidebarTitle">Browse</div>
-            <div className="sidebarSub">Select a category</div>
-          </div>
-
-          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
-            ✕
+        {/* Top Bar */}
+        <header className="topbar">
+          <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)}>
+            <span className="hamburger" />
           </button>
-        </div>
 
-        {/* LIST MENU */}
-        <nav>
-          <ul className="menuList">
-            {categories.map((c) => {
-              const active = selectedCategory === c.key;
-              return (
-                <li key={c.key}>
-                  <button
-                    className={`menuItem ${active ? "active" : ""}`}
-                    onClick={() => {
-                      setSelectedCategory(c.key);
-                      setSidebarOpen(false);
-                    }}
-                  >
-                    <span className="menuText">{c.label}</span>
-                    <span className="menuArrow">›</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+          <a className="brand" href="https://aurea.com">
+            auréa
+          </a>
 
-        <div className="sidebarFooter">
-          <div className="miniCard">
-            <div className="miniCardTitle">Auréa Standard</div>
-            <div className="miniCardText">Clean formulas • Timeless tailoring</div>
-          </div>
-        </div>
-      </aside>
-
-      {/* ✅ Auth Modal */}
-      <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-        <div
-          className="modalBackdrop"
-          onClick={() => setAuthOpen(false)}
-          aria-label="Close auth modal"
-        />
-        <div className="modalCard">
-          <div className="modalTop">
-            <div>
-              <div className="modalTitle">Account</div>
-              <div className="help">
-                Sign in, create an account, or continue as a guest.
-              </div>
+          <div className="topbarRight">
+            <div className="pill">
+              <span className="pillDot" />
+              <span>Free shipping over $75</span>
             </div>
-            <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close">
+
+            {user ? (
+              <button className="authBtn" onClick={signOut} aria-label="Sign out">
+                {user.mode === "guest" ? "Guest" : user.name} · Sign out
+              </button>
+            ) : (
+              <button
+                className="authBtn"
+                onClick={() => {
+                  setAuthOpen(true);
+                  setMode("signin");
+                }}
+                aria-label="Open sign in"
+              >
+                Sign in
+              </button>
+            )}
+          </div>
+        </header>
+
+        {/* Overlay (sidebar) */}
+        <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
+
+        {/* Sidebar */}
+        <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+          <div className="sidebarHeader">
+            <div>
+              <div className="sidebarTitle">Browse</div>
+              <div className="sidebarSub">Select a category</div>
+            </div>
+
+            <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
               ✕
             </button>
           </div>
 
-          <div className="modalBody">
-            <div className="tabs" role="tablist" aria-label="Auth tabs">
-              <button
-                className={`tab ${authMode === "signin" ? "active" : ""}`}
-                onClick={() => setMode("signin")}
-                type="button"
-              >
-                Sign in
-              </button>
-              <button
-                className={`tab ${authMode === "signup" ? "active" : ""}`}
-                onClick={() => setMode("signup")}
-                type="button"
-              >
-                Sign up
+          <nav>
+            <ul className="menuList">
+              {categories.map((c) => {
+                const active = selectedCategory === c.key;
+                return (
+                  <li key={c.key}>
+                    <button
+                      className={`menuItem ${active ? "active" : ""}`}
+                      onClick={() => {
+                        setSelectedCategory(c.key);
+                        setSidebarOpen(false);
+                      }}
+                    >
+                      <span className="menuText">{c.label}</span>
+                      <span className="menuArrow">›</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="sidebarFooter">
+            <div className="miniCard">
+              <div className="miniCardTitle">Auréa Standard</div>
+              <div className="miniCardText">Clean formulas • Timeless tailoring</div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Auth Modal */}
+        <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+          <div className="modalBackdrop" onClick={() => setAuthOpen(false)} aria-label="Close auth modal" />
+          <div className="modalCard">
+            <div className="modalTop">
+              <div>
+                <div className="modalTitle">Account</div>
+                <div className="help">Sign in, create an account, or continue as a guest.</div>
+              </div>
+              <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close">
+                ✕
               </button>
             </div>
 
-            {authMode === "signup" && (
-              <div className="field">
-                <div className="label">Full name</div>
-                <input
-                  className="input"
-                  value={authForm.name}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="Your name"
-                />
-              </div>
-            )}
-
-            <div className="row2">
-              <div className="field">
-                <div className="label">Email</div>
-                <input
-                  className="input"
-                  value={authForm.email}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
-                  placeholder="you@email.com"
-                  type="email"
-                />
+            <div className="modalBody">
+              <div className="tabs" role="tablist" aria-label="Auth tabs">
+                <button className={`tab ${authMode === "signin" ? "active" : ""}`} onClick={() => setMode("signin")} type="button">
+                  Sign in
+                </button>
+                <button className={`tab ${authMode === "signup" ? "active" : ""}`} onClick={() => setMode("signup")} type="button">
+                  Sign up
+                </button>
               </div>
 
-              <div className="field">
-                <div className="label">Password</div>
-                <input
-                  className="input"
-                  value={authForm.password}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
-                  placeholder="••••••••"
-                  type="password"
-                />
-              </div>
-            </div>
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Full name</div>
+                  <input
+                    className="input"
+                    value={authForm.name}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="Your name"
+                  />
+                </div>
+              )}
 
-            {authMode === "signup" && (
-              <div className="field">
-                <div className="label">Confirm password</div>
-                <input
-                  className="input"
-                  value={authForm.confirmPassword}
-                  onChange={(e) =>
-                    setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))
-                  }
-                  placeholder="••••••••"
-                  type="password"
-                />
-                {authForm.password &&
-                  authForm.confirmPassword &&
-                  authForm.password !== authForm.confirmPassword && (
+              <div className="row2">
+                <div className="field">
+                  <div className="label">Email</div>
+                  <input
+                    className="input"
+                    value={authForm.email}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
+                    placeholder="you@email.com"
+                    type="email"
+                  />
+                </div>
+
+                <div className="field">
+                  <div className="label">Password</div>
+                  <input
+                    className="input"
+                    value={authForm.password}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                </div>
+              </div>
+
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Confirm password</div>
+                  <input
+                    className="input"
+                    value={authForm.confirmPassword}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                  {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
                     <div className="help" style={{ color: "#b00020", fontWeight: 800 }}>
                       Passwords do not match.
                     </div>
                   )}
-              </div>
-            )}
-
-            <div className="authActions">
-              {authMode === "signin" ? (
-                <button
-                  className="btnPrimary"
-                  onClick={signIn}
-                  disabled={!authForm.email.trim() || !authForm.password.trim()}
-                  style={{
-                    opacity:
-                      !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
-                    cursor:
-                      !authForm.email.trim() || !authForm.password.trim()
-                        ? "not-allowed"
-                        : "pointer",
-                  }}
-                >
-                  Sign in
-                </button>
-              ) : (
-                <button
-                  className="btnPrimary"
-                  onClick={signUp}
-                  disabled={
-                    !authForm.name.trim() ||
-                    !authForm.email.trim() ||
-                    !authForm.password.trim() ||
-                    authForm.password !== authForm.confirmPassword
-                  }
-                  style={{
-                    opacity:
-                      !authForm.name.trim() ||
-                      !authForm.email.trim() ||
-                      !authForm.password.trim() ||
-                      authForm.password !== authForm.confirmPassword
-                        ? 0.6
-                        : 1,
-                    cursor:
-                      !authForm.name.trim() ||
-                      !authForm.email.trim() ||
-                      !authForm.password.trim() ||
-                      authForm.password !== authForm.confirmPassword
-                        ? "not-allowed"
-                        : "pointer",
-                  }}
-                >
-                  Create account
-                </button>
+                </div>
               )}
 
-              <div className="divider">or</div>
+              <div className="authActions">
+                {authMode === "signin" ? (
+                  <button
+                    className="btnPrimary"
+                    onClick={signIn}
+                    disabled={!authForm.email.trim() || !authForm.password.trim()}
+                    style={{
+                      opacity: !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
+                      cursor: !authForm.email.trim() || !authForm.password.trim() ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                ) : (
+                  <button
+                    className="btnPrimary"
+                    onClick={signUp}
+                    disabled={
+                      !authForm.name.trim() ||
+                      !authForm.email.trim() ||
+                      !authForm.password.trim() ||
+                      authForm.password !== authForm.confirmPassword
+                    }
+                    style={{
+                      opacity:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? 0.6
+                          : 1,
+                      cursor:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? "not-allowed"
+                          : "pointer",
+                    }}
+                  >
+                    Create account
+                  </button>
+                )}
 
-              <button className="btnGhost" onClick={continueAsGuest}>
-                Continue as guest
-              </button>
+                <div className="divider">or</div>
 
-              <div className="help">
-                (This is UI-only for now. Later you can connect it to your backend/auth provider.)
+                {/* ✅ Google Sign-in */}
+                <div className="googleWrap">
+                  <GoogleLogin onSuccess={onGoogleSuccess} onError={onGoogleError} />
+                </div>
+
+                <button className="btnGhost" onClick={continueAsGuest}>
+                  Continue as guest
+                </button>
+
+                <div className="help">(This is UI-only for now. Later you can connect to a backend.)</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main */}
-      <main className="main">
-        <section>
-          <div className="sectionHeader">
-            <div>
-              <h1 className="h1">{selectedCategory === "cosmetics" ? "Cosmetics" : "Clothes"}</h1>
-              <p className="sub">Curated essentials designed to feel effortless.</p>
-              {user && (
-                <p className="sub" style={{ marginTop: 6 }}>
-                  Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
-                </p>
-              )}
+        {/* Main */}
+        <main className="main">
+          <section>
+            <div className="sectionHeader">
+              <div>
+                <h1 className="h1">{selectedCategory === "cosmetics" ? "Cosmetics" : "Clothes"}</h1>
+                <p className="sub">Curated essentials designed to feel effortless.</p>
+                {user && (
+                  <p className="sub" style={{ marginTop: 6 }}>
+                    Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
+                  </p>
+                )}
+              </div>
+              <div className="sortHint">
+                Showing <b>{filteredProducts.length}</b> items
+              </div>
             </div>
-            <div className="sortHint">
-              Showing <b>{filteredProducts.length}</b> items
-            </div>
-          </div>
 
-          <div className="grid">
-            {filteredProducts.map((p) => (
-              <article key={p.id} className="card">
-                <div className="imgWrap">
-                  <img src={p.img} alt={p.name} className="img" />
-                </div>
-
-                <div className="cardBody">
-                  <div className="cardTop">
-                    <h3 className="cardTitle">{p.name}</h3>
-                    <div className="price">${p.price.toFixed(2)}</div>
+            <div className="grid">
+              {filteredProducts.map((p) => (
+                <article key={p.id} className="card">
+                  <div className="imgWrap">
+                    <img src={p.img} alt={p.name} className="img" />
                   </div>
 
-                  <button className="btnPrimary" onClick={() => addToCart(p)}>
-                    Add to Cart
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <aside className="cart">
-          <div className="cartHeader">
-            <div className="cartTitle">Cart</div>
-            <div className="cartCount">{cartItems.length} items</div>
-          </div>
-
-          {cartItems.length === 0 ? (
-            <div className="empty">
-              <div className="emptyIcon">🛍️</div>
-              <div className="emptyTitle">Your cart is empty</div>
-              <div className="emptyText">Add something you love.</div>
-            </div>
-          ) : (
-            <>
-              <ul className="cartList">
-                {cartItems.map((item, i) => (
-                  <li key={i} className="cartRow">
-                    <div>
-                      <div className="cartName">{item.name}</div>
-                      <div className="cartPrice">${item.price.toFixed(2)}</div>
+                  <div className="cardBody">
+                    <div className="cardTop">
+                      <h3 className="cardTitle">{p.name}</h3>
+                      <div className="price">${p.price.toFixed(2)}</div>
                     </div>
-                    <button className="removeBtn" onClick={() => removeFromCart(i)}>
-                      Remove
+
+                    <button className="btnPrimary" onClick={() => addToCart(p)}>
+                      Add to Cart
                     </button>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
-              <div className="cartTotal">
-                <span>Total</span>
-                <b>${totalPrice.toFixed(2)}</b>
+          <aside className="cart">
+            <div className="cartHeader">
+              <div className="cartTitle">Cart</div>
+              <div className="cartCount">{cartItems.length} items</div>
+            </div>
+
+            {cartItems.length === 0 ? (
+              <div className="empty">
+                <div className="emptyIcon">🛍️</div>
+                <div className="emptyTitle">Your cart is empty</div>
+                <div className="emptyText">Add something you love.</div>
               </div>
+            ) : (
+              <>
+                <ul className="cartList">
+                  {cartItems.map((item, i) => (
+                    <li key={i} className="cartRow">
+                      <div>
+                        <div className="cartName">{item.name}</div>
+                        <div className="cartPrice">${item.price.toFixed(2)}</div>
+                      </div>
+                      <button className="removeBtn" onClick={() => removeFromCart(i)}>
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
 
-              <button
-                className="btnCheckout"
-                onClick={() => {
-                  // If you want: force auth before checkout
-                  if (!user) setAuthOpen(true);
-                }}
-              >
-                Checkout
-              </button>
-              <div className="cartNote">
-                {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
-              </div>
-            </>
-          )}
-        </aside>
-      </main>
+                <div className="cartTotal">
+                  <span>Total</span>
+                  <b>${totalPrice.toFixed(2)}</b>
+                </div>
 
-      <footer className="footer">© 2026 auréa.com</footer>
-    </div>
+                <button
+                  className="btnCheckout"
+                  onClick={() => {
+                    if (!user) setAuthOpen(true);
+                  }}
+                >
+                  Checkout
+                </button>
+                <div className="cartNote">
+                  {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+                </div>
+              </>
+            )}
+          </aside>
+        </main>
+
+        <footer className="footer">© 2026 auréa.com</footer>
+      </div>
+    </GoogleOAuthProvider>
   );
 }
