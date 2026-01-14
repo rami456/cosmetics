@@ -237,7 +237,58 @@ export default function App() {
     .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
-    .btnPrimary{
+    /* Learn more button */
+.btnSecondary{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnSecondary:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+.btnRow{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* Product modal */
+.pmodal{ position:fixed; inset:0; z-index:95; opacity:0; pointer-events:none; transition:opacity 180ms ease; }
+.pmodal.show{ opacity:1; pointer-events:auto; }
+.pmodalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+.pmodalCard{
+  position:relative;
+  width:min(720px, 100%);
+  margin:18px;
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.pmodalBody{ padding:16px; display:grid; grid-template-columns: 220px 1fr; gap:16px; }
+.pmodalImg{ width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover; background:#f2f2f3; }
+.pmodalH{ margin:0; font-size:18px; font-weight:900; }
+.pmodalSub{ margin:6px 0 0; color:var(--muted); font-size:13px; }
+.pmodalList{ margin:12px 0 0; padding-left:18px; color:var(--text); }
+.pmodalMeta{ margin-top:10px; color:var(--muted); font-size:12px; }
+.pmodalActions{ margin-top:14px; display:flex; gap:10px; }
+.pmodalClose{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+}
+@media (max-width: 700px){
+  .pmodalBody{ grid-template-columns:1fr; }
+}
+
       width:100%;
       padding:11px 12px;
       border-radius:12px;
@@ -469,7 +520,28 @@ export default function App() {
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
 
     // ✅ Max Factor product you asked for
-    { id: 9, name: "Max Factor X 101", price: 11, img: "/products/maxfactor-x-101.png", category: "cosmetics" },
+    {
+  id: 9,
+  name: "Max Factor X 101",
+  price: 11,
+  img: "/products/maxfactor-x-101.png",
+  category: "cosmetics",
+
+  // ✅ Learn more info
+  details: {
+    subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
+    size: "30–35 ml (varies by market)",
+    features: [
+      "High coverage, buildable finish",
+      "Smudge-resistant & touch-proof",
+      "Long-wear up to ~8 hours",
+      "Oil-free & fragrance-free (good for sensitive skin)",
+    ],
+    howToUse:
+      "Apply a small amount to the center of the face and blend outward with a sponge/brush. Build coverage where needed.",
+  },
+},
+,
 
     { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "clothes" },
     { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "clothes" },
@@ -479,6 +551,8 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+const [productOpen, setProductOpen] = useState(false);
+const [activeProduct, setActiveProduct] = useState(null);
 
   // ✅ Auth UI state
   const [authOpen, setAuthOpen] = useState(false);
@@ -505,11 +579,15 @@ export default function App() {
 
   const addToCart = (product) => setCartItems((prev) => [...prev, product]);
   const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+  const learnMore = (product) => {
+  setActiveProduct(product);
+  setProductOpen(true);
+};
 
   // ✅ Learn more handler (added only)
-  const learnMore = (product) => {
+  function learnMore(product) {
     alert(`${product.name}\n$${product.price.toFixed(2)}\n\nMore details coming soon.`);
-  };
+  }
 
   // ESC closes drawer + modal
   useEffect(() => {
@@ -517,6 +595,7 @@ export default function App() {
       if (e.key === "Escape") {
         setSidebarOpen(false);
         setAuthOpen(false);
+        setProductOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -525,7 +604,7 @@ export default function App() {
 
   // lock body scroll when drawer OR auth modal open
   useEffect(() => {
-    const locked = sidebarOpen || authOpen;
+    const locked = sidebarOpen || authOpen || productOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [sidebarOpen, authOpen]);
@@ -867,10 +946,16 @@ export default function App() {
                       <button className="btnSecondary" onClick={() => learnMore(p)} type="button">
                         Learn more
                       </button>
+<div className="btnRow">
+  <button className="btnSecondary" onClick={() => learnMore(p)} type="button">
+    Learn more
+  </button>
 
-                      <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
-                        Add to Cart
-                      </button>
+  <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
+    Add to Cart
+  </button>
+</div>
+
                     </div>
                   </div>
                 </article>
@@ -927,7 +1012,80 @@ export default function App() {
           </aside>
         </main>
 
-        <footer className="footer">© 2026 auréa.com</footer>
+        {/* Product Learn More Modal */}
+<div className={`pmodal ${productOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div
+    className="pmodalBackdrop"
+    onClick={() => {
+      setProductOpen(false);
+      setActiveProduct(null);
+    }}
+    aria-label="Close product modal"
+  />
+  <div className="pmodalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">Product</div>
+        <div className="help">Details & usage</div>
+      </div>
+      <button
+        className="pmodalClose"
+        onClick={() => {
+          setProductOpen(false);
+          setActiveProduct(null);
+        }}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div className="pmodalBody">
+      <img className="pmodalImg" src={activeProduct?.img} alt={activeProduct?.name || "Product"} />
+
+      <div>
+        <h3 className="pmodalH">{activeProduct?.name}</h3>
+        <div className="pmodalSub">{activeProduct?.details?.subtitle}</div>
+
+        {activeProduct?.details?.features?.length ? (
+          <ul className="pmodalList">
+            {activeProduct.details.features.map((f, idx) => (
+              <li key={idx}>{f}</li>
+            ))}
+          </ul>
+        ) : null}
+
+        {activeProduct?.details?.size ? <div className="pmodalMeta">Size: {activeProduct.details.size}</div> : null}
+        {activeProduct?.details?.howToUse ? <div className="pmodalMeta">How to use: {activeProduct.details.howToUse}</div> : null}
+
+        <div className="pmodalActions">
+          <button
+            className="btnPrimary"
+            type="button"
+            onClick={() => {
+              if (activeProduct) addToCart(activeProduct);
+              setProductOpen(false);
+              setActiveProduct(null);
+            }}
+          >
+            Add to Cart
+          </button>
+          <button
+            className="btnGhost"
+            type="button"
+            onClick={() => {
+              setProductOpen(false);
+              setActiveProduct(null);
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </GoogleOAuthProvider>
   );
