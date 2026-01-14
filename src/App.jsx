@@ -237,16 +237,7 @@ export default function App() {
     .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
-    /* Learn more button */
-.btnSecondary{
-  width:100%;
-  padding:11px 12px;
-  border-radius:12px;
-  border:1px solid rgba(0,0,0,0.12);
-  background:#fff;
-  font-weight:900;
-  cursor:pointer;
-  transition:transform 120ms ease, box-shadow 180ms ease;
+
 }
 .btnSecondary:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
 
