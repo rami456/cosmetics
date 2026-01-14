@@ -82,6 +82,19 @@ export default function App() {
     .hamburger::before{ top:-5px; }
     .hamburger::after{ top:5px; }
 
+    /* Auth Button (topbar) */
+    .authBtn{
+      height:42px;
+      padding:0 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.88);
+      cursor:pointer;
+      font-weight:900;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
     /* Overlay */
     .overlay{
       position:fixed; inset:0;
@@ -310,6 +323,145 @@ export default function App() {
       font-size:13px;
     }
 
+    /* Auth Modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:90;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 180ms ease;
+    }
+    .modal.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .modalBackdrop{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.45);
+    }
+    .modalCard{
+      position:relative;
+      width:min(520px, 100%);
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .modalTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 16px 0;
+    }
+    .modalTitle{
+      font-weight:900;
+      font-size:14px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+    }
+    .modalClose{
+      width:42px; height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.9);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .modalBody{
+      padding:14px 16px 16px;
+    }
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+      margin-bottom:12px;
+    }
+    .tab{
+      flex:1;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .tab.active{
+      background:#0e0e10;
+      color:#fff;
+      border-color:rgba(0,0,0,0.2);
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+      margin-top:12px;
+    }
+    .label{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      letter-spacing:0.02em;
+    }
+    .input{
+      height:44px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      padding:0 12px;
+      outline:none;
+      background:#fff;
+      font-weight:700;
+    }
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .help{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .authActions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:14px;
+    }
+    .btnGhost{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:12px 0 2px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .divider::before, .divider::after{
+      content:"";
+      height:1px;
+      flex:1;
+      background:var(--line);
+    }
+
     /* Responsive */
     @media (max-width: 1100px){
       .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -333,6 +485,10 @@ export default function App() {
       .closeBtn{ display:flex; align-items:center; justify-content:center; }
       .pill{ display:none; }
     }
+
+    @media (max-width: 520px){
+      .row2{ grid-template-columns: 1fr; }
+    }
   `;
 
   const products = [
@@ -351,6 +507,17 @@ export default function App() {
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // ✅ Auth UI state
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
+  const [user, setUser] = useState(null); // { name, email, mode: "user" | "guest" }
+  const [authForm, setAuthForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const categories = [
     { key: "cosmetics", label: "Cosmetics" },
     { key: "clothes", label: "Clothes" },
@@ -366,21 +533,67 @@ export default function App() {
   const addToCart = (product) => setCartItems((prev) => [...prev, product]);
   const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
 
-  // ESC closes drawer
+  // ESC closes drawer + modal
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === "Escape") setSidebarOpen(false);
+      if (e.key === "Escape") {
+        setSidebarOpen(false);
+        setAuthOpen(false);
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // lock body scroll when drawer open (mobile)
+  // lock body scroll when drawer OR auth modal open
   useEffect(() => {
-    if (sidebarOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    const locked = sidebarOpen || authOpen;
+    document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
-  }, [sidebarOpen]);
+  }, [sidebarOpen, authOpen]);
+
+  const resetAuthForm = () =>
+    setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
+
+  const setMode = (mode) => {
+    setAuthMode(mode);
+    resetAuthForm();
+  };
+
+  const signIn = () => {
+    // UI-only demo validation
+    if (!authForm.email.trim() || !authForm.password.trim()) return;
+
+    setUser({
+      name: authForm.email.split("@")[0] || "User",
+      email: authForm.email.trim(),
+      mode: "user",
+    });
+    setAuthOpen(false);
+    resetAuthForm();
+  };
+
+  const signUp = () => {
+    // UI-only demo validation
+    if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
+    if (authForm.password !== authForm.confirmPassword) return;
+
+    setUser({
+      name: authForm.name.trim(),
+      email: authForm.email.trim(),
+      mode: "user",
+    });
+    setAuthOpen(false);
+    resetAuthForm();
+  };
+
+  const continueAsGuest = () => {
+    setUser({ name: "Guest", email: "", mode: "guest" });
+    setAuthOpen(false);
+    resetAuthForm();
+  };
+
+  const signOut = () => setUser(null);
 
   return (
     <div className="app">
@@ -401,10 +614,28 @@ export default function App() {
             <span className="pillDot" />
             <span>Free shipping over $75</span>
           </div>
+
+          {/* ✅ Auth button */}
+          {user ? (
+            <button className="authBtn" onClick={signOut} aria-label="Sign out">
+              {user.mode === "guest" ? "Guest" : user.name} · Sign out
+            </button>
+          ) : (
+            <button
+              className="authBtn"
+              onClick={() => {
+                setAuthOpen(true);
+                setMode("signin");
+              }}
+              aria-label="Open sign in"
+            >
+              Sign in
+            </button>
+          )}
         </div>
       </header>
 
-      {/* Overlay */}
+      {/* Overlay (sidebar) */}
       <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
       {/* Sidebar */}
@@ -451,6 +682,164 @@ export default function App() {
         </div>
       </aside>
 
+      {/* ✅ Auth Modal */}
+      <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+        <div
+          className="modalBackdrop"
+          onClick={() => setAuthOpen(false)}
+          aria-label="Close auth modal"
+        />
+        <div className="modalCard">
+          <div className="modalTop">
+            <div>
+              <div className="modalTitle">Account</div>
+              <div className="help">
+                Sign in, create an account, or continue as a guest.
+              </div>
+            </div>
+            <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close">
+              ✕
+            </button>
+          </div>
+
+          <div className="modalBody">
+            <div className="tabs" role="tablist" aria-label="Auth tabs">
+              <button
+                className={`tab ${authMode === "signin" ? "active" : ""}`}
+                onClick={() => setMode("signin")}
+                type="button"
+              >
+                Sign in
+              </button>
+              <button
+                className={`tab ${authMode === "signup" ? "active" : ""}`}
+                onClick={() => setMode("signup")}
+                type="button"
+              >
+                Sign up
+              </button>
+            </div>
+
+            {authMode === "signup" && (
+              <div className="field">
+                <div className="label">Full name</div>
+                <input
+                  className="input"
+                  value={authForm.name}
+                  onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
+                  placeholder="Your name"
+                />
+              </div>
+            )}
+
+            <div className="row2">
+              <div className="field">
+                <div className="label">Email</div>
+                <input
+                  className="input"
+                  value={authForm.email}
+                  onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
+                  placeholder="you@email.com"
+                  type="email"
+                />
+              </div>
+
+              <div className="field">
+                <div className="label">Password</div>
+                <input
+                  className="input"
+                  value={authForm.password}
+                  onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
+                  placeholder="••••••••"
+                  type="password"
+                />
+              </div>
+            </div>
+
+            {authMode === "signup" && (
+              <div className="field">
+                <div className="label">Confirm password</div>
+                <input
+                  className="input"
+                  value={authForm.confirmPassword}
+                  onChange={(e) =>
+                    setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))
+                  }
+                  placeholder="••••••••"
+                  type="password"
+                />
+                {authForm.password &&
+                  authForm.confirmPassword &&
+                  authForm.password !== authForm.confirmPassword && (
+                    <div className="help" style={{ color: "#b00020", fontWeight: 800 }}>
+                      Passwords do not match.
+                    </div>
+                  )}
+              </div>
+            )}
+
+            <div className="authActions">
+              {authMode === "signin" ? (
+                <button
+                  className="btnPrimary"
+                  onClick={signIn}
+                  disabled={!authForm.email.trim() || !authForm.password.trim()}
+                  style={{
+                    opacity:
+                      !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
+                    cursor:
+                      !authForm.email.trim() || !authForm.password.trim()
+                        ? "not-allowed"
+                        : "pointer",
+                  }}
+                >
+                  Sign in
+                </button>
+              ) : (
+                <button
+                  className="btnPrimary"
+                  onClick={signUp}
+                  disabled={
+                    !authForm.name.trim() ||
+                    !authForm.email.trim() ||
+                    !authForm.password.trim() ||
+                    authForm.password !== authForm.confirmPassword
+                  }
+                  style={{
+                    opacity:
+                      !authForm.name.trim() ||
+                      !authForm.email.trim() ||
+                      !authForm.password.trim() ||
+                      authForm.password !== authForm.confirmPassword
+                        ? 0.6
+                        : 1,
+                    cursor:
+                      !authForm.name.trim() ||
+                      !authForm.email.trim() ||
+                      !authForm.password.trim() ||
+                      authForm.password !== authForm.confirmPassword
+                        ? "not-allowed"
+                        : "pointer",
+                  }}
+                >
+                  Create account
+                </button>
+              )}
+
+              <div className="divider">or</div>
+
+              <button className="btnGhost" onClick={continueAsGuest}>
+                Continue as guest
+              </button>
+
+              <div className="help">
+                (This is UI-only for now. Later you can connect it to your backend/auth provider.)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main */}
       <main className="main">
         <section>
@@ -458,6 +847,11 @@ export default function App() {
             <div>
               <h1 className="h1">{selectedCategory === "cosmetics" ? "Cosmetics" : "Clothes"}</h1>
               <p className="sub">Curated essentials designed to feel effortless.</p>
+              {user && (
+                <p className="sub" style={{ marginTop: 6 }}>
+                  Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
+                </p>
+              )}
             </div>
             <div className="sortHint">
               Showing <b>{filteredProducts.length}</b> items
@@ -519,8 +913,18 @@ export default function App() {
                 <b>${totalPrice.toFixed(2)}</b>
               </div>
 
-              <button className="btnCheckout">Checkout</button>
-              <div className="cartNote">Secure checkout coming next.</div>
+              <button
+                className="btnCheckout"
+                onClick={() => {
+                  // If you want: force auth before checkout
+                  if (!user) setAuthOpen(true);
+                }}
+              >
+                Checkout
+              </button>
+              <div className="cartNote">
+                {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+              </div>
             </>
           )}
         </aside>
