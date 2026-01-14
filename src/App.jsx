@@ -523,7 +523,7 @@ export default function App() {
   id: 102,
   name: "Max Factor Foundation SPF 20",
   price: 17,
-  img: "/products/maxfactor-spf-20.png",
+  img: "/products/max-factor-spf20.png",
   category: "cosmetics",
   details: {
     subtitle: "Daily foundation with SPF 20 sun protection",
@@ -541,7 +541,10 @@ export default function App() {
   id: 103,
   name: "L’Oréal Paris Nude Foundation",
   price: 20,
-  img: "/products/loreal-nude.png",
+  images:[
+  "/products/L-Oreal-Paris-1.png",
+  "/products/loreal-paris-2.png"
+  ],
   category: "cosmetics",
   details: {
     subtitle: "Bare-skin effect foundation with a nude finish",
@@ -699,6 +702,10 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+// 🔽 ADD THESE THREE LINES RIGHT HERE
+const [learnMoreOpen, setLearnMoreOpen] = useState(false);
+const [activeProduct, setActiveProduct] = useState(null);
+const [activeImage, setActiveImage] = useState("");
 
   // ✅ Auth UI state
   const [authOpen, setAuthOpen] = useState(false);
@@ -713,7 +720,7 @@ export default function App() {
 
   // ✅ Learn more modal state
   const [productOpen, setProductOpen] = useState(false);
-  const [activeProduct, setActiveProduct] = useState(null);
+  
 
   // ✅ Categories: Cosmetics, Men, Women, Fragrances
   const categories = [
@@ -1090,7 +1097,7 @@ export default function App() {
               {filteredProducts.map((p) => (
                 <article key={p.id} className="card">
                   <div className="imgWrap">
-                    <img src={p.img} alt={p.name} className="img" />
+                    <img src={p.images?.[0]} alt={p.name} className="img" />
                   </div>
 
                   <div className="cardBody">
