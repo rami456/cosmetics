@@ -598,7 +598,7 @@ export default function App() {
       id: 9,
       name: "Max Factor X 101",
       price: 11,
-      img: "public/products/Max_Factor_Closed_101_Ivory_Beige_PNG.png",
+      img: "/products/maxfactor-x-101.png",
       category: "cosmetics",
       details: {
         subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
