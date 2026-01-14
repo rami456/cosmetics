@@ -560,13 +560,16 @@ export default function App() {
 
   const categories = [
     { key: "cosmetics", label: "Cosmetics" },
-    { key: "clothes", label: "Clothes" },
-    { key: "fragrances", label: "Fragrances" },
+   { key: "fragrances", label: "Fragrances" },
   ];
 
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("cosmetics");
+  const [cartItems, setCartItems] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   // ✅ Learn More modal state
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
@@ -597,15 +600,22 @@ export default function App() {
   const resetAuthForm = () =>
     setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
 
-  const setMode = (mode) => {
-    setAuthMode(mode);
-    resetAuthForm();
-  };
+    };
 
   // ✅ Firebase: keep user logged in (session listener)
   useEffectv(() =>
+  useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
+        // Keep guest if they chose it (don’t wipe guest on auth state change)
+        setUser((prev) => (prev?.mode === "guest" ? prev : null));
+        return;
+      }
+
+    return () => unsub();
+  }, []);
+        setUser((prev) => (prev?.mode === "guest" ? prev : null));
+        return;
         // Keep guest if they chose it (don’t wipe guest on auth state change)
         setUser((prev) => (prev?.mode === "guest" ? prev : null));
         return;
