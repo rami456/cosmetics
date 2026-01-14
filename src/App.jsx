@@ -238,48 +238,7 @@ export default function App() {
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
 
-}
-.btnSecondary:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-
-.btnRow{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-/* Product modal */
-.pmodal{ position:fixed; inset:0; z-index:95; opacity:0; pointer-events:none; transition:opacity 180ms ease; }
-.pmodal.show{ opacity:1; pointer-events:auto; }
-.pmodalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-.pmodalCard{
-  position:relative;
-  width:min(720px, 100%);
-  margin:18px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,0.92);
-  backdrop-filter: blur(14px);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.pmodalBody{ padding:16px; display:grid; grid-template-columns: 220px 1fr; gap:16px; }
-.pmodalImg{ width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover; background:#f2f2f3; }
-.pmodalH{ margin:0; font-size:18px; font-weight:900; }
-.pmodalSub{ margin:6px 0 0; color:var(--muted); font-size:13px; }
-.pmodalList{ margin:12px 0 0; padding-left:18px; color:var(--text); }
-.pmodalMeta{ margin-top:10px; color:var(--muted); font-size:12px; }
-.pmodalActions{ margin-top:14px; display:flex; gap:10px; }
-.pmodalClose{
-  width:42px; height:42px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,0.9);
-  cursor:pointer;
-}
-@media (max-width: 700px){
-  .pmodalBody{ grid-template-columns:1fr; }
-}
-
+    .btnPrimary{
       width:100%;
       padding:11px 12px;
       border-radius:12px;
@@ -293,7 +252,7 @@ export default function App() {
     .btnPrimary:hover{ transform:translateY(-1px); }
     .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
 
-    /* ✅ Learn more (added only) */
+    /* Learn more button */
     .btnSecondary{
       width:100%;
       padding:11px 12px;
@@ -305,6 +264,7 @@ export default function App() {
       transition:transform 120ms ease, box-shadow 180ms ease;
     }
     .btnSecondary:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
     .btnRow{
       display:flex;
       flex-direction:column;
@@ -451,6 +411,7 @@ export default function App() {
     .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
     .help{ margin-top:10px; font-size:12px; color:var(--muted); }
     .authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+
     .btnGhost{
       width:100%;
       padding:11px 12px;
@@ -462,6 +423,7 @@ export default function App() {
       transition:transform 120ms ease, box-shadow 180ms ease;
     }
     .btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
     .divider{
       display:flex;
       align-items:center;
@@ -484,6 +446,40 @@ export default function App() {
       margin-top:6px;
     }
 
+    /* Product modal (Learn more) */
+    .pmodal{ position:fixed; inset:0; z-index:95; opacity:0; pointer-events:none; transition:opacity 180ms ease; }
+    .pmodal.show{ opacity:1; pointer-events:auto; }
+    .pmodalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+    .pmodalCard{
+      position:relative;
+      width:min(720px, 100%);
+      margin:18px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .pmodalBody{ padding:16px; display:grid; grid-template-columns: 220px 1fr; gap:16px; }
+    .pmodalImg{ width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover; background:#f2f2f3; }
+    .pmodalH{ margin:0; font-size:18px; font-weight:900; }
+    .pmodalSub{ margin:6px 0 0; color:var(--muted); font-size:13px; }
+    .pmodalList{ margin:12px 0 0; padding-left:18px; color:var(--text); }
+    .pmodalMeta{ margin-top:10px; color:var(--muted); font-size:12px; }
+    .pmodalActions{ margin-top:14px; display:flex; gap:10px; }
+    .pmodalClose{
+      width:42px; height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.9);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    @media (max-width: 700px){
+      .pmodalBody{ grid-template-columns:1fr; }
+    }
+
     /* Responsive */
     @media (max-width: 1100px){
       .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -504,46 +500,47 @@ export default function App() {
   `;
 
   const products = [
+    // Cosmetics
     { id: 1, name: "Velvet Lipstick", price: 15, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
 
-    // ✅ Max Factor product you asked for
+    // ✅ Your Max Factor product (image in /public/products/)
     {
-  id: 9,
-  name: "Max Factor X 101",
-  price: 11,
-  img: "/products/maxfactor-x-101.png",
-  category: "cosmetics",
+      id: 9,
+      name: "Max Factor X 101",
+      price: 11,
+      img: "/products/maxfactor-x-101.png",
+      category: "cosmetics",
+      details: {
+        subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
+        size: "30–35 ml (varies by market)",
+        features: ["High coverage, buildable finish", "Smudge-resistant & touch-proof", "Long-wear up to ~8 hours", "Oil-free feel"],
+        howToUse: "Apply a small amount and blend outward with a sponge/brush. Build coverage where needed.",
+      },
+    },
 
-  // ✅ Learn more info
-  details: {
-    subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
-    size: "30–35 ml (varies by market)",
-    features: [
-      "High coverage, buildable finish",
-      "Smudge-resistant & touch-proof",
-      "Long-wear up to ~8 hours",
-      "Oil-free & fragrance-free (good for sensitive skin)",
-    ],
-    howToUse:
-      "Apply a small amount to the center of the face and blend outward with a sponge/brush. Build coverage where needed.",
-  },
-},
-,
+    // Women
+    { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "women" },
+    { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "women" },
+    { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/900x900", category: "women" },
 
-    { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "clothes" },
-    { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "clothes" },
-    { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/900x900", category: "clothes" },
+    // Men (placeholders — you can replace images later)
+    { id: 10, name: "Essential Tee", price: 35, img: "https://via.placeholder.com/900x900", category: "men" },
+    { id: 11, name: "Modern Overshirt", price: 110, img: "https://via.placeholder.com/900x900", category: "men" },
+    { id: 12, name: "Straight Chino", price: 85, img: "https://via.placeholder.com/900x900", category: "men" },
+
+    // Fragrances (placeholders — you can replace images later)
+    { id: 13, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+    { id: 14, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+    { id: 15, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
   ];
 
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const [productOpen, setProductOpen] = useState(false);
-const [activeProduct, setActiveProduct] = useState(null);
 
   // ✅ Auth UI state
   const [authOpen, setAuthOpen] = useState(false);
@@ -556,24 +553,42 @@ const [activeProduct, setActiveProduct] = useState(null);
     confirmPassword: "",
   });
 
+  // ✅ Learn more modal state
+  const [productOpen, setProductOpen] = useState(false);
+  const [activeProduct, setActiveProduct] = useState(null);
+
+  // ✅ Categories: Cosmetics, Men, Women, Fragrances
   const categories = [
     { key: "cosmetics", label: "Cosmetics" },
-    { key: "clothes", label: "Clothes" },
+    { key: "women", label: "Women" },
+    { key: "men", label: "Men" },
+    { key: "fragrances", label: "Fragrances" },
   ];
 
   const filteredProducts = useMemo(
     () => products.filter((p) => p.category === selectedCategory),
-    [products, selectedCategory]
+    [selectedCategory]
   );
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   const addToCart = (product) => setCartItems((prev) => [...prev, product]);
   const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+
   const learnMore = (product) => {
-  setActiveProduct(product);
-  setProductOpen(true);
-};
+    setActiveProduct(product);
+    setProductOpen(true);
+  };
+
+  const sectionTitle =
+    selectedCategory === "cosmetics"
+      ? "Cosmetics"
+      : selectedCategory === "women"
+      ? "Women"
+      : selectedCategory === "men"
+      ? "Men"
+      : "Fragrances";
+
   // ESC closes drawer + modal
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -587,12 +602,12 @@ const [activeProduct, setActiveProduct] = useState(null);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // lock body scroll when drawer OR auth modal open
+  // lock body scroll when drawer OR auth modal OR product modal open
   useEffect(() => {
     const locked = sidebarOpen || authOpen || productOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
-  }, [sidebarOpen, authOpen]);
+  }, [sidebarOpen, authOpen, productOpen]);
 
   const resetAuthForm = () =>
     setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
@@ -900,7 +915,7 @@ const [activeProduct, setActiveProduct] = useState(null);
           <section>
             <div className="sectionHeader">
               <div>
-                <h1 className="h1">{selectedCategory === "cosmetics" ? "Cosmetics" : "Clothes"}</h1>
+                <h1 className="h1">{sectionTitle}</h1>
                 <p className="sub">Curated essentials designed to feel effortless.</p>
                 {user && (
                   <p className="sub" style={{ marginTop: 6 }}>
@@ -926,21 +941,15 @@ const [activeProduct, setActiveProduct] = useState(null);
                       <div className="price">${p.price.toFixed(2)}</div>
                     </div>
 
-                    {/* ✅ ONLY CHANGE IN UI: Learn more above Add to Cart */}
+                    {/* ✅ ONLY ONE Learn more button (no duplicates) */}
                     <div className="btnRow">
                       <button className="btnSecondary" onClick={() => learnMore(p)} type="button">
                         Learn more
                       </button>
-<div className="btnRow">
-  <button className="btnSecondary" onClick={() => learnMore(p)} type="button">
-    Learn more
-  </button>
 
-  <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
-    Add to Cart
-  </button>
-</div>
-
+                      <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                 </article>
@@ -989,88 +998,87 @@ const [activeProduct, setActiveProduct] = useState(null);
                 >
                   Checkout
                 </button>
-                <div className="cartNote">
-                  {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
-                </div>
+                <div className="cartNote">{user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}</div>
               </>
             )}
           </aside>
         </main>
 
         {/* Product Learn More Modal */}
-<div className={`pmodal ${productOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-  <div
-    className="pmodalBackdrop"
-    onClick={() => {
-      setProductOpen(false);
-      setActiveProduct(null);
-    }}
-    aria-label="Close product modal"
-  />
-  <div className="pmodalCard">
-    <div className="modalTop">
-      <div>
-        <div className="modalTitle">Product</div>
-        <div className="help">Details & usage</div>
-      </div>
-      <button
-        className="pmodalClose"
-        onClick={() => {
-          setProductOpen(false);
-          setActiveProduct(null);
-        }}
-        aria-label="Close"
-      >
-        ✕
-      </button>
-    </div>
-
-    <div className="pmodalBody">
-      <img className="pmodalImg" src={activeProduct?.img} alt={activeProduct?.name || "Product"} />
-
-      <div>
-        <h3 className="pmodalH">{activeProduct?.name}</h3>
-        <div className="pmodalSub">{activeProduct?.details?.subtitle}</div>
-
-        {activeProduct?.details?.features?.length ? (
-          <ul className="pmodalList">
-            {activeProduct.details.features.map((f, idx) => (
-              <li key={idx}>{f}</li>
-            ))}
-          </ul>
-        ) : null}
-
-        {activeProduct?.details?.size ? <div className="pmodalMeta">Size: {activeProduct.details.size}</div> : null}
-        {activeProduct?.details?.howToUse ? <div className="pmodalMeta">How to use: {activeProduct.details.howToUse}</div> : null}
-
-        <div className="pmodalActions">
-          <button
-            className="btnPrimary"
-            type="button"
-            onClick={() => {
-              if (activeProduct) addToCart(activeProduct);
-              setProductOpen(false);
-              setActiveProduct(null);
-            }}
-          >
-            Add to Cart
-          </button>
-          <button
-            className="btnGhost"
-            type="button"
+        <div className={`pmodal ${productOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+          <div
+            className="pmodalBackdrop"
             onClick={() => {
               setProductOpen(false);
               setActiveProduct(null);
             }}
-          >
-            Close
-          </button>
+            aria-label="Close product modal"
+          />
+          <div className="pmodalCard">
+            <div className="modalTop">
+              <div>
+                <div className="modalTitle">Product</div>
+                <div className="help">Details & usage</div>
+              </div>
+              <button
+                className="pmodalClose"
+                onClick={() => {
+                  setProductOpen(false);
+                  setActiveProduct(null);
+                }}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="pmodalBody">
+              <img className="pmodalImg" src={activeProduct?.img} alt={activeProduct?.name || "Product"} />
+
+              <div>
+                <h3 className="pmodalH">{activeProduct?.name}</h3>
+                <div className="pmodalSub">{activeProduct?.details?.subtitle || "More details coming soon."}</div>
+
+                {activeProduct?.details?.features?.length ? (
+                  <ul className="pmodalList">
+                    {activeProduct.details.features.map((f, idx) => (
+                      <li key={idx}>{f}</li>
+                    ))}
+                  </ul>
+                ) : null}
+
+                {activeProduct?.details?.size ? <div className="pmodalMeta">Size: {activeProduct.details.size}</div> : null}
+                {activeProduct?.details?.howToUse ? <div className="pmodalMeta">How to use: {activeProduct.details.howToUse}</div> : null}
+
+                <div className="pmodalActions">
+                  <button
+                    className="btnPrimary"
+                    type="button"
+                    onClick={() => {
+                      if (activeProduct) addToCart(activeProduct);
+                      setProductOpen(false);
+                      setActiveProduct(null);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                  <button
+                    className="btnGhost"
+                    type="button"
+                    onClick={() => {
+                      setProductOpen(false);
+                      setActiveProduct(null);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
+        <footer className="footer">© 2026 auréa.com</footer>
       </div>
     </GoogleOAuthProvider>
   );
