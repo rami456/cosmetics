@@ -1,104 +1,119 @@
-import React, { useState } from "react";
+import { useState, useMemo } from "react";
+import "./App.css";
 
-function App() {
+export default function App() {
   const products = [
-    { id: 1, name: "Lipstick", price: 15, img: "https://via.placeholder.com/300" },
-    { id: 2, name: "Foundation", price: 25, img: "https://via.placeholder.com/300" },
-    { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/300" },
-    { id: 4, name: "Blush", price: 18, img: "https://via.placeholder.com/300" },
-    { id: 5, name: "Mascara", price: 20, img: "https://via.placeholder.com/300" },
+    { id: 1, name: "Lipstick", price: 15, img: "https://via.placeholder.com/300", category: "cosmetics" },
+    { id: 2, name: "Foundation", price: 25, img: "https://via.placeholder.com/300", category: "cosmetics" },
+    { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/300", category: "cosmetics" },
+    { id: 4, name: "Blush", price: 18, img: "https://via.placeholder.com/300", category: "cosmetics" },
+    { id: 5, name: "Mascara", price: 20, img: "https://via.placeholder.com/300", category: "cosmetics" },
+
+    { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/300", category: "clothes" },
+    { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/300", category: "clothes" },
+    { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/300", category: "clothes" },
   ];
 
+  const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
-  };
+  const filteredProducts = useMemo(
+    () => products.filter((p) => p.category === selectedCategory),
+    [selectedCategory]
+  );
 
-  const removeFromCart = (index) => {
-    setCartItems(cartItems.filter((_, i) => i !== index));
-  };
+  const addToCart = (product) => setCartItems((prev) => [...prev, product]);
+  const removeFromCart = (index) =>
+    setCartItems((prev) => prev.filter((_, i) => i !== index));
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", minHeight: "100vh" }}>
-      
+    <div style={{ fontFamily: "Arial, sans-serif", minHeight: "100vh", background: "#fafafa" }}>
       {/* Header */}
       <header
         style={{
-          backgroundColor: "#ffffff",
-          padding: "20px",
-          borderBottom: "1px solid #eee",
+          background: "#fff",
+          padding: 20,
           textAlign: "center",
-          fontSize: "28px",
+          fontSize: 28,
           fontWeight: "bold",
+          borderBottom: "1px solid #eee",
         }}
       >
-        <a
-          href="https://aurea.com"
-          style={{ textDecoration: "none", color: "#000" }}
-        >
-          auréa
-        </a>
+        auréa
       </header>
 
-      {/* Main Content */}
-      <main
+      {/* Sidebar */}
+      <aside
         style={{
-          display: "flex",
-          padding: "30px",
-          backgroundColor: "#fafafa",
-          gap: "30px",
+          position: "fixed",
+          top: 80,
+          left: 0,
+          bottom: 0,
+          width: 220,
+          background: "#fff",
+          borderRight: "1px solid #eee",
+          padding: 20,
         }}
       >
-        {/* Products Grid */}
+        <h3>Categories</h3>
+
+        {["cosmetics", "clothes"].map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            style={{
+              width: "100%",
+              padding: 12,
+              marginTop: 10,
+              borderRadius: 8,
+              border: "none",
+              cursor: "pointer",
+              background: selectedCategory === cat ? "#000" : "#f2f2f2",
+              color: selectedCategory === cat ? "#fff" : "#000",
+              textTransform: "capitalize",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </aside>
+
+      {/* Main */}
+      <main style={{ padding: 30, paddingLeft: 260, display: "flex", gap: 30 }}>
+        {/* Products */}
         <section
           style={{
+            flex: 3,
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-            gap: "25px",
-            flex: 3,
+            gap: 25,
           }}
         >
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div
               key={product.id}
               style={{
-                backgroundColor: "#fff",
-                border: "1px solid #eee",
-                borderRadius: "12px",
-                padding: "15px",
+                background: "#fff",
+                borderRadius: 12,
+                padding: 15,
                 textAlign: "center",
-                transition: "all 0.2s ease",
+                border: "1px solid #eee",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow =
-                  "0 8px 20px rgba(0,0,0,0.1)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.boxShadow = "none")
-              }
             >
-              <img
-                src={product.img}
-                alt={product.name}
-                style={{ width: "100%", borderRadius: "10px" }}
-              />
-              <h3 style={{ margin: "12px 0 5px" }}>{product.name}</h3>
-              <p style={{ color: "#555", marginBottom: "10px" }}>
-                ${product.price.toFixed(2)}
-              </p>
+              <img src={product.img} alt={product.name} style={{ width: "100%", borderRadius: 10 }} />
+              <h3>{product.name}</h3>
+              <p>${product.price}</p>
               <button
                 onClick={() => addToCart(product)}
                 style={{
-                  backgroundColor: "#000",
+                  background: "#000",
                   color: "#fff",
                   border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
+                  padding: 10,
                   width: "100%",
+                  borderRadius: 6,
                 }}
               >
                 Add to Cart
@@ -111,51 +126,29 @@ function App() {
         <aside
           style={{
             flex: 1,
-            backgroundColor: "#fff",
+            background: "#fff",
+            borderRadius: 12,
+            padding: 20,
             border: "1px solid #eee",
-            borderRadius: "12px",
-            padding: "20px",
             height: "fit-content",
           }}
         >
-          <h2 style={{ marginBottom: "15px" }}>🛒 Cart</h2>
+          <h2>🛒 Cart</h2>
 
           {cartItems.length === 0 ? (
-            <p style={{ color: "#777" }}>Your cart is empty</p>
+            <p>Your cart is empty</p>
           ) : (
             <>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {cartItems.map((item, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "10px",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <span>
-                      {item.name} – ${item.price}
-                    </span>
-                    <button
-                      onClick={() => removeFromCart(index)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                    >
-                      ✕
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              {cartItems.map((item, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                  <span>{item.name}</span>
+                  <button onClick={() => removeFromCart(i)} style={{ color: "red", border: "none" }}>
+                    ✕
+                  </button>
+                </div>
+              ))}
               <hr />
-              <p style={{ fontWeight: "bold", marginTop: "10px" }}>
-                Total: ${totalPrice.toFixed(2)}
-              </p>
+              <strong>Total: ${totalPrice}</strong>
             </>
           )}
         </aside>
@@ -164,11 +157,13 @@ function App() {
       {/* Footer */}
       <footer
         style={{
+          marginLeft: 220,
           textAlign: "center",
-          padding: "15px",
+          padding: 15,
           borderTop: "1px solid #eee",
-          fontSize: "14px",
+          fontSize: 14,
           color: "#666",
+          background: "#fff",
         }}
       >
         © 2026 auréa.com
@@ -176,5 +171,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
