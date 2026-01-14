@@ -33,12 +33,12 @@ export default function App() {
       {/* Header */}
       <header
         style={{
-          background: "#fff",
+          background: "#000000",
           padding: 20,
           textAlign: "center",
           fontSize: 28,
           fontWeight: "bold",
-          borderBottom: "1px solid #eee",
+          borderBottom: "1px solid #000000",
         }}
       >
         auréa
