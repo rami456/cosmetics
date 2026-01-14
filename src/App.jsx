@@ -1097,7 +1097,7 @@ const [activeImage, setActiveImage] = useState("");
               {filteredProducts.map((p) => (
                 <article key={p.id} className="card">
                   <div className="imgWrap">
-                    <img src={p.images?.[0]} alt={p.name} className="img" />
+                    <img src={(p.images?.[0] || p.img)} alt={p.name} className="img" />
                   </div>
 
                   <div className="cardBody">
