@@ -583,12 +583,6 @@ const [activeProduct, setActiveProduct] = useState(null);
   setActiveProduct(product);
   setProductOpen(true);
 };
-
-  // ✅ Learn more handler (added only)
-  function learnMore(product) {
-    alert(`${product.name}\n$${product.price.toFixed(2)}\n\nMore details coming soon.`);
-  }
-
   // ESC closes drawer + modal
   useEffect(() => {
     const onKeyDown = (e) => {
