@@ -121,44 +121,379 @@ export default function App() {
       pointer-events:auto;
     }
 
-    /* Sidebar */
-    /* Sidebar drawer with image */
-.sidebar{
-  position:fixed;
-  top:72px;
-  left:0;
-  bottom:0;
-  width:360px;
-  z-index:70;
-  transform:translateX(-105%);
-  transition:transform 220ms ease;
-  overflow:hidden;
-  padding:0;
-  background:#000;
-  border-right:1px solid var(--line);
-}
-.sidebar.open{
-  transform:translateX(0);
-}
+    /* ✅ Sidebar drawer (image background) */
+    .sidebar{
+      position:fixed;
+      top:72px; left:0; bottom:0;
+      width:360px;
+      z-index:70;
+      transform:translateX(-105%);
+      transition:transform 220ms ease;
+      overflow:hidden;
+      padding:0;
+      background:#000;
+      border-right:1px solid rgba(255,255,255,0.10);
+      box-shadow:var(--shadow);
+    }
+    .sidebar.open{ transform:translateX(0); }
 
-.sidebarBg{
-  position:absolute;
-  inset:0;
-  background-image:url("/menu.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-}
+    .sidebarBg{
+      position:absolute;
+      inset:0;
+      background-image:url("/menu.png");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      filter:saturate(1.0);
+    }
 
-.sidebarContent{
-  position:relative;
-  z-index:1;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  padding:18px;
-}
-      .closeBtn{ display:flex; align-items:center; justify-content:center; }
+    .sidebarContent{
+      position:relative;
+      z-index:1;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      padding:18px;
+    }
+
+    .sidebarHeader{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,0.18);
+      margin-bottom:14px;
+    }
+    .sidebarTitle{
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      color:#fff;
+      text-shadow:0 2px 10px rgba(0,0,0,0.35);
+    }
+    .sidebarSub{
+      margin-top:6px;
+      font-size:12px;
+      color:rgba(255,255,255,0.72);
+      text-shadow:0 2px 10px rgba(0,0,0,0.35);
+    }
+    .closeBtn{
+      width:42px; height:42px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .closeBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+    .menuList{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .menuItem{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      cursor:pointer;
+      transition:transform 120ms ease, box-shadow 180ms ease, background 180ms ease;
+      backdrop-filter: blur(6px);
+    }
+    .menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); background:rgba(0,0,0,0.48); }
+    .menuItem.active{
+      background:rgba(255,255,255,0.14);
+      border-color:rgba(255,255,255,0.30);
+    }
+    .menuText{ font-weight:800; letter-spacing:0.01em; }
+    .menuArrow{ opacity:0.8; font-size:18px; }
+
+    .sidebarFooter{ margin-top:auto; }
+    .miniCard{
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      backdrop-filter: blur(6px);
+    }
+    .miniCardTitle{
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+    .miniCardText{ margin-top:6px; font-size:12px; color:rgba(255,255,255,0.72); }
+
+    /* Main layout */
+    .main{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:18px;
+      padding:22px;
+      max-width:1280px;
+      margin:0 auto;
+    }
+    .sectionHeader{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .h1{ margin:0; font-size:32px; letter-spacing:-0.02em; }
+    .sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
+    .sortHint{ font-size:13px; color:var(--muted); }
+
+    /* Products */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:16px;
+    }
+    .card{
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:#fff;
+      overflow:hidden;
+      box-shadow:0 6px 20px rgba(0,0,0,0.06);
+      transition:transform 140ms ease, box-shadow 220ms ease;
+      position:relative;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
+    .imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
+    .img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .cardBody{ padding:14px; display:flex; flex-direction:column; gap:12px; }
+    .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .cardTitle{ margin:0; font-size:14px; font-weight:900; }
+    .price{ font-weight:900; font-size:14px; }
+
+    .btnPrimary{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.12);
+      background:#0e0e10;
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform 120ms ease, opacity 180ms ease;
+    }
+    .btnPrimary:hover{ transform:translateY(-1px); }
+    .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
+
+    /* Learn more button */
+    .learnMoreBtn{
+      position:absolute;
+      top:10px;
+      left:10px;
+      z-index:5;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.12);
+      background:rgba(255,255,255,0.92);
+      font-weight:900;
+      cursor:pointer;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .learnMoreBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+    /* Cart */
+    .cart{
+      position:sticky;
+      top:90px;
+      height:fit-content;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:#fff;
+      padding:16px;
+      box-shadow:0 8px 26px rgba(0,0,0,0.06);
+    }
+    .cartHeader{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+    .cartTitle{ font-weight:900; font-size:16px; }
+    .cartCount{ color:var(--muted); font-size:12px; }
+
+    .empty{
+      border:1px dashed rgba(0,0,0,0.18);
+      border-radius:16px;
+      padding:16px;
+      text-align:center;
+      background:linear-gradient(180deg,#fff,#fafafa);
+    }
+    .emptyIcon{ font-size:22px; }
+    .emptyTitle{ margin-top:10px; font-weight:900; }
+    .emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
+
+    .cartList{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+    .cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+    .cartRow:last-child{ border-bottom:none; }
+    .cartName{ font-weight:800; font-size:13px; }
+    .cartPrice{ color:var(--muted); font-size:12px; margin-top:4px; }
+    .removeBtn{
+      border:none;
+      background:transparent;
+      color:#b00020;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .cartTotal{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid var(--line);
+      font-size:14px;
+    }
+    .btnCheckout{
+      width:100%;
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.12);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+    .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
+    .footer{
+      padding:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:90;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 180ms ease;
+    }
+    .modal.show{ opacity:1; pointer-events:auto; }
+    .modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+    .modalCard{
+      position:relative;
+      width:min(720px, 100%);
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      max-height: calc(100vh - 48px);
+      overflow:auto;
+    }
+    .modalTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 16px 0;
+    }
+    .modalTitle{
+      font-weight:900;
+      font-size:14px;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+    }
+    .modalClose{
+      width:42px; height:42px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.9);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .modalBody{ padding:14px 16px 16px; }
+    .tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
+    .tab{
+      flex:1;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
+    .field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+    .label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
+    .input{
+      height:44px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      padding:0 12px;
+      outline:none;
+      background:#fff;
+      font-weight:700;
+    }
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .help{ margin-top:10px; font-size:12px; color:var(--muted); }
+    .authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+    .btnGhost{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:12px 0 2px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .divider::before, .divider::after{
+      content:"";
+      height:1px;
+      flex:1;
+      background:var(--line);
+    }
+
+    /* Learn More gallery */
+    .lmGrid{ display:grid; grid-template-columns: 1fr 260px; gap:14px; align-items:start; }
+    .lmImgWrap{ width:100%; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#f2f2f3; }
+    .lmImg{ width:100%; height:auto; display:block; }
+    .lmThumbs{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start; }
+    .lmThumbBtn{ width:70px; height:70px; padding:0; border-radius:12px; border:1px solid var(--line); background:#fff; cursor:pointer; overflow:hidden; }
+    .lmThumbBtn.active{ border-color:#0e0e10; }
+    .lmThumb{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    @media (max-width: 1100px){
+      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .main{ grid-template-columns: 1fr 320px; }
+    }
+    @media (max-width: 900px){
+      .main{ grid-template-columns: 1fr; }
+      .cart{ position:relative; top:auto; }
       .pill{ display:none; }
       .lmGrid{ grid-template-columns: 1fr; }
       .lmThumbs{ margin-top:12px; }
@@ -237,7 +572,6 @@ export default function App() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
-        // If they are guest, keep guest. Otherwise sign out UI.
         setUser((prev) => (prev?.mode === "guest" ? prev : null));
         return;
       }
@@ -323,7 +657,7 @@ export default function App() {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
-      setUser(null); // UI update immediately
+      setUser(null);
     } catch (err) {
       alert(err?.code || err?.message || "Sign out failed");
     }
@@ -344,6 +678,7 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* ✅ Keep this EXACTLY like this */}
       <style>{styles}</style>
 
       {/* Top Bar */}
@@ -382,45 +717,48 @@ export default function App() {
       {/* Overlay (sidebar) */}
       <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
-      {/* Sidebar */}
+      {/* ✅ Sidebar Drawer with Image */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebarHeader">
-          <div>
-            <div className="sidebarTitle">Browse</div>
-            <div className="sidebarSub">Select a category</div>
+        <div className="sidebarBg" aria-hidden="true" />
+        <div className="sidebarContent">
+          <div className="sidebarHeader">
+            <div>
+              <div className="sidebarTitle">Browse</div>
+              <div className="sidebarSub">Select a category</div>
+            </div>
+
+            <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
+              ✕
+            </button>
           </div>
 
-          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
-            ✕
-          </button>
-        </div>
+          <nav>
+            <ul className="menuList">
+              {categories.map((c) => {
+                const active = selectedCategory === c.key;
+                return (
+                  <li key={c.key}>
+                    <button
+                      className={`menuItem ${active ? "active" : ""}`}
+                      onClick={() => {
+                        setSelectedCategory(c.key);
+                        setSidebarOpen(false);
+                      }}
+                    >
+                      <span className="menuText">{c.label}</span>
+                      <span className="menuArrow">›</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-        <nav>
-          <ul className="menuList">
-            {categories.map((c) => {
-              const active = selectedCategory === c.key;
-              return (
-                <li key={c.key}>
-                  <button
-                    className={`menuItem ${active ? "active" : ""}`}
-                    onClick={() => {
-                      setSelectedCategory(c.key);
-                      setSidebarOpen(false);
-                    }}
-                  >
-                    <span className="menuText">{c.label}</span>
-                    <span className="menuArrow">›</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        <div className="sidebarFooter">
-          <div className="miniCard">
-            <div className="miniCardTitle">Auréa Standard</div>
-            <div className="miniCardText">Clean formulas • Timeless tailoring</div>
+          <div className="sidebarFooter">
+            <div className="miniCard">
+              <div className="miniCardTitle">Auréa Standard</div>
+              <div className="miniCardText">Clean formulas • Timeless tailoring</div>
+            </div>
           </div>
         </div>
       </aside>
