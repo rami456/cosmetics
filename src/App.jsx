@@ -510,18 +510,159 @@ export default function App() {
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    {
-      id: 9,
-      name: "Max Factor x 101",
-      price: 11,
-      category: "cosmetics",
-      images: ["/products/Max_Factor_Closed_101_Ivory_Beige_PNG.png", "/products/OIP (11).webp"],
-      details: {
-        subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
-        size: "30–35 ml (varies by market)",
-        features: ["High coverage, buildable finish", "Smudge-resistant & touch-proof", "Long-wear up to ~8 hours", "Oil-free feel"],
-        howToUse: "Apply a small amount and blend outward with a sponge/brush. Build coverage where needed.",
-      },
+   // ✅ Cosmetics (all include Learn More details + images)
+{
+  id: 9,
+  name: "MAxFactor X 101",
+  price: 11,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-101.jpg",
+    // "/products/maxfactor-101-2.jpg",
+  ],
+  details: {
+    subtitle: "Foundation — Shade 101 (light tone)",
+    size: "30 ml",
+    features: [
+      "Buildable coverage (light → medium)",
+      "Smooth, natural-looking finish",
+      "Best for everyday wear",
+    ],
+    howToUse:
+      "Apply 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
+  },
+},
+
+{
+  id: 10,
+  name: "MaxFactor X 55 BEIGE",
+  price: 13,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-55-beige.jpg",
+    // "/products/maxfactor-55-beige-2.jpg",
+  ],
+  details: {
+    subtitle: "Foundation — Shade 55 Beige (medium tone)",
+    size: "30 ml",
+    features: [
+      "Medium coverage for an even tone",
+      "Comfortable wear with a soft finish",
+      "Great for daily makeup looks",
+    ],
+    howToUse:
+      "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
+  },
+},
+
+{
+  id: 11,
+  name: "MaxFactor SPF 20",
+  price: 17,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-spf20.jpg",
+    // "/products/maxfactor-spf20-2.jpg",
+  ],
+  details: {
+    subtitle: "Foundation with SPF 20 — Everyday base",
+    size: "30 ml",
+    features: [
+      "Evens skin tone with medium coverage",
+      "SPF 20 (nice bonus protection)",
+      "Pairs well with setting powder",
+    ],
+    howToUse:
+      "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
+  },
+},
+
+{
+  id: 12,
+  name: "L’Oréal PARIS NUDE",
+  price: 20,
+  category: "cosmetics",
+  images: [
+    "/products/loreal-nude.jpg",
+    // "/products/loreal-nude-2.jpg",
+  ],
+  details: {
+    subtitle: "Nude finish foundation — Natural look",
+    size: "30 ml",
+    features: [
+      "Natural/nude look (skin-like finish)",
+      "Light → medium buildable coverage",
+      "Ideal for clean, minimal makeup styles",
+    ],
+    howToUse:
+      "Use a damp sponge for the most natural finish. Build coverage only where needed (T-zone, cheeks).",
+  },
+},
+
+{
+  id: 13,
+  name: "L’Oréal PARIS 24H C Cool",
+  price: 12,
+  category: "cosmetics",
+  images: [
+    "/products/loreal-24h-c-cool.jpg",
+    // "/products/loreal-24h-c-cool-2.jpg",
+  ],
+  details: {
+    subtitle: "Shade: Cool undertone (C)",
+    size: "30 ml",
+    features: [
+      "Cool undertone shade (balances warm/red tones)",
+      "Medium coverage, blendable texture",
+      "Good choice for everyday + events",
+    ],
+    howToUse:
+      "Blend quickly with a brush, then press with sponge to smooth texture. Set the T-zone if oily.",
+  },
+},
+
+{
+  id: 14,
+  name: "L’Oréal PARIS HN Normal",
+  price: 12,
+  category: "cosmetics",
+  images: [
+    "/products/loreal-hn-normal.jpg",
+    // "/products/loreal-hn-normal-2.jpg",
+  ],
+  details: {
+    subtitle: "Shade: HN (Neutral) — Balanced tone",
+    size: "30 ml",
+    features: [
+      "Neutral undertone shade (HN)",
+      "Medium coverage for an even base",
+      "Works well with most blush/bronzer tones",
+    ],
+    howToUse:
+      "Apply in thin layers. Let the first layer set for 30 seconds before adding more coverage.",
+  },
+},
+
+{
+  id: 15,
+  name: "HD Luminous",
+  price: 10,
+  category: "cosmetics",
+  images: [
+    "/products/hd-luminous.jpg",
+    // "/products/hd-luminous-2.jpg",
+  ],
+  details: {
+    subtitle: "Luminous/HD-style finish foundation",
+    size: "30 ml",
+    features: [
+      "Bright, luminous look",
+      "Blends smoothly on skin",
+      "Great under flash/indoor lighting",
+    ],
+    howToUse:
+      "Use a sponge for a soft-glow finish. If you’re oily, set only the center of the face to keep glow.",
+  },
     },
     { id: 13, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
     { id: 14, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
