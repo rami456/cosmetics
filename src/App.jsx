@@ -122,400 +122,50 @@ export default function App() {
     }
 
     /* Sidebar */
-    .sidebar{
-      position:fixed;
-      top:72px; left:0; bottom:0;
-      width:280px;
-      background:var(--panel);
-      border-right:1px solid var(--line);
-      padding:18px;
-      z-index:70;
-      transform:translateX(0);
-      transition:transform 220ms ease;
-    }
-    .sidebarHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding-bottom:14px;
-      border-bottom:1px solid var(--line);
-      margin-bottom:14px;
-    }
-    .sidebarTitle{
-      font-weight:900;
-      font-size:12px;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-    }
-    .sidebarSub{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .closeBtn{
-      display:none;
-      width:42px; height:42px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.9);
-      cursor:pointer;
-    }
-    .menuList{
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .menuItem{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:14px 14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease;
-    }
-    .menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-    .menuItem.active{
-      background:#0e0e10;
-      color:#fff;
-      border-color:rgba(0,0,0,0.2);
-    }
-    .menuText{ font-weight:800; letter-spacing:0.01em; }
-    .menuArrow{ opacity:0.7; font-size:18px; }
+    /* Sidebar drawer with image */
+.sidebar{
+  position:fixed;
+  top:72px;
+  left:0;
+  bottom:0;
+  width:360px;
+  z-index:70;
+  transform:translateX(-105%);
+  transition:transform 220ms ease;
+  overflow:hidden;
+  padding:0;
+  background:#000;
+  border-right:1px solid var(--line);
+}
+.sidebar.open{
+  transform:translateX(0);
+}
 
-    .sidebarFooter{ margin-top:16px; }
-    .miniCard{
-      padding:14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, #ffffff, #f7f7f8);
-    }
-    .miniCardTitle{
-      font-weight:900;
-      font-size:12px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-    .miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
+.sidebarBg{
+  position:absolute;
+  inset:0;
+  background-image:url("/menu.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
 
-    /* Main layout */
-    .main{
-      display:grid;
-      grid-template-columns: 1fr 340px;
-      gap:18px;
-      padding:22px;
-      max-width:1280px;
-      margin:0 auto;
-      margin-left:280px;
-    }
-    .sectionHeader{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:16px;
-    }
-    .h1{ margin:0; font-size:32px; letter-spacing:-0.02em; }
-    .sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
-    .sortHint{ font-size:13px; color:var(--muted); }
-
-    /* Products */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:16px;
-    }
-    .card{
-      border-radius:var(--radius);
-      border:1px solid var(--line);
-      background:#fff;
-      overflow:hidden;
-      box-shadow:0 6px 20px rgba(0,0,0,0.06);
-      transition:transform 140ms ease, box-shadow 220ms ease;
-      position:relative;
-    }
-    .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
-    .imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
-    .img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .cardBody{ padding:14px; display:flex; flex-direction:column; gap:12px; }
-    .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-    .cardTitle{ margin:0; font-size:14px; font-weight:900; }
-    .price{ font-weight:900; font-size:14px; }
-
-    .btnPrimary{
-      width:100%;
-      padding:11px 12px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.12);
-      background:#0e0e10;
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-      transition:transform 120ms ease, opacity 180ms ease;
-    }
-    .btnPrimary:hover{ transform:translateY(-1px); }
-    .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
-
-    /* Learn more button */
-    .learnMoreBtn{
-      position:absolute;
-      top:10px;
-      left:10px;
-      z-index:5;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.12);
-      background:rgba(255,255,255,0.92);
-      font-weight:900;
-      cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease;
-    }
-    .learnMoreBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-
-    /* Cart */
-    .cart{
-      position:sticky;
-      top:90px;
-      height:fit-content;
-      border-radius:var(--radius);
-      border:1px solid var(--line);
-      background:#fff;
-      padding:16px;
-      box-shadow:0 8px 26px rgba(0,0,0,0.06);
-    }
-    .cartHeader{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
-    .cartTitle{ font-weight:900; font-size:16px; }
-    .cartCount{ color:var(--muted); font-size:12px; }
-
-    .empty{
-      border:1px dashed rgba(0,0,0,0.18);
-      border-radius:16px;
-      padding:16px;
-      text-align:center;
-      background:linear-gradient(180deg,#fff,#fafafa);
-    }
-    .emptyIcon{ font-size:22px; }
-    .emptyTitle{ margin-top:10px; font-weight:900; }
-    .emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
-
-    .cartList{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
-    .cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
-    .cartRow:last-child{ border-bottom:none; }
-    .cartName{ font-weight:800; font-size:13px; }
-    .cartPrice{ color:var(--muted); font-size:12px; margin-top:4px; }
-    .removeBtn{
-      border:none;
-      background:transparent;
-      color:#b00020;
-      cursor:pointer;
-      font-weight:800;
-    }
-    .cartTotal{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:12px;
-      padding-top:12px;
-      border-top:1px solid var(--line);
-      font-size:14px;
-    }
-    .btnCheckout{
-      width:100%;
-      margin-top:12px;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.12);
-      background:#fff;
-      font-weight:900;
-      cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease;
-    }
-    .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-    .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
-    .footer{
-      margin-left:280px;
-      padding:18px;
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* Modal (Auth + Learn More) */
-    .modal{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:90;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity 180ms ease;
-    }
-    .modal.show{ opacity:1; pointer-events:auto; }
-    .modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-    .modalCard{
-      position:relative;
-      width:min(720px, 100%);
-      border-radius:22px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.92);
-      backdrop-filter: blur(14px);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      max-height: calc(100vh - 48px);
-      overflow:auto;
-    }
-    .modalTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 16px 0;
-    }
-    .modalTitle{
-      font-weight:900;
-      font-size:14px;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-    }
-    .modalClose{
-      width:42px; height:42px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,0.9);
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .modalBody{ padding:14px 16px 16px; }
-    .tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
-    .tab{
-      flex:1;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      font-weight:900;
-    }
-    .tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
-    .field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
-    .label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
-    .input{
-      height:44px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      padding:0 12px;
-      outline:none;
-      background:#fff;
-      font-weight:700;
-    }
-    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .help{ margin-top:10px; font-size:12px; color:var(--muted); }
-    .authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
-    .btnGhost{
-      width:100%;
-      padding:11px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-weight:900;
-      cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease;
-    }
-    .btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-    .divider{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:12px 0 2px;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .divider::before, .divider::after{
-      content:"";
-      height:1px;
-      flex:1;
-      background:var(--line);
-    }
-
-    /* Learn More gallery */
-    .lmGrid{
-      display:grid;
-      grid-template-columns: 1fr 260px;
-      gap:14px;
-      align-items:start;
-    }
-    .lmImgWrap{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:16px;
-      overflow:hidden;
-      background:#f2f2f3;
-    }
-    .lmImg{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-    .lmThumbs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-start;
-    }
-    .lmThumbBtn{
-      width:70px;
-      height:70px;
-      padding:0;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      overflow:hidden;
-    }
-    .lmThumbBtn.active{ border-color:#0e0e10; }
-    .lmThumb{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    /* Responsive */
-    @media (max-width: 1100px){
-      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .main{ grid-template-columns: 1fr 320px; }
-    }
-    @media (max-width: 900px){
-      .main{ margin-left:0; grid-template-columns: 1fr; }
-      .cart{ position:relative; top:auto; }
-      .footer{ margin-left:0; }
-      .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
-      .sidebar.open{ transform:translateX(0); }
+.sidebarContent{
+  position:relative;
+  z-index:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding:18px;
+}
       .closeBtn{ display:flex; align-items:center; justify-content:center; }
       .pill{ display:none; }
       .lmGrid{ grid-template-columns: 1fr; }
       .lmThumbs{ margin-top:12px; }
     }
-    @media (max-width: 620px){
-      .grid{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 520px){
-      .row2{ grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; }
-    }
+    @media (max-width: 620px){ .grid{ grid-template-columns: 1fr; } }
+    @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
   `;
 
   // ✅ Products
@@ -525,34 +175,19 @@ export default function App() {
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-
     {
       id: 9,
       name: "Max Factor x 101",
       price: 11,
       category: "cosmetics",
-      images: [
-        "/products/Max_Factor_Closed_101_Ivory_Beige_PNG.png",
-        "/products/OIP (11).webp",
-      ],
+      images: ["/products/Max_Factor_Closed_101_Ivory_Beige_PNG.png", "/products/OIP (11).webp"],
       details: {
         subtitle: "Lasting Performance Foundation — Shade 101 Ivory Beige",
         size: "30–35 ml (varies by market)",
-        features: [
-          "High coverage, buildable finish",
-          "Smudge-resistant & touch-proof",
-          "Long-wear up to ~8 hours",
-          "Oil-free feel",
-        ],
-        howToUse:
-          "Apply a small amount and blend outward with a sponge/brush. Build coverage where needed.",
+        features: ["High coverage, buildable finish", "Smudge-resistant & touch-proof", "Long-wear up to ~8 hours", "Oil-free feel"],
+        howToUse: "Apply a small amount and blend outward with a sponge/brush. Build coverage where needed.",
       },
     },
-
-    { id: 6, name: "Silk Dress", price: 120, img: "https://via.placeholder.com/900x900", category: "clothes" },
-    { id: 7, name: "Auréa Jacket", price: 180, img: "https://via.placeholder.com/900x900", category: "clothes" },
-    { id: 8, name: "Tailored Pants", price: 95, img: "https://via.placeholder.com/900x900", category: "clothes" },
-
     { id: 13, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
     { id: 14, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
     { id: 15, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
@@ -560,31 +195,26 @@ export default function App() {
 
   const categories = [
     { key: "cosmetics", label: "Cosmetics" },
-   { key: "fragrances", label: "Fragrances" },
+    { key: "fragrances", label: "Fragrances" },
   ];
 
+  // ✅ State (NO duplicates)
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("cosmetics");
-  const [cartItems, setCartItems] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // user = { name, email, mode: "user" | "guest" }
   const [user, setUser] = useState(null);
 
-  // ✅ Learn More modal state
+  // Learn More modal
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
 
-  // ✅ Auth UI state
+  // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
-  const [authForm, setAuthForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
   const filteredProducts = useMemo(
     () => products.filter((p) => p.category === selectedCategory),
@@ -594,37 +224,35 @@ export default function App() {
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   const addToCart = (product) => setCartItems((prev) => [...prev, product]);
-  const removeFromCart = (index) =>
-    setCartItems((prev) => prev.filter((_, i) => i !== index));
+  const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
 
-  const resetAuthForm = () =>
-    setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
+  const resetAuthForm = () => setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
 
-    };
+  const setMode = (mode) => {
+    setAuthMode(mode);
+    resetAuthForm();
+  };
 
-  // ✅ Firebase: keep user logged in (session listener)
-  useEffectv(() =>
+  // ✅ Firebase: keep user logged in (REAL source of truth)
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
-        // Keep guest if they chose it (don’t wipe guest on auth state change)
+        // If they are guest, keep guest. Otherwise sign out UI.
         setUser((prev) => (prev?.mode === "guest" ? prev : null));
         return;
       }
 
-    return () => unsub();
-  }, []);
-        setUser((prev) => (prev?.mode === "guest" ? prev : null));
-        return;
-        // Keep guest if they chose it (don’t wipe guest on auth state change)
-        setUser((prev) => (prev?.mode === "guest" ? prev : null));
-        return;
-      }
+      setUser({
+        name: u.displayName || u.email?.split("@")[0] || "User",
+        email: u.email || "",
+        mode: "user",
+      });
+    });
 
     return () => unsub();
   }, []);
 
-  // ESC closes drawer + modal
+  // ESC closes drawer + modals
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -637,59 +265,52 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // lock body scroll when drawer OR any modal open
+  // lock body scroll when drawer or modal open
   useEffect(() => {
     const locked = sidebarOpen || authOpen || learnMoreOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [sidebarOpen, authOpen, learnMoreOpen]);
 
-  // ✅ Firebase Email/Password Sign in
-const signIn = async () => {
-  if (!authForm.email || !authForm.password) return;
+  // ✅ REAL Firebase Email/Password sign in (NO setUser here)
+  const signIn = async () => {
+    if (!authForm.email.trim() || !authForm.password.trim()) return;
 
-  try {
-    await signInWithEmailAndPassword(
-      auth,
-      authForm.email.trim(),
-      authForm.password
-    );
-    setAuthOpen(false);
-  } catch (err) {
-    alert(err.code); // <-- this MUST show errors now
-  }
-};
+    try {
+      await signInWithEmailAndPassword(auth, authForm.email.trim(), authForm.password);
+      setAuthOpen(false);
+      resetAuthForm();
+    } catch (err) {
+      alert(err?.code || err?.message || "Sign in failed");
+    }
+  };
 
-
-  // ✅ Firebase Email/Password Sign up
+  // ✅ REAL Firebase Email/Password sign up (NO setUser here)
   const signUp = async () => {
     if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
     if (authForm.password !== authForm.confirmPassword) return;
 
     try {
-      const cred = await createUserWithEmailAndPassword(
-        auth,
-        authForm.email.trim(),
-        authForm.password
-      );
+      const cred = await createUserWithEmailAndPassword(auth, authForm.email.trim(), authForm.password);
       await updateProfile(cred.user, { displayName: authForm.name.trim() });
 
       setAuthOpen(false);
       resetAuthForm();
     } catch (err) {
-      alert(err?.message || "Sign up failed");
+      alert(err?.code || err?.message || "Sign up failed");
     }
   };
 
-  // ✅ Firebase Google popup sign-in
+  // ✅ REAL Google popup sign in (NO setUser here)
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+
       setAuthOpen(false);
       resetAuthForm();
     } catch (err) {
-      alert(err?.message || "Google sign-in failed");
+      alert(err?.code || err?.message || "Google sign-in failed");
     }
   };
 
@@ -702,20 +323,19 @@ const signIn = async () => {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
-      setUser(null);
+      setUser(null); // UI update immediately
     } catch (err) {
-      alert(err?.message || "Sign out failed");
+      alert(err?.code || err?.message || "Sign out failed");
     }
   };
 
-  // ✅ Learn more open/close
+  // Learn more open/close
   const openLearnMore = (product) => {
     setActiveProduct(product);
     const first = product?.images?.[0] || product?.img || "";
     setActiveImage(first);
     setLearnMoreOpen(true);
   };
-
   const closeLearnMore = () => {
     setLearnMoreOpen(false);
     setActiveProduct(null);
@@ -728,17 +348,11 @@ const signIn = async () => {
 
       {/* Top Bar */}
       <header className="topbar">
-        <button
-          className="iconBtn"
-          aria-label="Open menu"
-          onClick={() => setSidebarOpen(true)}
-        >
+        <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)}>
           <span className="hamburger" />
         </button>
 
-        <a className="brand" href="https://aurea.com">
-          auréa
-        </a>
+        <a className="brand" href="https://aurea.com">auréa</a>
 
         <div className="topbarRight">
           <div className="pill">
@@ -766,10 +380,7 @@ const signIn = async () => {
       </header>
 
       {/* Overlay (sidebar) */}
-      <div
-        className={`overlay ${sidebarOpen ? "show" : ""}`}
-        onClick={() => setSidebarOpen(false)}
-      />
+      <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
@@ -779,11 +390,7 @@ const signIn = async () => {
             <div className="sidebarSub">Select a category</div>
           </div>
 
-          <button
-            className="closeBtn"
-            aria-label="Close menu"
-            onClick={() => setSidebarOpen(false)}
-          >
+          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
             ✕
           </button>
         </div>
@@ -820,36 +427,22 @@ const signIn = async () => {
 
       {/* Auth Modal */}
       <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-        <div
-          className="modalBackdrop"
-          onClick={() => setAuthOpen(false)}
-          aria-label="Close auth modal"
-        />
+        <div className="modalBackdrop" onClick={() => setAuthOpen(false)} aria-label="Close auth modal" />
         <div className="modalCard">
           <div className="modalTop">
             <div>
               <div className="modalTitle">Account</div>
               <div className="help">Sign in, create an account, or continue as a guest.</div>
             </div>
-            <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close">
-              ✕
-            </button>
+            <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close">✕</button>
           </div>
 
           <div className="modalBody">
             <div className="tabs" role="tablist" aria-label="Auth tabs">
-              <button
-                className={`tab ${authMode === "signin" ? "active" : ""}`}
-                onClick={() => setMode("signin")}
-                type="button"
-              >
+              <button className={`tab ${authMode === "signin" ? "active" : ""}`} onClick={() => setMode("signin")} type="button">
                 Sign in
               </button>
-              <button
-                className={`tab ${authMode === "signup" ? "active" : ""}`}
-                onClick={() => setMode("signup")}
-                type="button"
-              >
+              <button className={`tab ${authMode === "signup" ? "active" : ""}`} onClick={() => setMode("signup")} type="button">
                 Sign up
               </button>
             </div>
@@ -896,9 +489,7 @@ const signIn = async () => {
                 <input
                   className="input"
                   value={authForm.confirmPassword}
-                  onChange={(e) =>
-                    setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))
-                  }
+                  onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
                   placeholder="••••••••"
                   type="password"
                 />
@@ -920,10 +511,7 @@ const signIn = async () => {
                   disabled={!authForm.email.trim() || !authForm.password.trim()}
                   style={{
                     opacity: !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
-                    cursor:
-                      !authForm.email.trim() || !authForm.password.trim()
-                        ? "not-allowed"
-                        : "pointer",
+                    cursor: !authForm.email.trim() || !authForm.password.trim() ? "not-allowed" : "pointer",
                   }}
                 >
                   Sign in
@@ -961,7 +549,6 @@ const signIn = async () => {
 
               <div className="divider">or</div>
 
-              {/* ✅ Firebase Google Sign-in */}
               <button className="btnGhost" onClick={signInWithGoogle} type="button">
                 Continue with Google
               </button>
@@ -970,7 +557,7 @@ const signIn = async () => {
                 Continue as guest
               </button>
 
-              <div className="help">(Firebase Auth is now real. Guest mode is UI-only.)</div>
+              <div className="help">(Firebase Auth is real. Guest mode is UI-only.)</div>
             </div>
           </div>
         </div>
@@ -985,9 +572,7 @@ const signIn = async () => {
               <div className="modalTitle">Learn More</div>
               <div className="help">{activeProduct?.name || ""}</div>
             </div>
-            <button className="modalClose" onClick={closeLearnMore} aria-label="Close">
-              ✕
-            </button>
+            <button className="modalClose" onClick={closeLearnMore} aria-label="Close">✕</button>
           </div>
 
           <div className="modalBody">
@@ -999,18 +584,16 @@ const signIn = async () => {
 
                 <div>
                   <div className="lmThumbs">
-                    {(activeProduct.images || (activeProduct.img ? [activeProduct.img] : [])).map(
-                      (src, i) => (
-                        <button
-                          key={i}
-                          className={`lmThumbBtn ${src === activeImage ? "active" : ""}`}
-                          onClick={() => setActiveImage(src)}
-                          type="button"
-                        >
-                          <img className="lmThumb" src={src} alt="" />
-                        </button>
-                      )
-                    )}
+                    {(activeProduct.images || (activeProduct.img ? [activeProduct.img] : [])).map((src, i) => (
+                      <button
+                        key={i}
+                        className={`lmThumbBtn ${src === activeImage ? "active" : ""}`}
+                        onClick={() => setActiveImage(src)}
+                        type="button"
+                      >
+                        <img className="lmThumb" src={src} alt="" />
+                      </button>
+                    ))}
                   </div>
 
                   {activeProduct.details ? (
@@ -1020,15 +603,11 @@ const signIn = async () => {
                           <b>{activeProduct.details.subtitle}</b>
                         </div>
                       )}
-                      {activeProduct.details.size && (
-                        <div className="help">Size: {activeProduct.details.size}</div>
-                      )}
+                      {activeProduct.details.size && <div className="help">Size: {activeProduct.details.size}</div>}
                       {Array.isArray(activeProduct.details.features) && (
                         <ul style={{ marginTop: 10, paddingLeft: 18 }}>
                           {activeProduct.details.features.map((f, idx) => (
-                            <li key={idx} className="help">
-                              {f}
-                            </li>
+                            <li key={idx} className="help">{f}</li>
                           ))}
                         </ul>
                       )}
@@ -1039,9 +618,7 @@ const signIn = async () => {
                       )}
                     </div>
                   ) : (
-                    <div className="help" style={{ marginTop: 12 }}>
-                      More details coming soon.
-                    </div>
+                    <div className="help" style={{ marginTop: 12 }}>More details coming soon.</div>
                   )}
                 </div>
               </div>
@@ -1055,13 +632,7 @@ const signIn = async () => {
         <section>
           <div className="sectionHeader">
             <div>
-              <h1 className="h1">
-                {selectedCategory === "cosmetics"
-                  ? "Cosmetics"
-                  : selectedCategory === "clothes"
-                  ? "Clothes"
-                  : "Fragrances"}
-              </h1>
+              <h1 className="h1">{selectedCategory === "cosmetics" ? "Cosmetics" : "Fragrances"}</h1>
               <p className="sub">Curated essentials designed to feel effortless.</p>
               {user && (
                 <p className="sub" style={{ marginTop: 6 }}>
@@ -1077,9 +648,7 @@ const signIn = async () => {
           <div className="grid">
             {filteredProducts.map((p) => {
               const coverImg =
-                p.img ||
-                (Array.isArray(p.images) ? p.images[0] : "") ||
-                "https://via.placeholder.com/900x900";
+                p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
 
               return (
                 <article key={p.id} className="card">
@@ -1153,6 +722,7 @@ const signIn = async () => {
               >
                 Checkout
               </button>
+
               <div className="cartNote">
                 {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
               </div>
