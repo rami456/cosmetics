@@ -15,7 +15,6 @@ import {
 export default function App() {
   // ✅ All styles included here (no separate CSS file needed)
   const styles = `
-  .introCard{ cursor:pointer; }
     :root{
       --panel:#ffffff;
       --soft:#f6f6f7;
@@ -66,6 +65,7 @@ export default function App() {
       white-space:nowrap;
     }
     .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
+
     /* Icon Button */
     .iconBtn{
       width:42px; height:42px;
@@ -107,65 +107,6 @@ export default function App() {
       white-space:nowrap;
     }
     .authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-/* Intro / Splash page */
-.intro{
-  position:fixed;
-  inset:0;
-  z-index:120;
-  background: #bdbdbd;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:22px;
-}
-.introCard{
-  width:min(980px, 100%);
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(0,0,0,0.08);
-  background:#bdbdbd;
-  position:relative;
-}
-.introImg{
-  width:100%;
-  height:auto;
-  display:block;
-}
-.introContent{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:28px;
-}
-.introText{
-  max-width: 720px;
-  margin-top: 16px;
-  color: rgba(0,0,0,0.75);
-  letter-spacing: 0.35em;
-  font-size: 14px;
-  line-height: 1.9;
-  text-transform:uppercase;
-}
-.introBtn{
-  margin-top: 26px;
-  padding: 14px 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: rgba(0,0,0,0.90);
-  color:#fff;
-  font-weight:900;
-  letter-spacing:0.35em;
-  text-transform:uppercase;
-  cursor:pointer;
-  transition:transform 120ms ease, box-shadow 180ms ease, opacity 180ms ease;
-}
-.introBtn:hover{ transform:translateY(-1px); box-shadow: var(--shadow2); }
-.introBtn:active{ transform:translateY(0px); opacity:0.92; }
 
     /* Cart bubble button (top-right) */
     .cartBubble{
@@ -552,150 +493,117 @@ export default function App() {
     @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
   `;
 
-// ✅ Products
+  // ✅ Products
   const products = [
+    // Cosmetics placeholders
     { id: 1, name: "Velvet Lipstick", price: 15, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" }, 
+    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-   // ✅ Cosmetics (all include Learn More details + images)
-{
-  id: 9,
-  name: "MAxFactor X 101",
-  price: 11,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-101.jpg",
-    // "/products/maxfactor-101-2.jpg",
-  ],
-  details: {
-    subtitle: "Foundation — Shade 101 (light tone)",
-    size: "30 ml",
-    features: [
-      "Buildable coverage (light → medium)",
-      "Smooth, natural-looking finish",
-      "Best for everyday wear",
-    ],
-    howToUse:
-      "Apply 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
-  },
-},
 
-{
-  id: 10,
-  name: "MaxFactor X 55 BEIGE",
-  price: 13,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-55-beige.jpg",
-    // "/products/maxfactor-55-beige-2.jpg",
-  ],
-  details: {
-    subtitle: "Foundation — Shade 55 Beige (medium tone)",
-    size: "30 ml",
-    features: [
-      "Medium coverage for an even tone",
-      "Comfortable wear with a soft finish",
-      "Great for daily makeup looks",
-    ],
-    howToUse:
-      "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
-  },
-},
-
-{
-  id: 11,
-  name: "MaxFactor SPF 20",
-  price: 17,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-spf20.jpg",
-    // "/products/maxfactor-spf20-2.jpg",
-  ],
-  details: {
-    subtitle: "Foundation with SPF 20 — Everyday base",
-    size: "30 ml",
-    features: [
-      "Evens skin tone with medium coverage",
-      "SPF 20 (nice bonus protection)",
-      "Pairs well with setting powder",
-    ],
-    howToUse:
-      "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
-  },
-},
-
-{
-  id: 12,
-  name: "L’Oréal PARIS NUDE",
-  price: 20,
-  category: "cosmetics",
-  images: [
-    "/products/loreal-nude.jpg",
-    // "/products/loreal-nude-2.jpg",
-  ],
-  details: {
-    subtitle: "Nude finish foundation — Natural look",
-    size: "30 ml",
-    features: [
-      "Natural/nude look (skin-like finish)",
-      "Light → medium buildable coverage",
-      "Ideal for clean, minimal makeup styles",
-    ],
-    howToUse:
-      "Use a damp sponge for the most natural finish. Build coverage only where needed (T-zone, cheeks).",
-  },
-},
-
-{
-  id: 13,
-  name: "L’Oréal PARIS 24H C Cool",
-  price: 12,
-  category: "cosmetics",
-  images: [
-    "/products/loreal-24h-c-cool.jpg",
-    // "/products/loreal-24h-c-cool-2.jpg",
-  ],
-  details: {
-    subtitle: "Shade: Cool undertone (C)",
-    size: "30 ml",
-    features: [
-      "Cool undertone shade (balances warm/red tones)",
-      "Medium coverage, blendable texture",
-      "Good choice for everyday + events",
-    ],
-    howToUse:
-      "Blend quickly with a brush, then press with sponge to smooth texture. Set the T-zone if oily.",
-  },
-},
-
-{
-  id: 14,
-  name: "L’Oréal PARIS HN Normal",
-  price: 12,
-  category: "cosmetics",
-  images: [
-    "/products/loreal-hn-normal.jpg",
-    // "/products/loreal-hn-normal-2.jpg",
-  ],
-  details: {
-    subtitle: "Shade: HN (Neutral) — Balanced tone",
-    size: "30 ml",
-    features: [
-      "Neutral undertone shade (HN)",
-      "Medium coverage for an even base",
-      "Works well with most blush/bronzer tones",
-    ],
-    howToUse:
-      "Apply in thin layers. Let the first layer set for 30 seconds before adding more coverage.",
-  },
-},
+    // ✅ Your cosmetics (with Learn More)
+    {
+      id: 9,
+      name: "MAxFactor X 101",
+      price: 11,
+      category: "cosmetics",
+      images: ["/products/maxfactor-101.jpg"],
+      details: {
+        subtitle: "Foundation — Shade 101 (light tone)",
+        size: "30 ml",
+        features: ["Buildable coverage (light → medium)", "Smooth, natural-looking finish", "Best for everyday wear"],
+        howToUse:
+          "Apply 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
+      },
+    },
+    {
+      id: 10,
+      name: "MaxFactor X 55 BEIGE",
+      price: 13,
+      category: "cosmetics",
+      images: ["/products/maxfactor-55-beige.jpg"],
+      details: {
+        subtitle: "Foundation — Shade 55 Beige (medium tone)",
+        size: "30 ml",
+        features: ["Medium coverage for an even tone", "Comfortable wear with a soft finish", "Great for daily looks"],
+        howToUse: "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
+      },
+    },
+    {
+      id: 11,
+      name: "MaxFactor SPF 20",
+      price: 17,
+      category: "cosmetics",
+      images: ["/products/maxfactor-spf20.jpg"],
+      details: {
+        subtitle: "Foundation with SPF 20 — Everyday base",
+        size: "30 ml",
+        features: ["Evens skin tone with medium coverage", "SPF 20 (bonus protection)", "Pairs well with setting powder"],
+        howToUse:
+          "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
+      },
+    },
+    {
+      id: 12,
+      name: "L’Oréal PARIS NUDE",
+      price: 20,
+      category: "cosmetics",
+      images: ["/products/loreal-nude.jpg"],
+      details: {
+        subtitle: "Nude finish foundation — Natural look",
+        size: "30 ml",
+        features: ["Skin-like nude finish", "Light → medium buildable coverage", "Ideal for minimal makeup styles"],
+        howToUse:
+          "Use a damp sponge for the most natural finish. Build coverage only where needed (T-zone, cheeks).",
+      },
+    },
+    {
+      id: 13,
+      name: "L’Oréal PARIS 24H C Cool",
+      price: 12,
+      category: "cosmetics",
+      images: ["/products/loreal-24h-c-cool.jpg"],
+      details: {
+        subtitle: "Shade: Cool undertone (C)",
+        size: "30 ml",
+        features: ["Cool undertone shade (balances warmth)", "Medium coverage, blendable texture", "Good for events too"],
+        howToUse:
+          "Blend quickly with a brush, then press with sponge to smooth texture. Set the T-zone if oily.",
+      },
+    },
+    {
+      id: 14,
+      name: "L’Oréal PARIS HN Normal",
+      price: 12,
+      category: "cosmetics",
+      images: ["/products/loreal-hn-normal.jpg"],
+      details: {
+        subtitle: "Shade: HN (Neutral) — Balanced tone",
+        size: "30 ml",
+        features: ["Neutral undertone shade", "Medium coverage for an even base", "Works well with most blush/bronzer"],
+        howToUse:
+          "Apply in thin layers. Let the first layer set for 30 seconds before adding more coverage.",
+      },
+    },
+    {
+      id: 16,
+      name: "HD Luminous",
+      price: 10,
+      category: "cosmetics",
+      images: ["/products/hd-luminous.jpg"],
+      details: {
+        subtitle: "HD Luminous Foundation — Bright, camera-ready finish",
+        size: "30 ml",
+        features: ["Luminous finish", "Smooth look for photos", "Lightweight daily feel"],
+        howToUse: "Apply a thin layer, then build only where needed. Set lightly to keep glow without shine.",
+      },
+    },
 
     // fragrances placeholders
-    { id: 13, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
-    { id: 14, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
-    { id: 15, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+    { id: 21, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+    { id: 22, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+    { id: 23, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
   ];
 
   const categories = [
@@ -708,8 +616,11 @@ export default function App() {
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // ✅ NEW: cart modal
+  // ✅ Cart modal
   const [cartOpen, setCartOpen] = useState(false);
+
+  // ✅ Intro overlay (first thing you see)
+  const [introOpen, setIntroOpen] = useState(true);
 
   // user = { name, email, mode: "user" | "guest" }
   const [user, setUser] = useState(null);
@@ -718,7 +629,6 @@ export default function App() {
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
-  const [introOpen, setIntroOpen] = useState(true);
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -740,6 +650,17 @@ export default function App() {
   const setMode = (mode) => {
     setAuthMode(mode);
     resetAuthForm();
+  };
+
+  // ✅ Intro: show only once per browser (unless you clear localStorage)
+  useEffect(() => {
+    const seen = localStorage.getItem("aurea_intro_seen");
+    if (seen === "1") setIntroOpen(false);
+  }, []);
+
+  const closeIntro = () => {
+    localStorage.setItem("aurea_intro_seen", "1");
+    setIntroOpen(false);
   };
 
   // ✅ Firebase: keep user logged in (REAL source of truth)
@@ -769,6 +690,7 @@ export default function App() {
         setAuthOpen(false);
         setLearnMoreOpen(false);
         setCartOpen(false);
+        setIntroOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -777,10 +699,10 @@ export default function App() {
 
   // lock body scroll when drawer or modal open
   useEffect(() => {
-    const locked = sidebarOpen || authOpen || learnMoreOpen || cartOpen;
+    const locked = sidebarOpen || authOpen || learnMoreOpen || cartOpen || introOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
-  }, [sidebarOpen, authOpen, learnMoreOpen, cartOpen]);
+  }, [sidebarOpen, authOpen, learnMoreOpen, cartOpen, introOpen]);
 
   // ✅ REAL Firebase Email/Password sign in (NO setUser here)
   const signIn = async () => {
@@ -855,53 +777,57 @@ export default function App() {
   return (
     <div className="app">
       <style>{styles}</style>
-{/* Intro Page */}
-{introOpen && (
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(0,0,0,0.45)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 9999,
-        }}
-      >
+
+      {/* ✅ INTRO OVERLAY (first page) */}
+      {introOpen && (
         <div
           style={{
-            background: "#bfbfbf",
-            padding: 40,
-            borderRadius: 24,
-            maxWidth: 900,
-            width: "90%",
-            textAlign: "center",
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.45)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            padding: 18,
           }}
         >
-          <img
-            src="/begin-experience.png"
-            alt="Auréa intro"
-            style={{ maxWidth: "100%", marginBottom: 30 }}
-          />
-
-          <button
-            onClick={closeIntro}
+          <div
             style={{
-              padding: "14px 28px",
-              borderRadius: 14,
-              border: "none",
-              background: "#000",
-              color: "#fff",
-              fontWeight: 900,
-              letterSpacing: "0.15em",
-              cursor: "pointer",
+              background: "#bfbfbf",
+              padding: 28,
+              borderRadius: 24,
+              maxWidth: 980,
+              width: "min(980px, 100%)",
+              textAlign: "center",
+              boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
             }}
           >
-            BEGIN EXPERIENCE
-          </button>
+            <img
+              src="/begin-experience.png"
+              alt="Auréa intro"
+              style={{ width: "100%", height: "auto", borderRadius: 18, display: "block" }}
+            />
+
+            <button
+              onClick={closeIntro}
+              style={{
+                marginTop: 18,
+                padding: "14px 28px",
+                borderRadius: 14,
+                border: "none",
+                background: "#000",
+                color: "#fff",
+                fontWeight: 900,
+                letterSpacing: "0.15em",
+                cursor: "pointer",
+              }}
+            >
+              BEGIN EXPERIENCE
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       {/* Top Bar */}
       <header className="topbar">
@@ -988,7 +914,7 @@ export default function App() {
         <div className="sidebarFooter">
           <div className="miniCard">
             <div className="miniCardTitle">Auréa Standard</div>
-            <div className="miniCardText">Clean formulas • Timeless tailoring</div>
+            <div className="miniCardText">Authentic items • Curated selection</div>
           </div>
         </div>
       </aside>
@@ -1260,7 +1186,7 @@ export default function App() {
       </div>
 
       {/* Main */}
-      <main className="main" id="shop">
+      <main className="main">
         <section>
           <div className="sectionHeader">
             <div>
