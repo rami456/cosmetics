@@ -104,8 +104,41 @@ export default function App() {
       cursor:pointer;
       font-weight:900;
       transition:transform 120ms ease, box-shadow 180ms ease;
+      white-space:nowrap;
     }
     .authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+    /* Cart bubble button (top-right) */
+    .cartBubble{
+      height:42px;
+      width:42px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.88);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      transition:transform 120ms ease, box-shadow 180ms ease;
+    }
+    .cartBubble:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+    .cartBadge{
+      position:absolute;
+      top:-6px;
+      right:-6px;
+      min-width:18px;
+      height:18px;
+      padding:0 6px;
+      border-radius:999px;
+      background:#0e0e10;
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
     /* Overlay */
     .overlay{
@@ -121,48 +154,25 @@ export default function App() {
       pointer-events:auto;
     }
 
-    /* ✅ Sidebar drawer (image background) */
+    /* Sidebar */
     .sidebar{
       position:fixed;
       top:72px; left:0; bottom:0;
-      width:360px;
-      z-index:70;
-      transform:translateX(-105%);
-      transition:transform 220ms ease;
-      overflow:hidden;
-      padding:0;
-      background:#000;
-      border-right:1px solid rgba(255,255,255,0.10);
-      box-shadow:var(--shadow);
-    }
-    .sidebar.open{ transform:translateX(0); }
-
-    .sidebarBg{
-      position:absolute;
-      inset:0;
-      background-image:url("/menu.png");
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
-      filter:saturate(1.0);
-    }
-
-    .sidebarContent{
-      position:relative;
-      z-index:1;
-      height:100%;
-      display:flex;
-      flex-direction:column;
+      width:280px;
+      background:var(--panel);
+      border-right:1px solid var(--line);
       padding:18px;
+      z-index:70;
+      transform:translateX(0);
+      transition:transform 220ms ease;
     }
-
     .sidebarHeader{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap:12px;
       padding-bottom:14px;
-      border-bottom:1px solid rgba(255,255,255,0.18);
+      border-bottom:1px solid var(--line);
       margin-bottom:14px;
     }
     .sidebarTitle{
@@ -170,27 +180,20 @@ export default function App() {
       font-size:12px;
       letter-spacing:0.10em;
       text-transform:uppercase;
-      color:#fff;
-      text-shadow:0 2px 10px rgba(0,0,0,0.35);
     }
     .sidebarSub{
       margin-top:6px;
       font-size:12px;
-      color:rgba(255,255,255,0.72);
-      text-shadow:0 2px 10px rgba(0,0,0,0.35);
+      color:var(--muted);
     }
     .closeBtn{
+      display:none;
       width:42px; height:42px;
       border-radius:12px;
-      border:1px solid rgba(255,255,255,0.22);
-      background:rgba(0,0,0,0.35);
-      color:#fff;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.9);
       cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      transition:transform 120ms ease, box-shadow 180ms ease;
     }
-    .closeBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-
     .menuList{
       list-style:none;
       padding:0;
@@ -206,29 +209,26 @@ export default function App() {
       justify-content:space-between;
       padding:14px 14px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,0.18);
-      background:rgba(0,0,0,0.35);
-      color:#fff;
+      border:1px solid var(--line);
+      background:#fff;
       cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease, background 180ms ease;
-      backdrop-filter: blur(6px);
+      transition:transform 120ms ease, box-shadow 180ms ease;
     }
-    .menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); background:rgba(0,0,0,0.48); }
+    .menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
     .menuItem.active{
-      background:rgba(255,255,255,0.14);
-      border-color:rgba(255,255,255,0.30);
+      background:#0e0e10;
+      color:#fff;
+      border-color:rgba(0,0,0,0.2);
     }
     .menuText{ font-weight:800; letter-spacing:0.01em; }
-    .menuArrow{ opacity:0.8; font-size:18px; }
+    .menuArrow{ opacity:0.7; font-size:18px; }
 
-    .sidebarFooter{ margin-top:auto; }
+    .sidebarFooter{ margin-top:16px; }
     .miniCard{
       padding:14px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,0.18);
-      background:rgba(0,0,0,0.35);
-      color:#fff;
-      backdrop-filter: blur(6px);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, #ffffff, #f7f7f8);
     }
     .miniCardTitle{
       font-weight:900;
@@ -236,7 +236,7 @@ export default function App() {
       letter-spacing:0.08em;
       text-transform:uppercase;
     }
-    .miniCardText{ margin-top:6px; font-size:12px; color:rgba(255,255,255,0.72); }
+    .miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
 
     /* Main layout */
     .main{
@@ -246,6 +246,7 @@ export default function App() {
       padding:22px;
       max-width:1280px;
       margin:0 auto;
+      margin-left:280px;
     }
     .sectionHeader{
       display:flex;
@@ -276,7 +277,7 @@ export default function App() {
     .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
     .imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
     .img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .cardBody{ padding:14px; display:flex; flex-direction:column; gap:12px; }
+    .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
     .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
@@ -294,22 +295,6 @@ export default function App() {
     }
     .btnPrimary:hover{ transform:translateY(-1px); }
     .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
-
-    /* Learn more button */
-    .learnMoreBtn{
-      position:absolute;
-      top:10px;
-      left:10px;
-      z-index:5;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(0,0,0,0.12);
-      background:rgba(255,255,255,0.92);
-      font-weight:900;
-      cursor:pointer;
-      transition:transform 120ms ease, box-shadow 180ms ease;
-    }
-    .learnMoreBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
 
     /* Cart */
     .cart{
@@ -360,7 +345,7 @@ export default function App() {
     }
     .btnCheckout{
       width:100%;
-      margin-top:12px;
+      margin-top:10px;
       padding:12px 12px;
       border-radius:12px;
       border:1px solid rgba(0,0,0,0.12);
@@ -372,6 +357,7 @@ export default function App() {
     .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
     .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
     .footer{
+      margin-left:280px;
       padding:18px;
       text-align:center;
       color:var(--muted);
@@ -492,8 +478,12 @@ export default function App() {
       .main{ grid-template-columns: 1fr 320px; }
     }
     @media (max-width: 900px){
-      .main{ grid-template-columns: 1fr; }
+      .main{ margin-left:0; grid-template-columns: 1fr; }
       .cart{ position:relative; top:auto; }
+      .footer{ margin-left:0; }
+      .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
+      .sidebar.open{ transform:translateX(0); }
+      .closeBtn{ display:flex; align-items:center; justify-content:center; }
       .pill{ display:none; }
       .lmGrid{ grid-template-columns: 1fr; }
       .lmThumbs{ margin-top:12px; }
@@ -503,10 +493,10 @@ export default function App() {
     @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
   `;
 
-  // ✅ Products
+// ✅ Products
   const products = [
     { id: 1, name: "Velvet Lipstick", price: 15, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
+    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" }, 
     { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
     { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
@@ -643,27 +633,7 @@ export default function App() {
   },
 },
 
-{
-  id: 15,
-  name: "HD Luminous",
-  price: 10,
-  category: "cosmetics",
-  images: [
-    "/products/hd-luminous.jpg",
-    // "/products/hd-luminous-2.jpg",
-  ],
-  details: {
-    subtitle: "Luminous/HD-style finish foundation",
-    size: "30 ml",
-    features: [
-      "Bright, luminous look",
-      "Blends smoothly on skin",
-      "Great under flash/indoor lighting",
-    ],
-    howToUse:
-      "Use a sponge for a soft-glow finish. If you’re oily, set only the center of the face to keep glow.",
-  },
-    },
+    // fragrances placeholders
     { id: 13, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
     { id: 14, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
     { id: 15, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
@@ -678,6 +648,9 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // ✅ NEW: cart modal
+  const [cartOpen, setCartOpen] = useState(false);
 
   // user = { name, email, mode: "user" | "guest" }
   const [user, setUser] = useState(null);
@@ -713,6 +686,7 @@ export default function App() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
+        // If they are guest, keep guest. Otherwise sign out UI.
         setUser((prev) => (prev?.mode === "guest" ? prev : null));
         return;
       }
@@ -734,6 +708,7 @@ export default function App() {
         setSidebarOpen(false);
         setAuthOpen(false);
         setLearnMoreOpen(false);
+        setCartOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -742,10 +717,10 @@ export default function App() {
 
   // lock body scroll when drawer or modal open
   useEffect(() => {
-    const locked = sidebarOpen || authOpen || learnMoreOpen;
+    const locked = sidebarOpen || authOpen || learnMoreOpen || cartOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
-  }, [sidebarOpen, authOpen, learnMoreOpen]);
+  }, [sidebarOpen, authOpen, learnMoreOpen, cartOpen]);
 
   // ✅ REAL Firebase Email/Password sign in (NO setUser here)
   const signIn = async () => {
@@ -798,7 +773,7 @@ export default function App() {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
-      setUser(null);
+      setUser(null); // UI update immediately
     } catch (err) {
       alert(err?.code || err?.message || "Sign out failed");
     }
@@ -819,7 +794,6 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* ✅ Keep this EXACTLY like this */}
       <style>{styles}</style>
 
       {/* Top Bar */}
@@ -835,6 +809,17 @@ export default function App() {
             <span className="pillDot" />
             <span>Free shipping over $75</span>
           </div>
+
+          {/* ✅ Cart bubble (opens cart modal) */}
+          <button
+            className="cartBubble"
+            aria-label="Open cart"
+            title="Your cart"
+            onClick={() => setCartOpen(true)}
+          >
+            🛒
+            {cartItems.length > 0 && <span className="cartBadge">{cartItems.length}</span>}
+          </button>
 
           {user ? (
             <button className="authBtn" onClick={signOut} aria-label="Sign out">
@@ -858,48 +843,45 @@ export default function App() {
       {/* Overlay (sidebar) */}
       <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
-      {/* ✅ Sidebar Drawer with Image */}
+      {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebarBg" aria-hidden="true" />
-        <div className="sidebarContent">
-          <div className="sidebarHeader">
-            <div>
-              <div className="sidebarTitle">Browse</div>
-              <div className="sidebarSub">Select a category</div>
-            </div>
-
-            <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
-              ✕
-            </button>
+        <div className="sidebarHeader">
+          <div>
+            <div className="sidebarTitle">Browse</div>
+            <div className="sidebarSub">Select a category</div>
           </div>
 
-          <nav>
-            <ul className="menuList">
-              {categories.map((c) => {
-                const active = selectedCategory === c.key;
-                return (
-                  <li key={c.key}>
-                    <button
-                      className={`menuItem ${active ? "active" : ""}`}
-                      onClick={() => {
-                        setSelectedCategory(c.key);
-                        setSidebarOpen(false);
-                      }}
-                    >
-                      <span className="menuText">{c.label}</span>
-                      <span className="menuArrow">›</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
+            ✕
+          </button>
+        </div>
 
-          <div className="sidebarFooter">
-            <div className="miniCard">
-              <div className="miniCardTitle">Auréa Standard</div>
-              <div className="miniCardText">Clean formulas • Timeless tailoring</div>
-            </div>
+        <nav>
+          <ul className="menuList">
+            {categories.map((c) => {
+              const active = selectedCategory === c.key;
+              return (
+                <li key={c.key}>
+                  <button
+                    className={`menuItem ${active ? "active" : ""}`}
+                    onClick={() => {
+                      setSelectedCategory(c.key);
+                      setSidebarOpen(false);
+                    }}
+                  >
+                    <span className="menuText">{c.label}</span>
+                    <span className="menuArrow">›</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className="sidebarFooter">
+          <div className="miniCard">
+            <div className="miniCardTitle">Auréa Standard</div>
+            <div className="miniCardText">Clean formulas • Timeless tailoring</div>
           </div>
         </div>
       </aside>
@@ -1106,6 +1088,70 @@ export default function App() {
         </div>
       </div>
 
+      {/* ✅ Cart Modal (opens from top-right circle) */}
+      <div className={`modal ${cartOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+        <div className="modalBackdrop" onClick={() => setCartOpen(false)} aria-label="Close cart modal" />
+        <div className="modalCard">
+          <div className="modalTop">
+            <div>
+              <div className="modalTitle">Your Cart</div>
+              <div className="help">{cartItems.length} item(s)</div>
+            </div>
+            <button className="modalClose" onClick={() => setCartOpen(false)} aria-label="Close">✕</button>
+          </div>
+
+          <div className="modalBody">
+            {cartItems.length === 0 ? (
+              <div className="empty">
+                <div className="emptyIcon">🛍️</div>
+                <div className="emptyTitle">Your cart is empty</div>
+                <div className="emptyText">Add something you love.</div>
+              </div>
+            ) : (
+              <>
+                <ul className="cartList">
+                  {cartItems.map((item, i) => (
+                    <li key={i} className="cartRow">
+                      <div>
+                        <div className="cartName">{item.name}</div>
+                        <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
+                      </div>
+                      <button className="removeBtn" onClick={() => removeFromCart(i)}>
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="cartTotal">
+                  <span>Total</span>
+                  <b>${totalPrice.toFixed(2)}</b>
+                </div>
+
+                <button
+                  className="btnCheckout"
+                  onClick={() => {
+                    if (!user) {
+                      setCartOpen(false);
+                      setAuthOpen(true);
+                      setMode("signin");
+                    } else {
+                      alert("Checkout backend coming next ✅");
+                    }
+                  }}
+                >
+                  Checkout
+                </button>
+
+                <div className="cartNote">
+                  {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Main */}
       <main className="main">
         <section>
@@ -1131,10 +1177,6 @@ export default function App() {
 
               return (
                 <article key={p.id} className="card">
-                  <button className="learnMoreBtn" type="button" onClick={() => openLearnMore(p)}>
-                    Learn more
-                  </button>
-
                   <div className="imgWrap">
                     <img src={coverImg} alt={p.name} className="img" />
                   </div>
@@ -1145,8 +1187,14 @@ export default function App() {
                       <div className="price">${Number(p.price).toFixed(2)}</div>
                     </div>
 
+                    {/* ✅ Add to cart FIRST */}
                     <button className="btnPrimary" onClick={() => addToCart(p)}>
                       Add to Cart
+                    </button>
+
+                    {/* ✅ Learn more UNDER Add to cart */}
+                    <button className="btnCheckout" type="button" onClick={() => openLearnMore(p)}>
+                      Learn more
                     </button>
                   </div>
                 </article>
@@ -1155,6 +1203,7 @@ export default function App() {
           </div>
         </section>
 
+        {/* Right side cart panel (still kept) */}
         <aside className="cart">
           <div className="cartHeader">
             <div className="cartTitle">Cart</div>
