@@ -496,12 +496,7 @@ export default function App() {
   // ✅ Products
   const products = [
     // Cosmetics placeholders
-    { id: 1, name: "Velvet Lipstick", price: 15, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 2, name: "Radiant Foundation", price: 25, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 3, name: "Skincare Set", price: 40, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 4, name: "Silk Blush", price: 18, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-    { id: 5, name: "Lash Mascara", price: 20, img: "https://via.placeholder.com/900x900", category: "cosmetics" },
-
+  
     // ✅ Your cosmetics (with Learn More)
     {
       id: 9,
