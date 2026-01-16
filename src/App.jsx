@@ -779,55 +779,72 @@ export default function App() {
       <style>{styles}</style>
 
       {/* ✅ INTRO OVERLAY (first page) */}
-      {introOpen && (
-        <div
+  {introOpen && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "rgba(0,0,0,0.35)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 18,
+    }}
+  >
+    <div
+      style={{
+        width: "min(980px, 96vw)",
+        borderRadius: 22,
+        overflow: "hidden",
+        boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
+        background: "#bbb",
+      }}
+    >
+      <img
+        src="/begin-experience.png"
+        alt="Auréa intro"
+        style={{
+          width: "100%",
+          height: "auto",
+          display: "block",
+        }}
+        onError={(e) => {
+          // This will prove it's failing to load
+          console.log("INTRO IMAGE FAILED:", e);
+          alert("Intro image not found. Check: public/begin-experience.png (exact name).");
+        }}
+      />
+
+      <div
+        style={{
+          padding: 16,
+          background: "rgba(0,0,0,0.65)",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <button
+          onClick={() => setIntroOpen(false)}
           style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.45)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-            padding: 18,
+            padding: "12px 18px",
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.2)",
+            background: "#0e0e10",
+            color: "#fff",
+            fontWeight: 900,
+            cursor: "pointer",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
           }}
         >
-          <div
-            style={{
-              background: "#bfbfbf",
-              padding: 28,
-              borderRadius: 24,
-              maxWidth: 980,
-              width: "min(980px, 100%)",
-              textAlign: "center",
-              boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
-            }}
-          >
-            <img
-              src="/begin-experience.png"
-              alt="Auréa intro"
-              style={{ width: "100%", height: "auto", borderRadius: 18, display: "block" }}
-            />
+          Begin Experience
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-            <button
-              onClick={closeIntro}
-              style={{
-                marginTop: 18,
-                padding: "14px 28px",
-                borderRadius: 14,
-                border: "none",
-                background: "#000",
-                color: "#fff",
-                fontWeight: 900,
-                letterSpacing: "0.15em",
-                cursor: "pointer",
-              }}
-            >
-              BEGIN EXPERIENCE
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Top Bar */}
       <header className="topbar">
