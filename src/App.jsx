@@ -15,6 +15,7 @@ import {
 export default function App() {
   // ✅ All styles included here (no separate CSS file needed)
   const styles = `
+  .introCard{ cursor:pointer; }
     :root{
       --panel:#ffffff;
       --soft:#f6f6f7;
@@ -65,7 +66,6 @@ export default function App() {
       white-space:nowrap;
     }
     .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
-
     /* Icon Button */
     .iconBtn{
       width:42px; height:42px;
@@ -107,6 +107,65 @@ export default function App() {
       white-space:nowrap;
     }
     .authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+/* Intro / Splash page */
+.intro{
+  position:fixed;
+  inset:0;
+  z-index:120;
+  background: #bdbdbd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+.introCard{
+  width:min(980px, 100%);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,0.08);
+  background:#bdbdbd;
+  position:relative;
+}
+.introImg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.introContent{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:28px;
+}
+.introText{
+  max-width: 720px;
+  margin-top: 16px;
+  color: rgba(0,0,0,0.75);
+  letter-spacing: 0.35em;
+  font-size: 14px;
+  line-height: 1.9;
+  text-transform:uppercase;
+}
+.introBtn{
+  margin-top: 26px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.90);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+.introBtn:hover{ transform:translateY(-1px); box-shadow: var(--shadow2); }
+.introBtn:active{ transform:translateY(0px); opacity:0.92; }
 
     /* Cart bubble button (top-right) */
     .cartBubble{
@@ -659,6 +718,7 @@ export default function App() {
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
+  const [introOpen, setIntroOpen] = useState(true);
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -795,6 +855,53 @@ export default function App() {
   return (
     <div className="app">
       <style>{styles}</style>
+{/* Intro Page */}
+{introOpen && (
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.45)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999,
+        }}
+      >
+        <div
+          style={{
+            background: "#bfbfbf",
+            padding: 40,
+            borderRadius: 24,
+            maxWidth: 900,
+            width: "90%",
+            textAlign: "center",
+          }}
+        >
+          <img
+            src="/begin-experience.png"
+            alt="Auréa intro"
+            style={{ maxWidth: "100%", marginBottom: 30 }}
+          />
+
+          <button
+            onClick={closeIntro}
+            style={{
+              padding: "14px 28px",
+              borderRadius: 14,
+              border: "none",
+              background: "#000",
+              color: "#fff",
+              fontWeight: 900,
+              letterSpacing: "0.15em",
+              cursor: "pointer",
+            }}
+          >
+            BEGIN EXPERIENCE
+          </button>
+        </div>
+      </div>
+    )}
 
       {/* Top Bar */}
       <header className="topbar">
@@ -1153,7 +1260,7 @@ export default function App() {
       </div>
 
       {/* Main */}
-      <main className="main">
+      <main className="main" id="shop">
         <section>
           <div className="sectionHeader">
             <div>
