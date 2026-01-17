@@ -765,8 +765,6 @@ const products = [
     category: "cosmetics",
     images: [
       "/products/maxfactor55beige.jpg",
-      "/products/maxfactor55beige-2.jpg",
-      "/products/maxfactor55beige-3.jpg",
     ],
     details: {
       subtitle: "Foundation — Shade 55 Beige (medium tone)",
@@ -782,8 +780,6 @@ const products = [
     category: "cosmetics",
     images: [
       "/products/maxfactorspf20.jpg",
-      "/products/maxfactorspf20-2.jpg",
-      "/products/maxfactorspf20-3.jpg",
     ],
     details: {
       subtitle: "Foundation with SPF 20 — Everyday base",
@@ -817,7 +813,6 @@ const products = [
     images: [
       "/products/loreal24hccool.jpg",
       "/products/loreal24hccool-2.jpg",
-      "/products/loreal24hccool-3.jpg",
     ],
     details: {
       subtitle: "Shade: Cool undertone (C)",
@@ -826,23 +821,7 @@ const products = [
       howToUse: "Blend quickly with a brush, then press with sponge to smooth texture. Set the T-zone if oily.",
     },
   },
-  {
-    id: 14,
-    name: "L’Oréal PARIS HN Normal",
-    price: 12,
-    category: "cosmetics",
-    images: [
-      "/products/lorealhnnormal.jpg",
-      "/products/lorealhnnormal-2.jpg",
-      "/products/lorealhnnormal-3.jpg",
-    ],
-    details: {
-      subtitle: "Shade: HN (Neutral) — Balanced tone",
-      size: "30 ml",
-      features: ["Neutral undertone shade", "Medium coverage for an even base", "Works well with most blush/bronzer"],
-      howToUse: "Apply in thin layers. Let the first layer set for 30 seconds before adding more coverage.",
-    },
-  },
+
   {
     id: 16,
     name: "HD Luminous",
