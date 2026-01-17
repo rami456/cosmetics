@@ -14,7 +14,25 @@ import {
 
 /** ✅ CSS (one file) */
 const styles = `
-  :root{
+.searchBar{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+  max-width:420px;
+}
+.searchBtn{
+  padding:0 16px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#0e0e10;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.searchBtn:hover{
+  opacity:0.9;
+}  
+:root{
     --panel:#ffffff;
     --soft:#f6f6f7;
     --line:rgba(0,0,0,0.08);
@@ -1395,16 +1413,34 @@ export default function App() {
                 </div>
               )}
 
-              {/* ✅ Search UI */}
-              <div className="field" style={{ marginTop: 12, maxWidth: 420 }}>
-                <div className="label">Search</div>
-                <input
-                  className="input"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products…"
-                />
-              </div>
+           <div style={{ marginTop: 12 }}>
+  <div className="label">Search</div>
+
+  <div className="searchBar">
+    <input
+      className="input"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      placeholder="Search products…"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault(); // already filters automatically
+        }
+      }}
+    />
+
+    <button
+      className="searchBtn"
+      type="button"
+      onClick={() => {
+        // search is already reactive — this just makes UX clear
+        setSearch(search.trim());
+      }}
+    >
+      Search
+    </button>
+  </div>
+</div>
             </div>
 
             <div className="sortHint">
