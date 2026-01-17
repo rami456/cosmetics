@@ -747,9 +747,9 @@ const products = [
     price: 11,
     category: "cosmetics",
     images: [
-      "/products/maxfactor101.jpg",
-      "/products/maxfactor101-2.jpg",
-      "/products/maxfactor101-3.jpg",
+      "/products/maxfactor-101.jpg",
+      "/products/maxfactor-101-2.jpg",
+      "/products/maxfactor-101-3.jpg",
     ],
     details: {
       subtitle: "Foundation — Shade 101 (light tone)",
