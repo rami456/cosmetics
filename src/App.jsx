@@ -12,7 +12,7 @@ import {
   signOut as firebaseSignOut,
 } from "firebase/auth";
 
-/** ✅ CSS (kept in one file, but OUTSIDE the component) */
+/** ✅ CSS (one file) */
 const styles = `
   :root{
     --panel:#ffffff;
@@ -492,8 +492,9 @@ const styles = `
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
 
-/** ✅ Data OUTSIDE component so it doesn’t recreate every render */
+/** ✅ Products (fragrances removed, clothing added with men/women) */
 const products = [
+  // Cosmetics
   {
     id: 9,
     name: "MAxFactor X 101",
@@ -586,20 +587,76 @@ const products = [
     },
   },
 
-  // Fragrances
-  { id: 21, name: "Noir Eau de Parfum", price: 98, img: "https://via.placeholder.com/900x900", category: "fragrances" },
-  { id: 22, name: "Citrus Mist", price: 72, img: "https://via.placeholder.com/900x900", category: "fragrances" },
-  { id: 23, name: "Amber Veil", price: 110, img: "https://via.placeholder.com/900x900", category: "fragrances" },
+  // Clothing (Women)
+  {
+    id: 101,
+    name: "Women’s Satin Blouse",
+    price: 29,
+    category: "clothing",
+    gender: "women",
+    images: ["https://via.placeholder.com/900x900?text=Women+Blouse"],
+    details: {
+      subtitle: "Soft satin, relaxed fit",
+      size: "S • M • L",
+      features: ["Breathable feel", "Day-to-night style", "Easy to pair"],
+      howToUse: "Pair with high-waist jeans or a skirt. Steam lightly before wear.",
+    },
+  },
+  {
+    id: 102,
+    name: "Women’s Tailored Trousers",
+    price: 39,
+    category: "clothing",
+    gender: "women",
+    images: ["https://via.placeholder.com/900x900?text=Women+Trousers"],
+    details: {
+      subtitle: "High-rise, straight leg",
+      size: "XS • S • M • L",
+      features: ["Flattering cut", "Comfort stretch", "Office-ready"],
+      howToUse: "Wear with heels or sneakers. Add a blazer for a clean look.",
+    },
+  },
+
+  // Clothing (Men)
+  {
+    id: 201,
+    name: "Men’s Essential Tee",
+    price: 18,
+    category: "clothing",
+    gender: "men",
+    images: ["https://via.placeholder.com/900x900?text=Men+Tee"],
+    details: {
+      subtitle: "Heavy cotton, classic cut",
+      size: "S • M • L • XL",
+      features: ["Soft handfeel", "Everyday staple", "Durable neckline"],
+      howToUse: "Layer under overshirts or wear solo. Cold wash to keep shape.",
+    },
+  },
+  {
+    id: 202,
+    name: "Men’s Overshirt Jacket",
+    price: 55,
+    category: "clothing",
+    gender: "men",
+    images: ["https://via.placeholder.com/900x900?text=Men+Overshirt"],
+    details: {
+      subtitle: "Midweight layering piece",
+      size: "M • L • XL",
+      features: ["Easy layering", "Clean minimal design", "All-season"],
+      howToUse: "Wear open over a tee or buttoned up. Perfect for evenings.",
+    },
+  },
 ];
 
 const categories = [
   { key: "cosmetics", label: "Cosmetics" },
-  { key: "fragrances", label: "Fragrances" },
+  { key: "clothing", label: "Clothing" },
 ];
 
 export default function App() {
   // ✅ State
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
+  const [clothingGender, setClothingGender] = useState("women"); // ✅ men | women (only used for clothing)
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -624,10 +681,16 @@ export default function App() {
   const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
   const filteredProducts = useMemo(() => {
-    return products.filter(
-      (p) => p.category === selectedCategory && p.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [selectedCategory, search]);
+    const q = search.toLowerCase().trim();
+    return products.filter((p) => {
+      const inCategory = p.category === selectedCategory;
+      const matchesSearch = !q || p.name.toLowerCase().includes(q);
+      const matchesGender =
+        selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+
+      return inCategory && matchesGender && matchesSearch;
+    });
+  }, [selectedCategory, clothingGender, search]);
 
   const totalPrice = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
@@ -768,6 +831,8 @@ export default function App() {
     setActiveImage("");
   };
 
+  const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
+
   return (
     <div className="app">
       <style>{styles}</style>
@@ -836,7 +901,7 @@ export default function App() {
 
       {/* Top Bar */}
       <header className="topbar">
-        <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)}>
+        <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)} type="button">
           <span className="hamburger" />
         </button>
 
@@ -851,13 +916,13 @@ export default function App() {
           </div>
 
           {/* Cart bubble */}
-          <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)}>
+          <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
             🛒
             {cartItems.length > 0 && <span className="cartBadge">{cartItems.length}</span>}
           </button>
 
           {user ? (
-            <button className="authBtn" onClick={signOut} aria-label="Sign out">
+            <button className="authBtn" onClick={signOut} aria-label="Sign out" type="button">
               {user.mode === "guest" ? "Guest" : user.name} · Sign out
             </button>
           ) : (
@@ -868,6 +933,7 @@ export default function App() {
                 setMode("signin");
               }}
               aria-label="Open sign in"
+              type="button"
             >
               Sign in
             </button>
@@ -886,7 +952,7 @@ export default function App() {
             <div className="sidebarSub">Select a category</div>
           </div>
 
-          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
+          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)} type="button">
             ✕
           </button>
         </div>
@@ -901,6 +967,8 @@ export default function App() {
                     className={`menuItem ${active ? "active" : ""}`}
                     onClick={() => {
                       setSelectedCategory(c.key);
+                      // ✅ When entering clothing, show Men/Women options (default women)
+                      if (c.key === "clothing") setClothingGender((g) => g || "women");
                       setSidebarOpen(false);
                     }}
                     type="button"
@@ -912,6 +980,31 @@ export default function App() {
               );
             })}
           </ul>
+
+          {/* ✅ When Clothing is selected, show Men/Women option */}
+          {selectedCategory === "clothing" && (
+            <div style={{ marginTop: 12 }}>
+              <div className="sidebarSub" style={{ marginBottom: 10 }}>
+                Choose section
+              </div>
+              <div className="tabs" style={{ margin: 0 }}>
+                <button
+                  className={`tab ${clothingGender === "women" ? "active" : ""}`}
+                  onClick={() => setClothingGender("women")}
+                  type="button"
+                >
+                  Women
+                </button>
+                <button
+                  className={`tab ${clothingGender === "men" ? "active" : ""}`}
+                  onClick={() => setClothingGender("men")}
+                  type="button"
+                >
+                  Men
+                </button>
+              </div>
+            </div>
+          )}
         </nav>
 
         <div className="sidebarFooter">
@@ -1221,9 +1314,9 @@ export default function App() {
             marginBottom: 24,
           }}
         >
-          <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>Effortless beauty, curated.</h1>
+          <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>Effortless style, curated.</h1>
           <p style={{ marginTop: 12, maxWidth: 520, color: "var(--muted)" }}>
-            Premium cosmetics & fragrances selected for everyday elegance.
+            Premium cosmetics & clothing selected for everyday elegance.
           </p>
 
           <button
@@ -1242,7 +1335,7 @@ export default function App() {
               <h2 style={{ fontSize: 22, margin: 0, fontWeight: 900 }}>Best Sellers</h2>
 
               <h1 className="h1" style={{ marginTop: 10 }}>
-                {selectedCategory === "cosmetics" ? "Cosmetics" : "Fragrances"}
+                {categoryTitle}
               </h1>
 
               <p className="sub">Curated essentials designed to feel effortless.</p>
@@ -1251,6 +1344,31 @@ export default function App() {
                 <p className="sub" style={{ marginTop: 6 }}>
                   Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
                 </p>
+              )}
+
+              {/* ✅ Men/Women option appears when Clothing is selected */}
+              {selectedCategory === "clothing" && (
+                <div style={{ marginTop: 12, maxWidth: 420 }}>
+                  <div className="label" style={{ marginBottom: 8 }}>
+                    Clothing section
+                  </div>
+                  <div className="tabs" style={{ margin: 0 }}>
+                    <button
+                      className={`tab ${clothingGender === "women" ? "active" : ""}`}
+                      onClick={() => setClothingGender("women")}
+                      type="button"
+                    >
+                      Women
+                    </button>
+                    <button
+                      className={`tab ${clothingGender === "men" ? "active" : ""}`}
+                      onClick={() => setClothingGender("men")}
+                      type="button"
+                    >
+                      Men
+                    </button>
+                  </div>
+                </div>
               )}
 
               {/* ✅ Search UI */}
@@ -1287,17 +1405,14 @@ export default function App() {
                       <div className="price">${Number(p.price).toFixed(2)}</div>
                     </div>
 
-                    {/* ✅ Rating (moved out of CSS string) */}
                     <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
                       ⭐ 4.8 · 120+ reviews
                     </div>
 
-                    {/* Add to cart */}
                     <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
                       Add to Cart
                     </button>
 
-                    {/* Learn more */}
                     <button className="btnCheckout" type="button" onClick={() => openLearnMore(p)}>
                       Learn more
                     </button>
