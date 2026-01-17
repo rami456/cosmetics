@@ -15,22 +15,6 @@ import {
 
 /** ✅ CSS (one file) */
 const styles = `
-.searchBar{
-  display:flex;
-  gap:10px;
-  margin-top:12px;
-  max-width:420px;
-}
-.searchBtn{
-  padding:0 16px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:#0e0e10;
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-}
-.searchBtn:hover{ opacity:0.9; }  
 :root{
   --panel:#ffffff;
   --soft:#f6f6f7;
@@ -81,6 +65,24 @@ button{ -webkit-tap-highlight-color: transparent; }
   white-space:nowrap;
 }
 .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
+
+/* ✅ Topbar search */
+.topSearch{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  max-width:520px;
+}
+.topSearch .input{
+  height:42px;
+  width:260px;
+}
+@media (max-width: 900px){
+  .topSearch .input{ width:160px; }
+}
+@media (max-width: 520px){
+  .topSearch{ display:none; } /* optional: hide on very small screens */
+}
 
 /* Icon Button */
 .iconBtn{
@@ -170,7 +172,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   pointer-events:auto;
 }
 
-/* Sidebar */
+/* ✅ Sidebar (closed by default; opens only when hamburger is pressed) */
 .sidebar{
   position:fixed;
   top:72px; left:0; bottom:0;
@@ -179,9 +181,12 @@ button{ -webkit-tap-highlight-color: transparent; }
   border-right:1px solid var(--line);
   padding:18px;
   z-index:70;
-  transform:translateX(0);
+  transform:translateX(-105%);
   transition:transform 220ms ease;
+  box-shadow:var(--shadow);
 }
+.sidebar.open{ transform:translateX(0); }
+
 .sidebarHeader{
   display:flex;
   align-items:flex-start;
@@ -203,12 +208,14 @@ button{ -webkit-tap-highlight-color: transparent; }
   color:var(--muted);
 }
 .closeBtn{
-  display:none;
+  display:flex; /* ✅ always show now */
   width:42px; height:42px;
   border-radius:12px;
   border:1px solid var(--line);
   background:rgba(255,255,255,0.9);
   cursor:pointer;
+  align-items:center;
+  justify-content:center;
 }
 .menuList{
   list-style:none;
@@ -254,7 +261,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 .miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
 
-/* Main layout */
+/* Main layout (no left reserved space) */
 .main{
   display:grid;
   grid-template-columns: 1fr 340px;
@@ -262,7 +269,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   padding:22px;
   max-width:1280px;
   margin:0 auto;
-  margin-left:280px;
+  margin-left:0;
 }
 .sectionHeader{
   display:flex;
@@ -312,6 +319,22 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 .btnPrimary:hover{ transform:translateY(-1px); }
 .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
+
+/* Search button look */
+.searchBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#0e0e10;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, opacity 180ms ease;
+  white-space:nowrap;
+}
+.searchBtn:hover{ transform:translateY(-1px); }
+.searchBtn:active{ transform:translateY(0px); opacity:0.92; }
 
 /* Cart */
 .cart{
@@ -373,8 +396,9 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
 .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
+
 .footer{
-  margin-left:280px;
+  margin-left:0;
   padding:18px;
   text-align:center;
   color:var(--muted);
@@ -558,10 +582,6 @@ button{ -webkit-tap-highlight-color: transparent; }
 @media (max-width: 900px){
   .main{ margin-left:0; grid-template-columns: 1fr; }
   .cart{ position:relative; top:auto; }
-  .footer{ margin-left:0; }
-  .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
-  .sidebar.open{ transform:translateX(0); }
-  .closeBtn{ display:flex; align-items:center; justify-content:center; }
   .pill{ display:none; }
   .productBody{ grid-template-columns: 1fr; }
 }
@@ -843,14 +863,11 @@ function ProductPage({ products, addToCart }) {
 /** ✅ Home page component */
 function HomePage(props) {
   const {
-    categories,
     selectedCategory,
     setSelectedCategory,
     clothingGender,
     setClothingGender,
     filteredProducts,
-    search,
-    setSearch,
     user,
     cartItems,
     addToCart,
@@ -858,7 +875,6 @@ function HomePage(props) {
     totalPrice,
     setAuthOpen,
     setMode,
-    setSidebarOpen,
   } = props;
 
   const navigate = useNavigate();
@@ -935,30 +951,6 @@ function HomePage(props) {
               </div>
             )}
 
-            <div style={{ marginTop: 12 }}>
-              <div className="label">Search</div>
-
-              <div className="searchBar">
-                <input
-                  className="input"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") e.preventDefault();
-                  }}
-                />
-
-                <button
-                  className="searchBtn"
-                  type="button"
-                  onClick={() => setSearch(search.trim())}
-                >
-                  Search
-                </button>
-              </div>
-            </div>
-
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
               💡 Tip: Click a product card to open the product page.
             </div>
@@ -1002,7 +994,7 @@ function HomePage(props) {
                   <button
                     className="btnPrimary"
                     onClick={(e) => {
-                      e.stopPropagation(); // ✅ don’t navigate
+                      e.stopPropagation();
                       addToCart(p);
                     }}
                     type="button"
@@ -1079,15 +1071,6 @@ function HomePage(props) {
             <div className="cartNote">
               {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
             </div>
-
-            <button
-              className="btnGhost"
-              style={{ marginTop: 10 }}
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-            >
-              Browse categories
-            </button>
           </>
         )}
       </aside>
@@ -1102,6 +1085,8 @@ export default function App() {
   const [clothingGender, setClothingGender] = useState("women");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // ✅ Search moved to topbar
   const [search, setSearch] = useState("");
 
   // ✅ Cart modal
@@ -1337,6 +1322,19 @@ export default function App() {
               <span>Free shipping over $75</span>
             </div>
 
+            {/* ✅ Search bar moved next to the pill */}
+            <div className="topSearch">
+              <input
+                className="input"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search products…"
+              />
+              <button className="searchBtn" type="button" onClick={() => setSearch(search.trim())}>
+                Search
+              </button>
+            </div>
+
             {/* Cart bubble */}
             <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
               🛒
@@ -1402,7 +1400,6 @@ export default function App() {
               })}
             </ul>
 
-            {/* ✅ When Clothing is selected, show Men/Women option */}
             {selectedCategory === "clothing" && (
               <div style={{ marginTop: 12 }}>
                 <div className="sidebarSub" style={{ marginBottom: 10 }}>
@@ -1452,18 +1449,10 @@ export default function App() {
 
             <div className="modalBody">
               <div className="tabs" role="tablist" aria-label="Auth tabs">
-                <button
-                  className={`tab ${authMode === "signin" ? "active" : ""}`}
-                  onClick={() => setMode("signin")}
-                  type="button"
-                >
+                <button className={`tab ${authMode === "signin" ? "active" : ""}`} onClick={() => setMode("signin")} type="button">
                   Sign in
                 </button>
-                <button
-                  className={`tab ${authMode === "signup" ? "active" : ""}`}
-                  onClick={() => setMode("signup")}
-                  type="button"
-                >
+                <button className={`tab ${authMode === "signup" ? "active" : ""}`} onClick={() => setMode("signup")} type="button">
                   Sign up
                 </button>
               </div>
@@ -1657,14 +1646,11 @@ export default function App() {
             path="/"
             element={
               <HomePage
-                categories={categories}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 clothingGender={clothingGender}
                 setClothingGender={setClothingGender}
                 filteredProducts={filteredProducts}
-                search={search}
-                setSearch={setSearch}
                 user={user}
                 cartItems={cartItems}
                 addToCart={addToCart}
@@ -1672,7 +1658,6 @@ export default function App() {
                 totalPrice={totalPrice}
                 setAuthOpen={setAuthOpen}
                 setMode={setMode}
-                setSidebarOpen={setSidebarOpen}
               />
             }
           />
