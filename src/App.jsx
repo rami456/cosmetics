@@ -805,40 +805,172 @@ const products = [
       howToUse: "Use a damp sponge for the most natural finish. Build coverage only where needed (T-zone, cheeks).",
     },
   },
-  {
-    id: 13,
-    name: "L’Oréal PARIS 24H C Cool",
-    price: 12,
-    category: "cosmetics",
-    images: [
-      "/products/loreal24hccool.jpg",
-      "/products/loreal24hccool-2.jpg",
+{
+  id: 401,
+  name: "Rimmel Lip Art Graphic Lipstick",
+  price: 9,
+  category: "cosmetics",
+  images: [
+    "/products/rimmel-lip-art-graphic.jpg",
+    "/products/rimmel-lip-art-graphic-2.jpg",
+    "/products/rimmel-lip-art-graphic-3.jpg",
+  ],
+  details: {
+    subtitle: "Liquid lipstick + lip liner in one",
+    features: [
+      "2-in-1 lip liner and lipstick",
+      "High precision application",
+      "Long-lasting matte finish",
     ],
-    details: {
-      subtitle: "Shade: Cool undertone (C)",
-      size: "30 ml",
-      features: ["Cool undertone shade (balances warmth)", "Medium coverage, blendable texture", "Good for events too"],
-      howToUse: "Blend quickly with a brush, then press with sponge to smooth texture. Set the T-zone if oily.",
-    },
   },
+},
+{
+  id: 402,
+  name: "Max Factor Pan Stik Foundation",
+  price: 9,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-pan-stik-foundation.jpg",
+    "/products/maxfactor-pan-stik-foundation-2.jpg",
+    "/products/maxfactor-pan-stik-foundation-3.jpg",
+  ],
+  details: {
+    subtitle: "Full coverage stick foundation",
+    features: [
+      "Creamy blendable formula",
+      "Covers imperfections instantly",
+      "Perfect for all skin types",
+    ],
+  },
+},
+{
+  id: 403,
+  name: "Max Factor Lipfinity Lip Colour 020 Angelic",
+  price: 9,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-lipfinity-020-angelic.jpg",
+    "/products/maxfactor-lipfinity-020-angelic-2.jpg",
+  ],
+  details: {
+    subtitle: "24H long-lasting liquid lipstick",
+    features: [
+      "Up to 24 hours wear",
+      "Smudge and transfer resistant",
+      "Includes moisturizing top coat",
+    ],
+  },
+},
+{
+  id: 404,
+  name: "Max Factor Lipfinity Lipstick",
+  price: 5,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-lipfinity-gold.jpg",
+    "/products/maxfactor-lipfinity-gold-2.jpg",
+    "/products/maxfactor-lipfinity-gold-3.jpg",
+  ],
+  details: {
+    subtitle: "Long-lasting moisturizing lipstick",
+    features: [
+      "Smooth creamy texture",
+      "High shine finish",
+      "Comfortable all-day wear",
+    ],
+  },
+},
+{
+  id: 405,
+  name: "Bourjois Little Round Pot Eyeshadow",
+  price: 10,
+  category: "cosmetics",
+  images: [
+    "/products/bourjois-little-round-pot-eyeshadow.jpg",
+    "/products/bourjois-little-round-pot-eyeshadow-2.jpg",
+   
+  ],
+  details: {
+    subtitle: "Silky baked eyeshadow",
+    features: [
+      "Ultra soft texture",
+      "Long-lasting color",
+      "Easy to blend",
+    ],
+  },
+},
+{
+  id: 407,
+  name: "Bourjois Always Fabulous Stick Foundation",
+  price: 8,
+  category: "cosmetics",
+  images: [
+    "/products/bourjois-always-fabulous-stick-foundation.jpg",
+  ],
+  details: {
+    subtitle: "Long-lasting stick foundation",
+    features: [
+      "Full coverage",
+      "Natural matte finish",
+      "Easy on-the-go application",
+    ],
+  },
+},
+{
+  id: 408,
+  name: "Max Factor Eyeshadow Palette Nude",
+  price: 7,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-eyeshadow-palette-nude.jpg",
+  ],
+  details: {
+    subtitle: "Neutral everyday eye palette",
+    features: [
+      "Blendable shades",
+      "Includes applicator",
+      "Perfect for day and night looks",
+    ],
+  },
+},
+{
+  id: 409,
+  name: "Radiance Reveal Concealer",
+  price: 9,
+  category: "cosmetics",
+  images: [
+    "/products/radiance-reveal-concealer.jpg",
+  
+  ],
+  details: {
+    subtitle: "Hydrating liquid concealer",
+    features: [
+      "Brightens under eyes",
+      "Hydrates for 24H",
+      "Natural radiant finish",
+    ],
+  },
+},
+{
+  id: 410,
+  name: "Rimmel Lasting Finish Powder 25H",
+  price: 4,
+  category: "cosmetics",
+  images: [
+    "/products/rimmel-lasting-finish-powder.jpg",
+    "/products/rimmel-lasting-finish-powder-2.jpg",
+    "/products/rimmel-lasting-finish-powder-3.jpg",
+  ],
+  details: {
+    subtitle: "Long-wear powder foundation",
+    features: [
+      "Up to 25H wear",
+      "Controls shine",
+      "Smooth flawless finish",
+    ],
+  },
+},
 
-  {
-    id: 16,
-    name: "HD Luminous",
-    price: 10,
-    category: "cosmetics",
-    images: [
-      "/products/hdluminous.jpg",
-      "/products/hdluminous-2.jpg",
-      "/products/hdluminous-3.jpg",
-    ],
-    details: {
-      subtitle: "HD Luminous Foundation — Bright, camera-ready finish",
-      size: "30 ml",
-      features: ["Luminous finish", "Smooth look for photos", "Lightweight daily feel"],
-      howToUse: "Apply a thin layer, then build only where needed. Set lightly to keep glow without shine.",
-    },
-  },
 
   // Clothing (Women)
   {
@@ -921,8 +1053,6 @@ const products = [
     category: "cosmetics",
     images: [
       "/products/maxfactor-colour-adapt-80-bronze.jpg",
-      "/products/maxfactor-colour-adapt-80-bronze-2.jpg",
-      "/products/maxfactor-colour-adapt-80-bronze-3.jpg",
     ],
     details: {
       subtitle: "Skin tone adapting liquid foundation",
