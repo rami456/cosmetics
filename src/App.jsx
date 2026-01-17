@@ -1034,7 +1034,6 @@ const products = [
     images: [
       "/products/maxfactor-miracle-glow-duo.jpg",
       "/products/maxfactor-miracle-glow-duo-2.jpg",
-      "/products/maxfactor-miracle-glow-duo-3.jpg",
     ],
     details: {
       subtitle: "Dual-tone highlighter compact",
@@ -1078,9 +1077,8 @@ const products = [
     price: 2.5,
     category: "cosmetics",
     images: [
-      "/products/miss-sporty-designer-duo-sculpting.jpg",
-      "/products/miss-sporty-designer-duo-sculpting-2.jpg",
-      "/products/miss-sporty-designer-duo-sculpting-3.jpg",
+      "/products/100peachy.jpg",
+      "/products/100peachy2.jpg",
     ],
     details: {
       subtitle: "Blush and highlighter duo compact",
