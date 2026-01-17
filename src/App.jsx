@@ -81,7 +81,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   .topSearch .input{ width:160px; }
 }
 @media (max-width: 520px){
-  .topSearch{ display:none; } /* optional: hide on very small screens */
+  .topSearch{ display:none; } /* optional */
 }
 
 /* Icon Button */
@@ -208,7 +208,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   color:var(--muted);
 }
 .closeBtn{
-  display:flex; /* ✅ always show now */
+  display:flex;
   width:42px; height:42px;
   border-radius:12px;
   border:1px solid var(--line);
@@ -246,7 +246,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .menuText{ font-weight:800; letter-spacing:0.01em; }
 .menuArrow{ opacity:0.7; font-size:18px; }
 
-.sidebarFooter{ margin-top:16px; }
+.sidebarFooter{ margin-top:16px; display:flex; flex-direction:column; gap:10px; }
 .miniCard{
   padding:14px;
   border-radius:14px;
@@ -261,10 +261,33 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 .miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
 
-/* Main layout (no left reserved space) */
+.accountMini{
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.accountMiniTop{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.accountName{ font-weight:900; font-size:13px; }
+.accountEmail{ margin-top:4px; color:var(--muted); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.accountActions{ margin-top:10px; display:flex; gap:10px; }
+.smallBtn{
+  flex:1;
+  height:38px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.smallBtn.primary{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.15); }
+
+/* Main layout */
 .main{
   display:grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 360px;
   gap:18px;
   padding:22px;
   max-width:1280px;
@@ -299,12 +322,30 @@ button{ -webkit-tap-highlight-color: transparent; }
   cursor:pointer;
 }
 .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
-.imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
+.imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; position:relative; }
 .img{ width:100%; height:100%; object-fit:cover; display:block; }
 .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
 .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
 .cardTitle{ margin:0; font-size:14px; font-weight:900; }
 .price{ font-weight:900; font-size:14px; }
+
+.wishBtn{
+  position:absolute;
+  top:10px; right:10px;
+  width:40px; height:40px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.92);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,0.08);
+}
+.wishBtn.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+.wishBtn:hover{ transform:translateY(-1px); }
 
 .btnPrimary{
   width:100%;
@@ -320,7 +361,19 @@ button{ -webkit-tap-highlight-color: transparent; }
 .btnPrimary:hover{ transform:translateY(-1px); }
 .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
 
-/* Search button look */
+.btnCheckout{
+  width:100%;
+  margin-top:0;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
 .searchBtn{
   height:42px;
   padding:0 14px;
@@ -366,7 +419,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
 .cartRow:last-child{ border-bottom:none; }
 .cartName{ font-weight:800; font-size:13px; }
-.cartPrice{ color:var(--muted); font-size:12px; margin-top:4px; }
+.cartMeta{ color:var(--muted); font-size:12px; margin-top:4px; }
 .removeBtn{
   border:none;
   background:transparent;
@@ -374,27 +427,77 @@ button{ -webkit-tap-highlight-color: transparent; }
   cursor:pointer;
   font-weight:800;
 }
-.cartTotal{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+
+.qtyBox{
+  display:flex; align-items:center; gap:8px;
+  margin-top:8px;
+}
+.qtyBtn{
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.qtyNum{
+  min-width:24px;
+  text-align:center;
+  font-weight:900;
+}
+
+.summary{
   margin-top:12px;
   padding-top:12px;
   border-top:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:13px;
+}
+.sumRow{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  color:var(--muted);
+}
+.sumRow b{ color:var(--text); }
+.sumRow.total{
+  padding-top:10px;
+  margin-top:6px;
+  border-top:1px solid var(--line);
+  color:var(--text);
   font-size:14px;
 }
-.btnCheckout{
-  width:100%;
-  margin-top:10px;
-  padding:12px 12px;
-  border-radius:12px;
-  border:1px solid rgba(0,0,0,0.12);
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
   background:#fff;
-  font-weight:900;
-  cursor:pointer;
-  transition:transform 120ms ease, box-shadow 180ms ease;
+  font-size:12px;
+  color:var(--muted);
 }
-.btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+.promoBox{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+.promoRow{
+  display:flex; gap:10px; align-items:center;
+}
+.promoRow .input{ height:42px; }
+.promoMsg{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+.promoMsg.ok{ color:#0b6b2e; font-weight:900; }
+.promoMsg.bad{ color:#b00020; font-weight:900; }
+
 .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
 
 .footer{
@@ -422,7 +525,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
 .modalCard{
   position:relative;
-  width:min(720px, 100%);
+  width:min(760px, 100%);
   border-radius:22px;
   border:1px solid var(--line);
   background:rgba(255,255,255,0.92);
@@ -575,12 +678,56 @@ button{ -webkit-tap-highlight-color: transparent; }
 .thumbBtn.active{ border-color:#0e0e10; }
 .thumbImg{ width:100%; height:100%; object-fit:cover; display:block; }
 
+.sizeRow{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.sizeBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.sizeBtn.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+
+.pageWrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:22px;
+}
+.pageCard{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow2);
+  padding:18px;
+}
+.pageTitle{
+  margin:0;
+  font-size:26px;
+  font-weight:900;
+}
+.pageSub{
+  margin-top:8px;
+  color:var(--muted);
+}
+
+/* Responsive */
 @media (max-width: 1100px){
   .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .main{ grid-template-columns: 1fr 320px; }
+  .main{ grid-template-columns: 1fr 340px; }
 }
 @media (max-width: 900px){
-  .main{ margin-left:0; grid-template-columns: 1fr; }
+  .main{ grid-template-columns: 1fr; }
   .cart{ position:relative; top:auto; }
   .pill{ display:none; }
   .productBody{ grid-template-columns: 1fr; }
@@ -751,29 +898,54 @@ const categories = [
   { key: "clothing", label: "Clothing" },
 ];
 
-/** ✅ Product page component */
-function ProductPage({ products, addToCart }) {
+const PROMOS = {
+  AUREA10: { type: "percent", value: 10, label: "10% off" },
+  AUREA15: { type: "percent", value: 15, label: "15% off" },
+  SAVE5: { type: "fixed", value: 5, label: "$5 off" },
+  FREESHIP: { type: "freeship", value: 0, label: "Free shipping" },
+};
+
+const SHIPPING_FEE = 7.99;
+const FREE_SHIPPING_THRESHOLD = 75;
+
+function money(n) {
+  return `$${Number(n || 0).toFixed(2)}`;
+}
+
+function parseSizes(sizeStr) {
+  if (!sizeStr) return [];
+  // "XS • S • M • L" -> ["XS","S","M","L"]
+  return sizeStr
+    .split(/•|·|,|\|/g)
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
+
+/** ✅ Product page */
+function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const { id } = useParams();
   const pid = Number(id);
   const p = products.find((x) => Number(x.id) === pid);
 
   const [activeImage, setActiveImage] = useState("");
+  const [qty, setQty] = useState(1);
+  const [size, setSize] = useState("");
 
   useEffect(() => {
     const first = p?.images?.[0] || p?.img || "";
     setActiveImage(first);
+    setQty(1);
+    setSize("");
   }, [pid]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!p) {
     return (
-      <div className="productWrap">
-        <div className="productCard">
-          <div className="productTop">
-            <Link className="backLink" to="/">← Back</Link>
-            <div style={{ fontWeight: 900 }}>Product not found</div>
-          </div>
-          <div style={{ padding: 16, color: "var(--muted)" }}>
-            This product doesn’t exist (ID: {id}).
+      <div className="pageWrap">
+        <div className="pageCard">
+          <h1 className="pageTitle">Product not found</h1>
+          <p className="pageSub">This product doesn’t exist (ID: {id}).</p>
+          <div style={{ marginTop: 14 }}>
+            <Link className="backLink" to="/">← Back to shop</Link>
           </div>
         </div>
       </div>
@@ -781,13 +953,36 @@ function ProductPage({ products, addToCart }) {
   }
 
   const images = p.images || (p.img ? [p.img] : []);
+  const isWished = wishlistIds.includes(p.id);
+
+  const sizeOptions = p.category === "clothing" ? parseSizes(p?.details?.size) : [];
+  const needsSize = p.category === "clothing" && sizeOptions.length > 0;
+
+  const add = () => {
+    if (needsSize && !size) {
+      alert("Please choose a size first.");
+      return;
+    }
+    addToCart(p, { qty, size: needsSize ? size : "" });
+  };
 
   return (
     <div className="productWrap">
       <div className="productCard">
         <div className="productTop">
           <Link className="backLink" to="/">← Back to shop</Link>
-          <div style={{ fontWeight: 900 }}>${Number(p.price).toFixed(2)}</div>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <button
+              className={`smallBtn ${isWished ? "primary" : ""}`}
+              style={{ width: 44, flex: "none" }}
+              onClick={() => toggleWishlist(p.id)}
+              type="button"
+              title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              {isWished ? "♥" : "♡"}
+            </button>
+            <div style={{ fontWeight: 900 }}>{money(p.price)}</div>
+          </div>
         </div>
 
         <div className="productBody">
@@ -822,9 +1017,40 @@ function ProductPage({ products, addToCart }) {
               </p>
             )}
 
+            {needsSize && (
+              <div style={{ marginTop: 14 }}>
+                <div className="label" style={{ marginBottom: 8 }}>Choose size</div>
+                <div className="sizeRow">
+                  {sizeOptions.map((s) => (
+                    <button
+                      key={s}
+                      className={`sizeBtn ${size === s ? "active" : ""}`}
+                      onClick={() => setSize(s)}
+                      type="button"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 14 }}>
+              <div className="label" style={{ marginBottom: 8 }}>Quantity</div>
+              <div className="qtyBox">
+                <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">−</button>
+                <div className="qtyNum">{qty}</div>
+                <button className="qtyBtn" onClick={() => setQty((q) => q + 1)} type="button">+</button>
+              </div>
+            </div>
+
             {p.details?.size && (
               <p style={{ marginTop: 10, marginBottom: 0, color: "var(--muted)" }}>
-                Size: <b style={{ color: "var(--text)" }}>{p.details.size}</b>
+                {p.category !== "clothing" ? (
+                  <>Size: <b style={{ color: "var(--text)" }}>{p.details.size}</b></>
+                ) : (
+                  <span style={{ color: "var(--muted)" }}>Available: {p.details.size}</span>
+                )}
               </p>
             )}
 
@@ -845,13 +1071,13 @@ function ProductPage({ products, addToCart }) {
             )}
 
             <div style={{ marginTop: 16 }}>
-              <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
+              <button className="btnPrimary" onClick={add} type="button">
                 Add to Cart
               </button>
             </div>
 
             <div style={{ marginTop: 10, color: "var(--muted)", fontSize: 12, textAlign: "center" }}>
-              Secure checkout coming next.
+              Secure checkout with Whish Money coming next.
             </div>
           </div>
         </div>
@@ -860,23 +1086,162 @@ function ProductPage({ products, addToCart }) {
   );
 }
 
-/** ✅ Home page component */
-function HomePage(props) {
-  const {
-    selectedCategory,
-    setSelectedCategory,
-    clothingGender,
-    setClothingGender,
-    filteredProducts,
-    user,
-    cartItems,
-    addToCart,
-    removeFromCart,
-    totalPrice,
-    setAuthOpen,
-    setMode,
-  } = props;
+/** ✅ Wishlist page */
+function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
+  const navigate = useNavigate();
+  const wished = products.filter((p) => wishlistIds.includes(p.id));
 
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center" }}>
+          <div>
+            <h1 className="pageTitle">Wishlist</h1>
+            <p className="pageSub">{wished.length} item(s)</p>
+          </div>
+          <Link className="backLink" to="/">← Back</Link>
+        </div>
+
+        {wished.length === 0 ? (
+          <div className="empty" style={{ marginTop: 14 }}>
+            <div className="emptyIcon">♡</div>
+            <div className="emptyTitle">No saved items</div>
+            <div className="emptyText">Tap the heart on a product to save it here.</div>
+          </div>
+        ) : (
+          <div className="grid" style={{ marginTop: 14 }}>
+            {wished.map((p) => {
+              const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+              const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+
+              return (
+                <article
+                  key={p.id}
+                  className="card"
+                  onClick={() => navigate(`/product/${p.id}`)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="imgWrap">
+                    <img src={coverImg} alt={p.name} className="img" />
+                    <button
+                      className={`wishBtn ${wishlistIds.includes(p.id) ? "active" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(p.id);
+                      }}
+                      type="button"
+                      aria-label="Toggle wishlist"
+                    >
+                      {wishlistIds.includes(p.id) ? "♥" : "♡"}
+                    </button>
+                  </div>
+
+                  <div className="cardBody">
+                    <div className="cardTop">
+                      <h3 className="cardTitle">{p.name}</h3>
+                      <div className="price">{money(p.price)}</div>
+                    </div>
+
+                    <button
+                      className="btnPrimary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (needsSize) {
+                          navigate(`/product/${p.id}`);
+                          alert("Select size on the product page.");
+                          return;
+                        }
+                        addToCart(p, { qty: 1, size: "" });
+                      }}
+                      type="button"
+                    >
+                      Add to Cart
+                    </button>
+
+                    <button
+                      className="btnCheckout"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/product/${p.id}`);
+                      }}
+                    >
+                      View Product
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** ✅ Success / Cancel pages */
+function SuccessPage({ clearCart }) {
+  useEffect(() => {
+    // In real life, clear cart only after server confirms payment (webhook).
+    clearCart();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <h1 className="pageTitle">Payment successful ✅</h1>
+        <p className="pageSub">Thank you! Your order is being processed.</p>
+        <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link className="backLink" to="/">Continue shopping</Link>
+          <div className="badge">Secure payment via Whish Money</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CancelPage() {
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <h1 className="pageTitle">Payment canceled</h1>
+        <p className="pageSub">No worries. Your cart is still saved.</p>
+        <div style={{ marginTop: 14 }}>
+          <Link className="backLink" to="/">← Back to shop</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** ✅ Home page */
+function HomePage({
+  selectedCategory,
+  setSelectedCategory,
+  clothingGender,
+  setClothingGender,
+  filteredProducts,
+  user,
+  wishlistIds,
+  toggleWishlist,
+  cartItems,
+  addToCart,
+  removeFromCart,
+  updateQty,
+  subtotal,
+  promoCode,
+  promoInput,
+  setPromoInput,
+  promoMessage,
+  applyPromo,
+  discount,
+  shipping,
+  total,
+  checkout,
+  setAuthOpen,
+  setMode,
+}) {
   const navigate = useNavigate();
   const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
 
@@ -899,14 +1264,14 @@ function HomePage(props) {
           Premium cosmetics & clothing selected for everyday elegance.
         </p>
 
-        <button
-          className="btnPrimary"
-          style={{ width: 220, marginTop: 18 }}
-          onClick={() => setSelectedCategory("cosmetics")}
-          type="button"
-        >
-          Shop Best Sellers
-        </button>
+        <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button className="btnPrimary" style={{ width: 220 }} onClick={() => setSelectedCategory("cosmetics")} type="button">
+            Shop Best Sellers
+          </button>
+          <button className="btnCheckout" style={{ width: 220 }} onClick={() => navigate("/wishlist")} type="button">
+            View Wishlist
+          </button>
+        </div>
       </section>
 
       <section>
@@ -933,18 +1298,10 @@ function HomePage(props) {
                   Clothing section
                 </div>
                 <div className="tabs" style={{ margin: 0 }}>
-                  <button
-                    className={`tab ${clothingGender === "women" ? "active" : ""}`}
-                    onClick={() => setClothingGender("women")}
-                    type="button"
-                  >
+                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
                     Women
                   </button>
-                  <button
-                    className={`tab ${clothingGender === "men" ? "active" : ""}`}
-                    onClick={() => setClothingGender("men")}
-                    type="button"
-                  >
+                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
                     Men
                   </button>
                 </div>
@@ -952,7 +1309,7 @@ function HomePage(props) {
             )}
 
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
-              💡 Tip: Click a product card to open the product page.
+              💡 Tip: Click a product card to open the product page (sizes + quantity).
             </div>
           </div>
 
@@ -963,8 +1320,9 @@ function HomePage(props) {
 
         <div className="grid">
           {filteredProducts.map((p) => {
-            const coverImg =
-              p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+            const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+            const isWished = wishlistIds.includes(p.id);
+            const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
 
             return (
               <article
@@ -979,12 +1337,24 @@ function HomePage(props) {
               >
                 <div className="imgWrap">
                   <img src={coverImg} alt={p.name} className="img" />
+                  <button
+                    className={`wishBtn ${isWished ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(p.id);
+                    }}
+                    type="button"
+                    aria-label="Toggle wishlist"
+                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    {isWished ? "♥" : "♡"}
+                  </button>
                 </div>
 
                 <div className="cardBody">
                   <div className="cardTop">
                     <h3 className="cardTitle">{p.name}</h3>
-                    <div className="price">${Number(p.price).toFixed(2)}</div>
+                    <div className="price">{money(p.price)}</div>
                   </div>
 
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
@@ -995,7 +1365,12 @@ function HomePage(props) {
                     className="btnPrimary"
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToCart(p);
+                      if (needsSize) {
+                        navigate(`/product/${p.id}`);
+                        alert("Select size on the product page.");
+                        return;
+                      }
+                      addToCart(p, { qty: 1, size: "" });
                     }}
                     type="button"
                   >
@@ -1023,7 +1398,7 @@ function HomePage(props) {
       <aside className="cart">
         <div className="cartHeader">
           <div className="cartTitle">Cart</div>
-          <div className="cartCount">{cartItems.length} items</div>
+          <div className="cartCount">{cartItems.reduce((s, x) => s + x.qty, 0)} items</div>
         </div>
 
         {cartItems.length === 0 ? (
@@ -1036,10 +1411,17 @@ function HomePage(props) {
           <>
             <ul className="cartList">
               {cartItems.map((item, i) => (
-                <li key={i} className="cartRow">
-                  <div>
+                <li key={`${item.id}-${item.size || "nosize"}-${i}`} className="cartRow">
+                  <div style={{ minWidth: 0 }}>
                     <div className="cartName">{item.name}</div>
-                    <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
+                    <div className="cartMeta">
+                      {money(item.price)} {item.size ? `• Size ${item.size}` : ""} • Line: <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
+                    </div>
+                    <div className="qtyBox">
+                      <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">−</button>
+                      <div className="qtyNum">{item.qty}</div>
+                      <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
+                    </div>
                   </div>
                   <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
                     Remove
@@ -1048,9 +1430,59 @@ function HomePage(props) {
               ))}
             </ul>
 
-            <div className="cartTotal">
-              <span>Total</span>
-              <b>${totalPrice.toFixed(2)}</b>
+            {/* Promo */}
+            <div className="promoBox">
+              <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
+              <div className="promoRow">
+                <input
+                  className="input"
+                  value={promoInput}
+                  onChange={(e) => setPromoInput(e.target.value)}
+                  placeholder="AUREA10, SAVE5, FREESHIP…"
+                />
+                <button className="searchBtn" type="button" onClick={applyPromo}>
+                  Apply
+                </button>
+              </div>
+              {promoMessage && (
+                <div className={`promoMsg ${promoMessage.ok ? "ok" : "bad"}`}>
+                  {promoMessage.text}
+                </div>
+              )}
+              {promoCode && PROMOS[promoCode] && (
+                <div className="promoMsg ok">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
+              )}
+            </div>
+
+            {/* Summary */}
+            <div className="summary">
+              <div className="sumRow">
+                <span>Subtotal</span>
+                <b>{money(subtotal)}</b>
+              </div>
+              <div className="sumRow">
+                <span>Discount</span>
+                <b>-{money(discount)}</b>
+              </div>
+              <div className="sumRow">
+                <span>Shipping</span>
+                <b>{shipping === 0 ? "Free" : money(shipping)}</b>
+              </div>
+
+              <div className="sumRow" style={{ marginTop: 6 }}>
+                <span style={{ fontSize: 12 }}>
+                  {subtotal >= FREE_SHIPPING_THRESHOLD ? (
+                    "Free shipping unlocked ✅"
+                  ) : (
+                    `Add ${money(FREE_SHIPPING_THRESHOLD - subtotal)} for free shipping`
+                  )}
+                </span>
+              </div>
+
+              <div className="sumRow total">
+                <span>Total</span>
+                <b>{money(total)}</b>
+              </div>
             </div>
 
             <button
@@ -1060,17 +1492,26 @@ function HomePage(props) {
                   setAuthOpen(true);
                   setMode("signin");
                 } else {
-                  alert("Checkout backend coming next ✅");
+                  checkout();
                 }
               }}
               type="button"
             >
-              Checkout
+              Checkout (Whish Money)
             </button>
 
             <div className="cartNote">
-              {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+              {user ? "You’ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
             </div>
+
+            <button
+              className="btnGhost"
+              style={{ marginTop: 10 }}
+              type="button"
+              onClick={() => navigate("/wishlist")}
+            >
+              Wishlist
+            </button>
           </>
         )}
       </aside>
@@ -1083,10 +1524,9 @@ export default function App() {
   // ✅ State
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [clothingGender, setClothingGender] = useState("women");
-  const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // ✅ Search moved to topbar
+  // ✅ Search in topbar
   const [search, setSearch] = useState("");
 
   // ✅ Cart modal
@@ -1103,27 +1543,47 @@ export default function App() {
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
   const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
-  const filteredProducts = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    return products.filter((p) => {
-      const inCategory = p.category === selectedCategory;
-      const matchesSearch = !q || p.name.toLowerCase().includes(q);
-      const matchesGender =
-        selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+  // ✅ Wishlist
+  const [wishlistIds, setWishlistIds] = useState([]);
 
-      return inCategory && matchesGender && matchesSearch;
-    });
-  }, [selectedCategory, clothingGender, search]);
+  // ✅ Cart: [{id,name,price,qty,size}]
+  const [cartItems, setCartItems] = useState([]);
 
-  const totalPrice = useMemo(() => {
-    return cartItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
+  // ✅ Promo
+  const [promoCode, setPromoCode] = useState("");
+  const [promoInput, setPromoInput] = useState("");
+  const [promoMessage, setPromoMessage] = useState(null);
+
+  // Persist: wishlist + cart + promo
+  useEffect(() => {
+    try {
+      const w = JSON.parse(localStorage.getItem("aurea_wishlist") || "[]");
+      if (Array.isArray(w)) setWishlistIds(w);
+      const c = JSON.parse(localStorage.getItem("aurea_cart") || "[]");
+      if (Array.isArray(c)) setCartItems(c);
+      const p = localStorage.getItem("aurea_promo") || "";
+      setPromoCode(p);
+      setPromoInput(p);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("aurea_wishlist", JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
+
+  useEffect(() => {
+    localStorage.setItem("aurea_cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // ✅ Cart helpers (no duplicates by product id)
-  const addToCart = (product) =>
-    setCartItems((prev) => (prev.some((x) => x.id === product.id) ? prev : [...prev, product]));
+  useEffect(() => {
+    localStorage.setItem("aurea_promo", promoCode || "");
+  }, [promoCode]);
 
-  const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+  const toggleWishlist = (id) => {
+    setWishlistIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  };
 
   const resetAuthForm = () => setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
 
@@ -1150,14 +1610,12 @@ export default function App() {
         setUser((prev) => (prev?.mode === "guest" ? prev : null));
         return;
       }
-
       setUser({
         name: u.displayName || u.email?.split("@")[0] || "User",
         email: u.email || "",
         mode: "user",
       });
     });
-
     return () => unsub();
   }, []);
 
@@ -1182,10 +1640,122 @@ export default function App() {
     return () => (document.body.style.overflow = "");
   }, [sidebarOpen, authOpen, cartOpen, introOpen]);
 
+  // ✅ Filters
+  const filteredProducts = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    return products.filter((p) => {
+      const inCategory = p.category === selectedCategory;
+      const matchesSearch = !q || p.name.toLowerCase().includes(q);
+      const matchesGender = selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+      return inCategory && matchesGender && matchesSearch;
+    });
+  }, [selectedCategory, clothingGender, search]);
+
+  // ✅ Cart helpers (merge by product id + size)
+  const addToCart = (product, opts = { qty: 1, size: "" }) => {
+    const qty = Math.max(1, Number(opts.qty || 1));
+    const size = (opts.size || "").trim();
+
+    setCartItems((prev) => {
+      const idx = prev.findIndex((x) => x.id === product.id && (x.size || "") === size);
+      if (idx >= 0) {
+        const copy = [...prev];
+        copy[idx] = { ...copy[idx], qty: copy[idx].qty + qty };
+        return copy;
+      }
+      return [...prev, { id: product.id, name: product.name, price: Number(product.price), qty, size }];
+    });
+  };
+
+  const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+
+  const updateQty = (index, nextQty) => {
+    setCartItems((prev) => {
+      const q = Number(nextQty || 0);
+      if (q <= 0) return prev.filter((_, i) => i !== index);
+      return prev.map((x, i) => (i === index ? { ...x, qty: q } : x));
+    });
+  };
+
+  const clearCart = () => setCartItems([]);
+
+  // ✅ Promo logic
+  const applyPromo = () => {
+    const code = (promoInput || "").trim().toUpperCase();
+    if (!code) {
+      setPromoCode("");
+      setPromoMessage({ ok: true, text: "Promo removed." });
+      return;
+    }
+    if (!PROMOS[code]) {
+      setPromoMessage({ ok: false, text: "Invalid promo code." });
+      return;
+    }
+    setPromoCode(code);
+    setPromoMessage({ ok: true, text: `Applied ${code} (${PROMOS[code].label})` });
+  };
+
+  // ✅ Totals (subtotal / discount / shipping / total)
+  const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.qty, 0), [cartItems]);
+
+  const discount = useMemo(() => {
+    if (!promoCode || !PROMOS[promoCode]) return 0;
+    const promo = PROMOS[promoCode];
+    if (promo.type === "percent") return (subtotal * promo.value) / 100;
+    if (promo.type === "fixed") return Math.min(subtotal, promo.value);
+    return 0;
+  }, [promoCode, subtotal]);
+
+  const shipping = useMemo(() => {
+    if (cartItems.length === 0) return 0;
+
+    // Promo freeship overrides
+    if (promoCode && PROMOS[promoCode]?.type === "freeship") return 0;
+
+    // Free over threshold (based on subtotal BEFORE discount)
+    if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+
+    return SHIPPING_FEE;
+  }, [cartItems.length, promoCode, subtotal]);
+
+  const total = useMemo(() => Math.max(0, subtotal - discount + shipping), [subtotal, discount, shipping]);
+
+  // ✅ Checkout (Whish Money) – frontend calls your backend, backend returns a secure payment URL
+  const checkout = async () => {
+    try {
+      if (cartItems.length === 0) return;
+
+      // You must implement this endpoint on your backend:
+      // POST /create-whish-checkout  -> returns { url: "https://..." }
+      const res = await fetch("http://localhost:4242/create-whish-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currency: "USD",
+          promoCode: promoCode || "",
+          cartItems,
+          totals: { subtotal, discount, shipping, total },
+          customer: user ? { name: user.name, email: user.email, mode: user.mode } : null,
+          // recommended URLs for your backend to use:
+          successUrl: `${window.location.origin}/success`,
+          cancelUrl: `${window.location.origin}/cancel`,
+        }),
+      });
+
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url; // redirect to Whish secure hosted payment page
+      } else {
+        alert(data?.error || "Checkout failed. Check your backend.");
+      }
+    } catch (e) {
+      alert("Checkout error. Make sure your backend is running on port 4242.");
+    }
+  };
+
   // ✅ Firebase Email/Password sign in
   const signIn = async () => {
     if (!authForm.email.trim() || !authForm.password.trim()) return;
-
     try {
       await signInWithEmailAndPassword(auth, authForm.email.trim(), authForm.password);
       setAuthOpen(false);
@@ -1216,7 +1786,6 @@ export default function App() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-
       setAuthOpen(false);
       resetAuthForm();
     } catch (err) {
@@ -1322,7 +1891,7 @@ export default function App() {
               <span>Free shipping over $75</span>
             </div>
 
-            {/* ✅ Search bar moved next to the pill */}
+            {/* ✅ Search bar next to pill */}
             <div className="topSearch">
               <input
                 className="input"
@@ -1338,7 +1907,7 @@ export default function App() {
             {/* Cart bubble */}
             <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
               🛒
-              {cartItems.length > 0 && <span className="cartBadge">{cartItems.length}</span>}
+              {cartItems.length > 0 && <span className="cartBadge">{cartItems.reduce((s, x) => s + x.qty, 0)}</span>}
             </button>
 
             {user ? (
@@ -1406,26 +1975,73 @@ export default function App() {
                   Choose section
                 </div>
                 <div className="tabs" style={{ margin: 0 }}>
-                  <button
-                    className={`tab ${clothingGender === "women" ? "active" : ""}`}
-                    onClick={() => setClothingGender("women")}
-                    type="button"
-                  >
+                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
                     Women
                   </button>
-                  <button
-                    className={`tab ${clothingGender === "men" ? "active" : ""}`}
-                    onClick={() => setClothingGender("men")}
-                    type="button"
-                  >
+                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
                     Men
                   </button>
                 </div>
               </div>
             )}
+
+            <div style={{ marginTop: 12 }}>
+              <Link
+                to="/wishlist"
+                className="menuItem"
+                style={{ textDecoration: "none", color: "inherit" }}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="menuText">Wishlist</span>
+                <span className="menuArrow">♥</span>
+              </Link>
+            </div>
           </nav>
 
           <div className="sidebarFooter">
+            {/* ✅ Small account view in hamburger */}
+            <div className="accountMini">
+              <div className="accountMiniTop">
+                <div style={{ minWidth: 0 }}>
+                  <div className="accountName">{user ? (user.mode === "guest" ? "Guest" : user.name) : "Not signed in"}</div>
+                  <div className="accountEmail">{user?.email || "—"}</div>
+                </div>
+              </div>
+
+              <div className="accountActions">
+                {user ? (
+                  <button className="smallBtn" onClick={signOut} type="button">
+                    Sign out
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      className="smallBtn primary"
+                      onClick={() => {
+                        setSidebarOpen(false);
+                        setAuthOpen(true);
+                        setMode("signin");
+                      }}
+                      type="button"
+                    >
+                      Sign in
+                    </button>
+                    <button
+                      className="smallBtn"
+                      onClick={() => {
+                        setSidebarOpen(false);
+                        setAuthOpen(true);
+                        setMode("signup");
+                      }}
+                      type="button"
+                    >
+                      Sign up
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
             <div className="miniCard">
               <div className="miniCardTitle">Auréa Standard</div>
               <div className="miniCardText">Authentic items • Curated selection</div>
@@ -1580,7 +2196,7 @@ export default function App() {
             <div className="modalTop">
               <div>
                 <div className="modalTitle">Your Cart</div>
-                <div className="help">{cartItems.length} item(s)</div>
+                <div className="help">{cartItems.reduce((s, x) => s + x.qty, 0)} item(s)</div>
               </div>
               <button className="modalClose" onClick={() => setCartOpen(false)} aria-label="Close" type="button">
                 ✕
@@ -1598,10 +2214,17 @@ export default function App() {
                 <>
                   <ul className="cartList">
                     {cartItems.map((item, i) => (
-                      <li key={i} className="cartRow">
-                        <div>
+                      <li key={`${item.id}-${item.size || "nosize"}-${i}`} className="cartRow">
+                        <div style={{ minWidth: 0 }}>
                           <div className="cartName">{item.name}</div>
-                          <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
+                          <div className="cartMeta">
+                            {money(item.price)} {item.size ? `• Size ${item.size}` : ""} • Line: <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
+                          </div>
+                          <div className="qtyBox">
+                            <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">−</button>
+                            <div className="qtyNum">{item.qty}</div>
+                            <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
+                          </div>
                         </div>
                         <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
                           Remove
@@ -1610,9 +2233,48 @@ export default function App() {
                     ))}
                   </ul>
 
-                  <div className="cartTotal">
-                    <span>Total</span>
-                    <b>${totalPrice.toFixed(2)}</b>
+                  {/* Promo */}
+                  <div className="promoBox">
+                    <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
+                    <div className="promoRow">
+                      <input
+                        className="input"
+                        value={promoInput}
+                        onChange={(e) => setPromoInput(e.target.value)}
+                        placeholder="AUREA10, SAVE5, FREESHIP…"
+                      />
+                      <button className="searchBtn" type="button" onClick={applyPromo}>
+                        Apply
+                      </button>
+                    </div>
+                    {promoMessage && (
+                      <div className={`promoMsg ${promoMessage.ok ? "ok" : "bad"}`}>
+                        {promoMessage.text}
+                      </div>
+                    )}
+                    {promoCode && PROMOS[promoCode] && (
+                      <div className="promoMsg ok">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
+                    )}
+                  </div>
+
+                  {/* Summary */}
+                  <div className="summary">
+                    <div className="sumRow">
+                      <span>Subtotal</span>
+                      <b>{money(subtotal)}</b>
+                    </div>
+                    <div className="sumRow">
+                      <span>Discount</span>
+                      <b>-{money(discount)}</b>
+                    </div>
+                    <div className="sumRow">
+                      <span>Shipping</span>
+                      <b>{shipping === 0 ? "Free" : money(shipping)}</b>
+                    </div>
+                    <div className="sumRow total">
+                      <span>Total</span>
+                      <b>{money(total)}</b>
+                    </div>
                   </div>
 
                   <button
@@ -1623,16 +2285,17 @@ export default function App() {
                         setAuthOpen(true);
                         setMode("signin");
                       } else {
-                        alert("Checkout backend coming next ✅");
+                        setCartOpen(false);
+                        checkout();
                       }
                     }}
                     type="button"
                   >
-                    Checkout
+                    Checkout (Whish Money)
                   </button>
 
                   <div className="cartNote">
-                    {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+                    {user ? "You’ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
                   </div>
                 </>
               )}
@@ -1652,16 +2315,51 @@ export default function App() {
                 setClothingGender={setClothingGender}
                 filteredProducts={filteredProducts}
                 user={user}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
                 cartItems={cartItems}
                 addToCart={addToCart}
                 removeFromCart={removeFromCart}
-                totalPrice={totalPrice}
+                updateQty={updateQty}
+                subtotal={subtotal}
+                promoCode={promoCode}
+                promoInput={promoInput}
+                setPromoInput={setPromoInput}
+                promoMessage={promoMessage}
+                applyPromo={applyPromo}
+                discount={discount}
+                shipping={shipping}
+                total={total}
+                checkout={checkout}
                 setAuthOpen={setAuthOpen}
                 setMode={setMode}
               />
             }
           />
-          <Route path="/product/:id" element={<ProductPage products={products} addToCart={addToCart} />} />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductPage
+                products={products}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
+                addToCart={addToCart}
+              />
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <WishlistPage
+                products={products}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
+                addToCart={addToCart}
+              />
+            }
+          />
+          <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
+          <Route path="/cancel" element={<CancelPage />} />
         </Routes>
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
@@ -1669,3 +2367,19 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+/*
+✅ IMPORTANT FOR FEATURE #5 (Whish Money checkout)
+
+This frontend expects your BACKEND endpoint:
+
+POST http://localhost:4242/create-whish-checkout
+Body: { cartItems, currency:"USD", totals:{...}, successUrl, cancelUrl, customer }
+
+Response: { url: "https://whish-hosted-payment-page/..." }
+
+Your backend must create the Whish payment request and return the collect/checkout URL.
+Then set Whish redirect to:
+  successUrl = http://your-site/success
+  cancelUrl  = http://your-site/cancel
+*/
