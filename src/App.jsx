@@ -738,7 +738,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 `;
 
 /** ✅ Products */
-  /** ✅ Products (ALL updated to have 3 images each) */
+ /** ✅ Products (ALL updated to have 3 images each — JPG) */
 const products = [
   // Cosmetics
   {
@@ -747,9 +747,9 @@ const products = [
     price: 11,
     category: "cosmetics",
     images: [
-      "/products/maxfactor101.png",
-      "/products/maxfactor101-2.png",
-      "/products/maxfactor101-3.png",
+      "/products/maxfactor101.jpg",
+      "/products/maxfactor101-2.jpg",
+      "/products/maxfactor101-3.jpg",
     ],
     details: {
       subtitle: "Foundation — Shade 101 (light tone)",
@@ -764,9 +764,9 @@ const products = [
     price: 13,
     category: "cosmetics",
     images: [
-      "/products/maxfactor55beige.png",
-      "/products/maxfactor55beige-2.png",
-      "/products/maxfactor55beige-3.png",
+      "/products/maxfactor55beige.jpg",
+      "/products/maxfactor55beige-2.jpg",
+      "/products/maxfactor55beige-3.jpg",
     ],
     details: {
       subtitle: "Foundation — Shade 55 Beige (medium tone)",
@@ -781,9 +781,9 @@ const products = [
     price: 17,
     category: "cosmetics",
     images: [
-      "/products/maxfactorspf20.png",
-      "/products/maxfactorspf20-2.png",
-      "/products/maxfactorspf20-3.png",
+      "/products/maxfactorspf20.jpg",
+      "/products/maxfactorspf20-2.jpg",
+      "/products/maxfactorspf20-3.jpg",
     ],
     details: {
       subtitle: "Foundation with SPF 20 — Everyday base",
@@ -798,9 +798,9 @@ const products = [
     price: 20,
     category: "cosmetics",
     images: [
-      "/products/lorealnude.png",
-      "/products/lorealnude-2.png",
-      "/products/lorealnude-3.png",
+      "/products/lorealnude.jpg",
+      "/products/lorealnude-2.jpg",
+      "/products/lorealnude-3.jpg",
     ],
     details: {
       subtitle: "Nude finish foundation — Natural look",
@@ -815,9 +815,9 @@ const products = [
     price: 12,
     category: "cosmetics",
     images: [
-      "/products/loreal24hccool.png",
-      "/products/loreal24hccool-2.png",
-      "/products/loreal24hccool-3.png",
+      "/products/loreal24hccool.jpg",
+      "/products/loreal24hccool-2.jpg",
+      "/products/loreal24hccool-3.jpg",
     ],
     details: {
       subtitle: "Shade: Cool undertone (C)",
@@ -832,9 +832,9 @@ const products = [
     price: 12,
     category: "cosmetics",
     images: [
-      "/products/lorealhnnormal.png",
-      "/products/lorealhnnormal-2.png",
-      "/products/lorealhnnormal-3.png",
+      "/products/lorealhnnormal.jpg",
+      "/products/lorealhnnormal-2.jpg",
+      "/products/lorealhnnormal-3.jpg",
     ],
     details: {
       subtitle: "Shade: HN (Neutral) — Balanced tone",
@@ -849,9 +849,9 @@ const products = [
     price: 10,
     category: "cosmetics",
     images: [
-      "/products/hdluminous.png",
-      "/products/hdluminous-2.png",
-      "/products/hdluminous-3.png",
+      "/products/hdluminous.jpg",
+      "/products/hdluminous-2.jpg",
+      "/products/hdluminous-3.jpg",
     ],
     details: {
       subtitle: "HD Luminous Foundation — Bright, camera-ready finish",
