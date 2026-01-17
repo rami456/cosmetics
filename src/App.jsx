@@ -1,5 +1,5 @@
-
 import { useEffect, useMemo, useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Link } from "react-router-dom";
 
 // Firebase
 import { auth } from "./firebase";
@@ -30,512 +30,547 @@ const styles = `
   font-weight:900;
   cursor:pointer;
 }
-.searchBtn:hover{
-  opacity:0.9;
-}  
+.searchBtn:hover{ opacity:0.9; }  
 :root{
-    --panel:#ffffff;
-    --soft:#f6f6f7;
-    --line:rgba(0,0,0,0.08);
-    --text:#0e0e10;
-    --muted:rgba(14,14,16,0.62);
-    --shadow:0 18px 60px rgba(0,0,0,0.10);
-    --shadow2:0 10px 30px rgba(0,0,0,0.10);
-    --radius:18px;
-  }
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    background:var(--soft);
-    color:var(--text);
-    font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  }
-  button{ -webkit-tap-highlight-color: transparent; }
-  .app{ min-height:100vh; }
+  --panel:#ffffff;
+  --soft:#f6f6f7;
+  --line:rgba(0,0,0,0.08);
+  --text:#0e0e10;
+  --muted:rgba(14,14,16,0.62);
+  --shadow:0 18px 60px rgba(0,0,0,0.10);
+  --shadow2:0 10px 30px rgba(0,0,0,0.10);
+  --radius:18px;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--soft);
+  color:var(--text);
+  font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+button{ -webkit-tap-highlight-color: transparent; }
+.app{ min-height:100vh; }
 
-  /* Topbar */
-  .topbar{
-    position:sticky; top:0; z-index:50;
-    height:72px;
-    display:flex; align-items:center; gap:14px;
-    padding:0 18px;
-    background:rgba(255,255,255,0.75);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-  }
-  .brand{
-    text-decoration:none;
-    color:var(--text);
-    font-weight:900;
-    letter-spacing:0.06em;
-    font-size:22px;
-    text-transform:lowercase;
-  }
-  .topbarRight{ margin-left:auto; display:flex; align-items:center; gap:10px; }
-  .pill{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    background:rgba(255,255,255,0.7);
-    font-size:12px;
-    color:var(--muted);
-    white-space:nowrap;
-  }
-  .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  height:72px;
+  display:flex; align-items:center; gap:14px;
+  padding:0 18px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  text-decoration:none;
+  color:var(--text);
+  font-weight:900;
+  letter-spacing:0.06em;
+  font-size:22px;
+  text-transform:lowercase;
+}
+.topbarRight{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+.pill{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,0.7);
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+.pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
 
-  /* Icon Button */
-  .iconBtn{
-    width:42px; height:42px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.88);
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-  }
-  .iconBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-  .hamburger{
-    width:18px; height:2px;
-    background:#111;
-    border-radius:999px;
-    position:relative;
-    display:block;
-  }
-  .hamburger::before,.hamburger::after{
-    content:"";
-    position:absolute; left:0;
-    width:18px; height:2px;
-    background:#111;
-    border-radius:999px;
-  }
-  .hamburger::before{ top:-5px; }
-  .hamburger::after{ top:5px; }
+/* Icon Button */
+.iconBtn{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.iconBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.hamburger{
+  width:18px; height:2px;
+  background:#111;
+  border-radius:999px;
+  position:relative;
+  display:block;
+}
+.hamburger::before,.hamburger::after{
+  content:"";
+  position:absolute; left:0;
+  width:18px; height:2px;
+  background:#111;
+  border-radius:999px;
+}
+.hamburger::before{ top:-5px; }
+.hamburger::after{ top:5px; }
 
-  /* Auth Button (topbar) */
-  .authBtn{
-    height:42px;
-    padding:0 14px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.88);
-    cursor:pointer;
-    font-weight:900;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-    white-space:nowrap;
-  }
-  .authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+/* Auth Button (topbar) */
+.authBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  font-weight:900;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+  white-space:nowrap;
+}
+.authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
 
-  /* Cart bubble button (top-right) */
-  .cartBubble{
-    height:42px;
-    width:42px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.88);
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-  }
-  .cartBubble:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-  .cartBadge{
-    position:absolute;
-    top:-6px;
-    right:-6px;
-    min-width:18px;
-    height:18px;
-    padding:0 6px;
-    border-radius:999px;
-    background:#0e0e10;
-    color:#fff;
-    font-size:11px;
-    font-weight:900;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+/* Cart bubble button (top-right) */
+.cartBubble{
+  height:42px;
+  width:42px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.cartBubble:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.cartBadge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#0e0e10;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-  /* Overlay */
-  .overlay{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.40);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 220ms ease;
-    z-index:60;
-  }
-  .overlay.show{
-    opacity:1;
-    pointer-events:auto;
-  }
+/* Overlay */
+.overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.40);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 220ms ease;
+  z-index:60;
+}
+.overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
 
-  /* Sidebar */
-  .sidebar{
-    position:fixed;
-    top:72px; left:0; bottom:0;
-    width:280px;
-    background:var(--panel);
-    border-right:1px solid var(--line);
-    padding:18px;
-    z-index:70;
-    transform:translateX(0);
-    transition:transform 220ms ease;
-  }
-  .sidebarHeader{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    padding-bottom:14px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:14px;
-  }
-  .sidebarTitle{
-    font-weight:900;
-    font-size:12px;
-    letter-spacing:0.10em;
-    text-transform:uppercase;
-  }
-  .sidebarSub{
-    margin-top:6px;
-    font-size:12px;
-    color:var(--muted);
-  }
-  .closeBtn{
-    display:none;
-    width:42px; height:42px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.9);
-    cursor:pointer;
-  }
-  .menuList{
-    list-style:none;
-    padding:0;
-    margin:0;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .menuItem{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px 14px;
-    border-radius:14px;
-    border:1px solid var(--line);
-    background:#fff;
-    cursor:pointer;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-  }
-  .menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-  .menuItem.active{
-    background:#0e0e10;
-    color:#fff;
-    border-color:rgba(0,0,0,0.2);
-  }
-  .menuText{ font-weight:800; letter-spacing:0.01em; }
-  .menuArrow{ opacity:0.7; font-size:18px; }
+/* Sidebar */
+.sidebar{
+  position:fixed;
+  top:72px; left:0; bottom:0;
+  width:280px;
+  background:var(--panel);
+  border-right:1px solid var(--line);
+  padding:18px;
+  z-index:70;
+  transform:translateX(0);
+  transition:transform 220ms ease;
+}
+.sidebarHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.sidebarTitle{
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.sidebarSub{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+.closeBtn{
+  display:none;
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+}
+.menuList{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.menuItem{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.menuItem.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+.menuText{ font-weight:800; letter-spacing:0.01em; }
+.menuArrow{ opacity:0.7; font-size:18px; }
 
-  .sidebarFooter{ margin-top:16px; }
-  .miniCard{
-    padding:14px;
-    border-radius:14px;
-    border:1px solid var(--line);
-    background:linear-gradient(180deg, #ffffff, #f7f7f8);
-  }
-  .miniCardTitle{
-    font-weight:900;
-    font-size:12px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-  }
-  .miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
+.sidebarFooter{ margin-top:16px; }
+.miniCard{
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, #ffffff, #f7f7f8);
+}
+.miniCardTitle{
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
 
-  /* Main layout */
-  .main{
-    display:grid;
-    grid-template-columns: 1fr 340px;
-    gap:18px;
-    padding:22px;
-    max-width:1280px;
-    margin:0 auto;
-    margin-left:280px;
-  }
-  .sectionHeader{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:16px;
-    margin-bottom:16px;
-  }
-  .h1{ margin:0; font-size:32px; letter-spacing:-0.02em; }
-  .sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
-  .sortHint{ font-size:13px; color:var(--muted); }
+/* Main layout */
+.main{
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap:18px;
+  padding:22px;
+  max-width:1280px;
+  margin:0 auto;
+  margin-left:280px;
+}
+.sectionHeader{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.h1{ margin:0; font-size:32px; letter-spacing:-0.02em; }
+.sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
+.sortHint{ font-size:13px; color:var(--muted); }
 
-  /* Products */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap:16px;
-  }
-  .card{
-    border-radius:var(--radius);
-    border:1px solid var(--line);
-    background:#fff;
-    overflow:hidden;
-    box-shadow:0 6px 20px rgba(0,0,0,0.06);
-    transition:transform 140ms ease, box-shadow 220ms ease;
-    position:relative;
-  }
-  .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
-  .imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
-  .img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
-  .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-  .cardTitle{ margin:0; font-size:14px; font-weight:900; }
-  .price{ font-weight:900; font-size:14px; }
+/* Products */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:16px;
+}
+.card{
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+  transition:transform 140ms ease, box-shadow 220ms ease;
+  position:relative;
+  cursor:pointer;
+}
+.card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
+.imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; }
+.img{ width:100%; height:100%; object-fit:cover; display:block; }
+.cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
+.cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.cardTitle{ margin:0; font-size:14px; font-weight:900; }
+.price{ font-weight:900; font-size:14px; }
 
-  .btnPrimary{
-    width:100%;
-    padding:11px 12px;
-    border-radius:12px;
-    border:1px solid rgba(0,0,0,0.12);
-    background:#0e0e10;
-    color:#fff;
-    font-weight:900;
-    cursor:pointer;
-    transition:transform 120ms ease, opacity 180ms ease;
-  }
-  .btnPrimary:hover{ transform:translateY(-1px); }
-  .btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
+.btnPrimary{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#0e0e10;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, opacity 180ms ease;
+}
+.btnPrimary:hover{ transform:translateY(-1px); }
+.btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
 
-  /* Search row */
-  .searchRow{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    margin-top:12px;
-    max-width:420px;
-  }
-  .searchBtn{
-    height:44px;
-    padding:0 14px;
-    border-radius:12px;
-    border:1px solid rgba(0,0,0,0.12);
-    background:#0e0e10;
-    color:#fff;
-    font-weight:900;
-    cursor:pointer;
-    transition:transform 120ms ease, opacity 180ms ease;
-    white-space:nowrap;
-  }
-  .searchBtn:hover{ transform:translateY(-1px); }
-  .searchBtn:active{ transform:translateY(0px); opacity:0.92; }
+/* Cart */
+.cart{
+  position:sticky;
+  top:90px;
+  height:fit-content;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  padding:16px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.06);
+}
+.cartHeader{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+.cartTitle{ font-weight:900; font-size:16px; }
+.cartCount{ color:var(--muted); font-size:12px; }
 
-  /* Cart */
-  .cart{
-    position:sticky;
-    top:90px;
-    height:fit-content;
-    border-radius:var(--radius);
-    border:1px solid var(--line);
-    background:#fff;
-    padding:16px;
-    box-shadow:0 8px 26px rgba(0,0,0,0.06);
-  }
-  .cartHeader{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
-  .cartTitle{ font-weight:900; font-size:16px; }
-  .cartCount{ color:var(--muted); font-size:12px; }
+.empty{
+  border:1px dashed rgba(0,0,0,0.18);
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+.emptyIcon{ font-size:22px; }
+.emptyTitle{ margin-top:10px; font-weight:900; }
+.emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
 
-  .empty{
-    border:1px dashed rgba(0,0,0,0.18);
-    border-radius:16px;
-    padding:16px;
-    text-align:center;
-    background:linear-gradient(180deg,#fff,#fafafa);
-  }
-  .emptyIcon{ font-size:22px; }
-  .emptyTitle{ margin-top:10px; font-weight:900; }
-  .emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
+.cartList{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+.cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.cartRow:last-child{ border-bottom:none; }
+.cartName{ font-weight:800; font-size:13px; }
+.cartPrice{ color:var(--muted); font-size:12px; margin-top:4px; }
+.removeBtn{
+  border:none;
+  background:transparent;
+  color:#b00020;
+  cursor:pointer;
+  font-weight:800;
+}
+.cartTotal{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:14px;
+}
+.btnCheckout{
+  width:100%;
+  margin-top:10px;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
+.footer{
+  margin-left:280px;
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
 
-  .cartList{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
-  .cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
-  .cartRow:last-child{ border-bottom:none; }
-  .cartName{ font-weight:800; font-size:13px; }
-  .cartPrice{ color:var(--muted); font-size:12px; margin-top:4px; }
-  .removeBtn{
-    border:none;
-    background:transparent;
-    color:#b00020;
-    cursor:pointer;
-    font-weight:800;
-  }
-  .cartTotal{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1px solid var(--line);
-    font-size:14px;
-  }
-  .btnCheckout{
-    width:100%;
-    margin-top:10px;
-    padding:12px 12px;
-    border-radius:12px;
-    border:1px solid rgba(0,0,0,0.12);
-    background:#fff;
-    font-weight:900;
-    cursor:pointer;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-  }
-  .btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-  .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
-  .footer{
-    margin-left:280px;
-    padding:18px;
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-  }
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:90;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 180ms ease;
+}
+.modal.show{ opacity:1; pointer-events:auto; }
+.modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+.modalCard{
+  position:relative;
+  width:min(720px, 100%);
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  max-height: calc(100vh - 48px);
+  overflow:auto;
+}
+.modalTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 16px 0;
+}
+.modalTitle{
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.modalClose{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.modalBody{ padding:14px 16px 16px; }
+.tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
+.tab{
+  flex:1;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
+.field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+.label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
+.input{
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:0 12px;
+  outline:none;
+  background:#fff;
+  font-weight:700;
+  width:100%;
+}
+.row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+.help{ margin-top:10px; font-size:12px; color:var(--muted); }
+.authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+.btnGhost{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:12px 0 2px;
+  color:var(--muted);
+  font-size:12px;
+}
+.divider::before, .divider::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--line);
+}
 
-  /* Modal */
-  .modal{
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    z-index:90;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 180ms ease;
-  }
-  .modal.show{ opacity:1; pointer-events:auto; }
-  .modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
-  .modalCard{
-    position:relative;
-    width:min(720px, 100%);
-    border-radius:22px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.92);
-    backdrop-filter: blur(14px);
-    box-shadow:var(--shadow);
-    overflow:hidden;
-    max-height: calc(100vh - 48px);
-    overflow:auto;
-  }
-  .modalTop{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    padding:16px 16px 0;
-  }
-  .modalTitle{
-    font-weight:900;
-    font-size:14px;
-    letter-spacing:0.10em;
-    text-transform:uppercase;
-  }
-  .modalClose{
-    width:42px; height:42px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.9);
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .modalBody{ padding:14px 16px 16px; }
-  .tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
-  .tab{
-    flex:1;
-    padding:10px 12px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:#fff;
-    cursor:pointer;
-    font-weight:900;
-  }
-  .tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
-  .field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
-  .label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
-  .input{
-    height:44px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    padding:0 12px;
-    outline:none;
-    background:#fff;
-    font-weight:700;
-    width:100%;
-  }
-  .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-  .help{ margin-top:10px; font-size:12px; color:var(--muted); }
-  .authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
-  .btnGhost{
-    width:100%;
-    padding:11px 12px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:#fff;
-    font-weight:900;
-    cursor:pointer;
-    transition:transform 120ms ease, box-shadow 180ms ease;
-  }
-  .btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
-  .divider{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:12px 0 2px;
-    color:var(--muted);
-    font-size:12px;
-  }
-  .divider::before, .divider::after{
-    content:"";
-    height:1px;
-    flex:1;
-    background:var(--line);
-  }
+/* Product Page */
+.productWrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:22px;
+  display:grid;
+  gap:18px;
+}
+.productCard{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow2);
+  overflow:hidden;
+}
+.productTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+.backLink{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  text-decoration:none;
+  font-weight:900;
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+}
+.productBody{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+  padding:16px;
+}
+.pImgWrap{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:#f2f2f3;
+}
+.pImg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.thumbRow{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.thumbBtn{
+  width:70px; height:70px;
+  padding:0;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  overflow:hidden;
+}
+.thumbBtn.active{ border-color:#0e0e10; }
+.thumbImg{ width:100%; height:100%; object-fit:cover; display:block; }
 
-  /* Learn More gallery */
-  .lmGrid{ display:grid; grid-template-columns: 1fr 260px; gap:14px; align-items:start; }
-  .lmImgWrap{ width:100%; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#f2f2f3; }
-  .lmImg{ width:100%; height:auto; display:block; }
-  .lmThumbs{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start; }
-  .lmThumbBtn{ width:70px; height:70px; padding:0; border-radius:12px; border:1px solid var(--line); background:#fff; cursor:pointer; overflow:hidden; }
-  .lmThumbBtn.active{ border-color:#0e0e10; }
-  .lmThumb{ width:100%; height:100%; object-fit:cover; display:block; }
-
-  @media (max-width: 1100px){
-    .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .main{ grid-template-columns: 1fr 320px; }
-  }
-  @media (max-width: 900px){
-    .main{ margin-left:0; grid-template-columns: 1fr; }
-    .cart{ position:relative; top:auto; }
-    .footer{ margin-left:0; }
-    .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
-    .sidebar.open{ transform:translateX(0); }
-    .closeBtn{ display:flex; align-items:center; justify-content:center; }
-    .pill{ display:none; }
-    .lmGrid{ grid-template-columns: 1fr; }
-    .lmThumbs{ margin-top:12px; }
-  }
-  @media (max-width: 620px){ .grid{ grid-template-columns: 1fr; } }
-  @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+@media (max-width: 1100px){
+  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .main{ grid-template-columns: 1fr 320px; }
+}
+@media (max-width: 900px){
+  .main{ margin-left:0; grid-template-columns: 1fr; }
+  .cart{ position:relative; top:auto; }
+  .footer{ margin-left:0; }
+  .sidebar{ transform:translateX(-105%); box-shadow:var(--shadow); }
+  .sidebar.open{ transform:translateX(0); }
+  .closeBtn{ display:flex; align-items:center; justify-content:center; }
+  .pill{ display:none; }
+  .productBody{ grid-template-columns: 1fr; }
+}
+@media (max-width: 620px){ .grid{ grid-template-columns: 1fr; } }
+@media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
 
-/** ✅ Products (fragrances removed, clothing added with men/women) */
+/** ✅ Products */
 const products = [
   // Cosmetics
   {
@@ -696,10 +731,375 @@ const categories = [
   { key: "clothing", label: "Clothing" },
 ];
 
+/** ✅ Product page component */
+function ProductPage({ products, addToCart }) {
+  const { id } = useParams();
+  const pid = Number(id);
+  const p = products.find((x) => Number(x.id) === pid);
+
+  const [activeImage, setActiveImage] = useState("");
+
+  useEffect(() => {
+    const first = p?.images?.[0] || p?.img || "";
+    setActiveImage(first);
+  }, [pid]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!p) {
+    return (
+      <div className="productWrap">
+        <div className="productCard">
+          <div className="productTop">
+            <Link className="backLink" to="/">← Back</Link>
+            <div style={{ fontWeight: 900 }}>Product not found</div>
+          </div>
+          <div style={{ padding: 16, color: "var(--muted)" }}>
+            This product doesn’t exist (ID: {id}).
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const images = p.images || (p.img ? [p.img] : []);
+
+  return (
+    <div className="productWrap">
+      <div className="productCard">
+        <div className="productTop">
+          <Link className="backLink" to="/">← Back to shop</Link>
+          <div style={{ fontWeight: 900 }}>${Number(p.price).toFixed(2)}</div>
+        </div>
+
+        <div className="productBody">
+          <div>
+            <div className="pImgWrap">
+              <img className="pImg" src={activeImage || images[0]} alt={p.name} />
+            </div>
+
+            <div className="thumbRow">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  className={`thumbBtn ${src === activeImage ? "active" : ""}`}
+                  onClick={() => setActiveImage(src)}
+                  type="button"
+                >
+                  <img className="thumbImg" src={src} alt="" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>{p.name}</h1>
+            <div style={{ marginTop: 8, color: "var(--muted)", fontWeight: 800 }}>
+              ⭐ 4.8 · 120+ reviews
+            </div>
+
+            {p.details?.subtitle && (
+              <p style={{ marginTop: 14, marginBottom: 0, color: "var(--muted)" }}>
+                <b style={{ color: "var(--text)" }}>{p.details.subtitle}</b>
+              </p>
+            )}
+
+            {p.details?.size && (
+              <p style={{ marginTop: 10, marginBottom: 0, color: "var(--muted)" }}>
+                Size: <b style={{ color: "var(--text)" }}>{p.details.size}</b>
+              </p>
+            )}
+
+            {Array.isArray(p.details?.features) && (
+              <ul style={{ marginTop: 14, paddingLeft: 18, color: "var(--muted)" }}>
+                {p.details.features.map((f, idx) => (
+                  <li key={idx} style={{ marginBottom: 8 }}>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {p.details?.howToUse && (
+              <div style={{ marginTop: 12, color: "var(--muted)" }}>
+                <b style={{ color: "var(--text)" }}>How to use:</b> {p.details.howToUse}
+              </div>
+            )}
+
+            <div style={{ marginTop: 16 }}>
+              <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
+                Add to Cart
+              </button>
+            </div>
+
+            <div style={{ marginTop: 10, color: "var(--muted)", fontSize: 12, textAlign: "center" }}>
+              Secure checkout coming next.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** ✅ Home page component */
+function HomePage(props) {
+  const {
+    categories,
+    selectedCategory,
+    setSelectedCategory,
+    clothingGender,
+    setClothingGender,
+    filteredProducts,
+    search,
+    setSearch,
+    user,
+    cartItems,
+    addToCart,
+    removeFromCart,
+    totalPrice,
+    setAuthOpen,
+    setMode,
+    setSidebarOpen,
+  } = props;
+
+  const navigate = useNavigate();
+  const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
+
+  return (
+    <main className="main">
+      {/* HERO */}
+      <section
+        style={{
+          gridColumn: "1 / -1",
+          padding: "40px 32px",
+          borderRadius: 22,
+          background: "linear-gradient(135deg, #ffffff 0%, #f4f4f6 100%)",
+          border: "1px solid var(--line)",
+          boxShadow: "var(--shadow2)",
+          marginBottom: 24,
+        }}
+      >
+        <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>Effortless style, curated.</h1>
+        <p style={{ marginTop: 12, maxWidth: 520, color: "var(--muted)" }}>
+          Premium cosmetics & clothing selected for everyday elegance.
+        </p>
+
+        <button
+          className="btnPrimary"
+          style={{ width: 220, marginTop: 18 }}
+          onClick={() => setSelectedCategory("cosmetics")}
+          type="button"
+        >
+          Shop Best Sellers
+        </button>
+      </section>
+
+      <section>
+        <div className="sectionHeader">
+          <div style={{ width: "100%" }}>
+            <h2 style={{ fontSize: 22, margin: 0, fontWeight: 900 }}>Best Sellers</h2>
+
+            <h1 className="h1" style={{ marginTop: 10 }}>
+              {categoryTitle}
+            </h1>
+
+            <p className="sub">Curated essentials designed to feel effortless.</p>
+
+            {user && (
+              <p className="sub" style={{ marginTop: 6 }}>
+                Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
+              </p>
+            )}
+
+            {/* ✅ Men/Women option appears when Clothing is selected */}
+            {selectedCategory === "clothing" && (
+              <div style={{ marginTop: 12, maxWidth: 420 }}>
+                <div className="label" style={{ marginBottom: 8 }}>
+                  Clothing section
+                </div>
+                <div className="tabs" style={{ margin: 0 }}>
+                  <button
+                    className={`tab ${clothingGender === "women" ? "active" : ""}`}
+                    onClick={() => setClothingGender("women")}
+                    type="button"
+                  >
+                    Women
+                  </button>
+                  <button
+                    className={`tab ${clothingGender === "men" ? "active" : ""}`}
+                    onClick={() => setClothingGender("men")}
+                    type="button"
+                  >
+                    Men
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 12 }}>
+              <div className="label">Search</div>
+
+              <div className="searchBar">
+                <input
+                  className="input"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search products…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") e.preventDefault();
+                  }}
+                />
+
+                <button
+                  className="searchBtn"
+                  type="button"
+                  onClick={() => setSearch(search.trim())}
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
+              💡 Tip: Click a product card to open the product page.
+            </div>
+          </div>
+
+          <div className="sortHint">
+            Showing <b>{filteredProducts.length}</b> items
+          </div>
+        </div>
+
+        <div className="grid">
+          {filteredProducts.map((p) => {
+            const coverImg =
+              p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+
+            return (
+              <article
+                key={p.id}
+                className="card"
+                onClick={() => navigate(`/product/${p.id}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") navigate(`/product/${p.id}`);
+                }}
+              >
+                <div className="imgWrap">
+                  <img src={coverImg} alt={p.name} className="img" />
+                </div>
+
+                <div className="cardBody">
+                  <div className="cardTop">
+                    <h3 className="cardTitle">{p.name}</h3>
+                    <div className="price">${Number(p.price).toFixed(2)}</div>
+                  </div>
+
+                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
+                    ⭐ 4.8 · 120+ reviews
+                  </div>
+
+                  <button
+                    className="btnPrimary"
+                    onClick={(e) => {
+                      e.stopPropagation(); // ✅ don’t navigate
+                      addToCart(p);
+                    }}
+                    type="button"
+                  >
+                    Add to Cart
+                  </button>
+
+                  <button
+                    className="btnCheckout"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/product/${p.id}`);
+                    }}
+                  >
+                    View Product
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Right side cart panel */}
+      <aside className="cart">
+        <div className="cartHeader">
+          <div className="cartTitle">Cart</div>
+          <div className="cartCount">{cartItems.length} items</div>
+        </div>
+
+        {cartItems.length === 0 ? (
+          <div className="empty">
+            <div className="emptyIcon">🛍️</div>
+            <div className="emptyTitle">Your cart is empty</div>
+            <div className="emptyText">Add something you love.</div>
+          </div>
+        ) : (
+          <>
+            <ul className="cartList">
+              {cartItems.map((item, i) => (
+                <li key={i} className="cartRow">
+                  <div>
+                    <div className="cartName">{item.name}</div>
+                    <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
+                  </div>
+                  <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="cartTotal">
+              <span>Total</span>
+              <b>${totalPrice.toFixed(2)}</b>
+            </div>
+
+            <button
+              className="btnCheckout"
+              onClick={() => {
+                if (!user) {
+                  setAuthOpen(true);
+                  setMode("signin");
+                } else {
+                  alert("Checkout backend coming next ✅");
+                }
+              }}
+              type="button"
+            >
+              Checkout
+            </button>
+
+            <div className="cartNote">
+              {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+            </div>
+
+            <button
+              className="btnGhost"
+              style={{ marginTop: 10 }}
+              type="button"
+              onClick={() => setSidebarOpen(true)}
+            >
+              Browse categories
+            </button>
+          </>
+        )}
+      </aside>
+    </main>
+  );
+}
+
+/** ✅ Main App */
 export default function App() {
   // ✅ State
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
-  const [clothingGender, setClothingGender] = useState("women"); // ✅ men | women (only used for clothing)
+  const [clothingGender, setClothingGender] = useState("women");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -712,11 +1112,6 @@ export default function App() {
 
   // user = { name, email, mode: "user" | "guest" }
   const [user, setUser] = useState(null);
-
-  // Learn More modal
-  const [learnMoreOpen, setLearnMoreOpen] = useState(false);
-  const [activeProduct, setActiveProduct] = useState(null);
-  const [activeImage, setActiveImage] = useState("");
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -787,7 +1182,6 @@ export default function App() {
       if (e.key === "Escape") {
         setSidebarOpen(false);
         setAuthOpen(false);
-        setLearnMoreOpen(false);
         setCartOpen(false);
         setIntroOpen(false);
       }
@@ -798,10 +1192,10 @@ export default function App() {
 
   // lock body scroll when drawer or modal open
   useEffect(() => {
-    const locked = sidebarOpen || authOpen || learnMoreOpen || cartOpen || introOpen;
+    const locked = sidebarOpen || authOpen || cartOpen || introOpen;
     document.body.style.overflow = locked ? "hidden" : "";
     return () => (document.body.style.overflow = "");
-  }, [sidebarOpen, authOpen, learnMoreOpen, cartOpen, introOpen]);
+  }, [sidebarOpen, authOpen, cartOpen, introOpen]);
 
   // ✅ Firebase Email/Password sign in
   const signIn = async () => {
@@ -860,688 +1254,433 @@ export default function App() {
     }
   };
 
-  // Learn more open/close
-  const openLearnMore = (product) => {
-    setActiveProduct(product);
-    const first = product?.images?.[0] || product?.img || "";
-    setActiveImage(first);
-    setLearnMoreOpen(true);
-  };
-
-  const closeLearnMore = () => {
-    setLearnMoreOpen(false);
-    setActiveProduct(null);
-    setActiveImage("");
-  };
-
-  const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
-
   return (
-    <div className="app">
-      <style>{styles}</style>
+    <BrowserRouter>
+      <div className="app">
+        <style>{styles}</style>
 
-      {/* ✅ INTRO OVERLAY */}
-      {introOpen && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            background: "rgba(0,0,0,0.35)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 18,
-          }}
-        >
+        {/* ✅ INTRO OVERLAY */}
+        {introOpen && (
           <div
             style={{
-              width: "min(980px, 96vw)",
-              borderRadius: 22,
-              overflow: "hidden",
-              boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
-              background: "#bbb",
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "rgba(0,0,0,0.35)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 18,
             }}
           >
-            <img
-              src="/begin-experience.png"
-              alt="Auréa intro"
-              style={{ width: "100%", height: "auto", display: "block" }}
-              onError={(e) => {
-                console.log("INTRO IMAGE FAILED:", e);
-                alert("Intro image not found. Check: public/begin-experience.png (exact name).");
-              }}
-            />
-
             <div
               style={{
-                padding: 16,
-                background: "rgba(0,0,0,0.65)",
-                display: "flex",
-                justifyContent: "center",
+                width: "min(980px, 96vw)",
+                borderRadius: 22,
+                overflow: "hidden",
+                boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
+                background: "#bbb",
               }}
             >
-              <button
-                onClick={closeIntro}
+              <img
+                src="/begin-experience.png"
+                alt="Auréa intro"
+                style={{ width: "100%", height: "auto", display: "block" }}
+                onError={(e) => {
+                  console.log("INTRO IMAGE FAILED:", e);
+                  alert("Intro image not found. Check: public/begin-experience.png (exact name).");
+                }}
+              />
+
+              <div
                 style={{
-                  padding: "12px 18px",
-                  borderRadius: 12,
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  background: "#0e0e10",
-                  color: "#fff",
-                  fontWeight: 900,
-                  cursor: "pointer",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
+                  padding: 16,
+                  background: "rgba(0,0,0,0.65)",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
-                Begin Experience
+                <button
+                  onClick={closeIntro}
+                  style={{
+                    padding: "12px 18px",
+                    borderRadius: 12,
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: "#0e0e10",
+                    color: "#fff",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Begin Experience
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Top Bar */}
+        <header className="topbar">
+          <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)} type="button">
+            <span className="hamburger" />
+          </button>
+
+          <a className="brand" href="https://aurea.com" rel="noreferrer">
+            auréa
+          </a>
+
+          <div className="topbarRight">
+            <div className="pill">
+              <span className="pillDot" />
+              <span>Free shipping over $75</span>
+            </div>
+
+            {/* Cart bubble */}
+            <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
+              🛒
+              {cartItems.length > 0 && <span className="cartBadge">{cartItems.length}</span>}
+            </button>
+
+            {user ? (
+              <button className="authBtn" onClick={signOut} aria-label="Sign out" type="button">
+                {user.mode === "guest" ? "Guest" : user.name} · Sign out
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Top Bar */}
-      <header className="topbar">
-        <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)} type="button">
-          <span className="hamburger" />
-        </button>
-
-        <a className="brand" href="https://aurea.com" rel="noreferrer">
-          auréa
-        </a>
-
-        <div className="topbarRight">
-          <div className="pill">
-            <span className="pillDot" />
-            <span>Free shipping over $75</span>
-          </div>
-
-          {/* Cart bubble */}
-          <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
-            🛒
-            {cartItems.length > 0 && <span className="cartBadge">{cartItems.length}</span>}
-          </button>
-
-          {user ? (
-            <button className="authBtn" onClick={signOut} aria-label="Sign out" type="button">
-              {user.mode === "guest" ? "Guest" : user.name} · Sign out
-            </button>
-          ) : (
-            <button
-              className="authBtn"
-              onClick={() => {
-                setAuthOpen(true);
-                setMode("signin");
-              }}
-              aria-label="Open sign in"
-              type="button"
-            >
-              Sign in
-            </button>
-          )}
-        </div>
-      </header>
-
-      {/* Overlay (sidebar) */}
-      <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebarHeader">
-          <div>
-            <div className="sidebarTitle">Browse</div>
-            <div className="sidebarSub">Select a category</div>
-          </div>
-
-          <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)} type="button">
-            ✕
-          </button>
-        </div>
-
-        <nav>
-          <ul className="menuList">
-            {categories.map((c) => {
-              const active = selectedCategory === c.key;
-              return (
-                <li key={c.key}>
-                  <button
-                    className={`menuItem ${active ? "active" : ""}`}
-                    onClick={() => {
-                      setSelectedCategory(c.key);
-                      // ✅ When entering clothing, show Men/Women options (default women)
-                      if (c.key === "clothing") setClothingGender((g) => g || "women");
-                      setSidebarOpen(false);
-                    }}
-                    type="button"
-                  >
-                    <span className="menuText">{c.label}</span>
-                    <span className="menuArrow">›</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* ✅ When Clothing is selected, show Men/Women option */}
-          {selectedCategory === "clothing" && (
-            <div style={{ marginTop: 12 }}>
-              <div className="sidebarSub" style={{ marginBottom: 10 }}>
-                Choose section
-              </div>
-              <div className="tabs" style={{ margin: 0 }}>
-                <button
-                  className={`tab ${clothingGender === "women" ? "active" : ""}`}
-                  onClick={() => setClothingGender("women")}
-                  type="button"
-                >
-                  Women
-                </button>
-                <button
-                  className={`tab ${clothingGender === "men" ? "active" : ""}`}
-                  onClick={() => setClothingGender("men")}
-                  type="button"
-                >
-                  Men
-                </button>
-              </div>
-            </div>
-          )}
-        </nav>
-
-        <div className="sidebarFooter">
-          <div className="miniCard">
-            <div className="miniCardTitle">Auréa Standard</div>
-            <div className="miniCardText">Authentic items • Curated selection</div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Auth Modal */}
-      <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-        <div className="modalBackdrop" onClick={() => setAuthOpen(false)} aria-label="Close auth modal" />
-        <div className="modalCard">
-          <div className="modalTop">
-            <div>
-              <div className="modalTitle">Account</div>
-              <div className="help">Sign in, create an account, or continue as a guest.</div>
-            </div>
-            <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close" type="button">
-              ✕
-            </button>
-          </div>
-
-          <div className="modalBody">
-            <div className="tabs" role="tablist" aria-label="Auth tabs">
+            ) : (
               <button
-                className={`tab ${authMode === "signin" ? "active" : ""}`}
-                onClick={() => setMode("signin")}
+                className="authBtn"
+                onClick={() => {
+                  setAuthOpen(true);
+                  setMode("signin");
+                }}
+                aria-label="Open sign in"
                 type="button"
               >
                 Sign in
               </button>
-              <button
-                className={`tab ${authMode === "signup" ? "active" : ""}`}
-                onClick={() => setMode("signup")}
-                type="button"
-              >
-                Sign up
+            )}
+          </div>
+        </header>
+
+        {/* Overlay (sidebar) */}
+        <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
+
+        {/* Sidebar */}
+        <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+          <div className="sidebarHeader">
+            <div>
+              <div className="sidebarTitle">Browse</div>
+              <div className="sidebarSub">Select a category</div>
+            </div>
+
+            <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)} type="button">
+              ✕
+            </button>
+          </div>
+
+          <nav>
+            <ul className="menuList">
+              {categories.map((c) => {
+                const active = selectedCategory === c.key;
+                return (
+                  <li key={c.key}>
+                    <button
+                      className={`menuItem ${active ? "active" : ""}`}
+                      onClick={() => {
+                        setSelectedCategory(c.key);
+                        if (c.key === "clothing") setClothingGender((g) => g || "women");
+                        setSidebarOpen(false);
+                      }}
+                      type="button"
+                    >
+                      <span className="menuText">{c.label}</span>
+                      <span className="menuArrow">›</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+
+            {/* ✅ When Clothing is selected, show Men/Women option */}
+            {selectedCategory === "clothing" && (
+              <div style={{ marginTop: 12 }}>
+                <div className="sidebarSub" style={{ marginBottom: 10 }}>
+                  Choose section
+                </div>
+                <div className="tabs" style={{ margin: 0 }}>
+                  <button
+                    className={`tab ${clothingGender === "women" ? "active" : ""}`}
+                    onClick={() => setClothingGender("women")}
+                    type="button"
+                  >
+                    Women
+                  </button>
+                  <button
+                    className={`tab ${clothingGender === "men" ? "active" : ""}`}
+                    onClick={() => setClothingGender("men")}
+                    type="button"
+                  >
+                    Men
+                  </button>
+                </div>
+              </div>
+            )}
+          </nav>
+
+          <div className="sidebarFooter">
+            <div className="miniCard">
+              <div className="miniCardTitle">Auréa Standard</div>
+              <div className="miniCardText">Authentic items • Curated selection</div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Auth Modal */}
+        <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+          <div className="modalBackdrop" onClick={() => setAuthOpen(false)} aria-label="Close auth modal" />
+          <div className="modalCard">
+            <div className="modalTop">
+              <div>
+                <div className="modalTitle">Account</div>
+                <div className="help">Sign in, create an account, or continue as a guest.</div>
+              </div>
+              <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close" type="button">
+                ✕
               </button>
             </div>
 
-            {authMode === "signup" && (
-              <div className="field">
-                <div className="label">Full name</div>
-                <input
-                  className="input"
-                  value={authForm.name}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="Your name"
-                />
-              </div>
-            )}
-
-            <div className="row2">
-              <div className="field">
-                <div className="label">Email</div>
-                <input
-                  className="input"
-                  value={authForm.email}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
-                  placeholder="you@email.com"
-                  type="email"
-                />
-              </div>
-
-              <div className="field">
-                <div className="label">Password</div>
-                <input
-                  className="input"
-                  value={authForm.password}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
-                  placeholder="••••••••"
-                  type="password"
-                />
-              </div>
-            </div>
-
-            {authMode === "signup" && (
-              <div className="field">
-                <div className="label">Confirm password</div>
-                <input
-                  className="input"
-                  value={authForm.confirmPassword}
-                  onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
-                  placeholder="••••••••"
-                  type="password"
-                />
-                {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
-                  <div className="help" style={{ color: "#b00020", fontWeight: 800 }}>
-                    Passwords do not match.
-                  </div>
-                )}
-              </div>
-            )}
-
-            <div className="authActions">
-              {authMode === "signin" ? (
+            <div className="modalBody">
+              <div className="tabs" role="tablist" aria-label="Auth tabs">
                 <button
-                  className="btnPrimary"
-                  onClick={signIn}
-                  disabled={!authForm.email.trim() || !authForm.password.trim()}
-                  style={{
-                    opacity: !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
-                    cursor: !authForm.email.trim() || !authForm.password.trim() ? "not-allowed" : "pointer",
-                  }}
+                  className={`tab ${authMode === "signin" ? "active" : ""}`}
+                  onClick={() => setMode("signin")}
                   type="button"
                 >
                   Sign in
                 </button>
-              ) : (
                 <button
-                  className="btnPrimary"
-                  onClick={signUp}
-                  disabled={
-                    !authForm.name.trim() ||
-                    !authForm.email.trim() ||
-                    !authForm.password.trim() ||
-                    authForm.password !== authForm.confirmPassword
-                  }
-                  style={{
-                    opacity:
-                      !authForm.name.trim() ||
-                      !authForm.email.trim() ||
-                      !authForm.password.trim() ||
-                      authForm.password !== authForm.confirmPassword
-                        ? 0.6
-                        : 1,
-                    cursor:
-                      !authForm.name.trim() ||
-                      !authForm.email.trim() ||
-                      !authForm.password.trim() ||
-                      authForm.password !== authForm.confirmPassword
-                        ? "not-allowed"
-                        : "pointer",
-                  }}
+                  className={`tab ${authMode === "signup" ? "active" : ""}`}
+                  onClick={() => setMode("signup")}
                   type="button"
                 >
-                  Create account
+                  Sign up
                 </button>
+              </div>
+
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Full name</div>
+                  <input
+                    className="input"
+                    value={authForm.name}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="Your name"
+                  />
+                </div>
               )}
 
-              <div className="divider">or</div>
-
-              <button className="btnGhost" onClick={signInWithGoogle} type="button">
-                Continue with Google
-              </button>
-
-              <button className="btnGhost" onClick={continueAsGuest} type="button">
-                Continue as guest
-              </button>
-
-              <div className="help">(Firebase Auth is real. Guest mode is UI-only.)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Learn More Modal */}
-      <div className={`modal ${learnMoreOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-        <div className="modalBackdrop" onClick={closeLearnMore} aria-label="Close learn more" />
-        <div className="modalCard">
-          <div className="modalTop">
-            <div>
-              <div className="modalTitle">Learn More</div>
-              <div className="help">{activeProduct?.name || ""}</div>
-            </div>
-            <button className="modalClose" onClick={closeLearnMore} aria-label="Close" type="button">
-              ✕
-            </button>
-          </div>
-
-          <div className="modalBody">
-            {activeProduct && (
-              <div className="lmGrid">
-                <div className="lmImgWrap">
-                  <img className="lmImg" src={activeImage} alt={activeProduct.name} />
+              <div className="row2">
+                <div className="field">
+                  <div className="label">Email</div>
+                  <input
+                    className="input"
+                    value={authForm.email}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
+                    placeholder="you@email.com"
+                    type="email"
+                  />
                 </div>
 
-                <div>
-                  <div className="lmThumbs">
-                    {(activeProduct.images || (activeProduct.img ? [activeProduct.img] : [])).map((src, i) => (
-                      <button
-                        key={i}
-                        className={`lmThumbBtn ${src === activeImage ? "active" : ""}`}
-                        onClick={() => setActiveImage(src)}
-                        type="button"
-                      >
-                        <img className="lmThumb" src={src} alt="" />
-                      </button>
-                    ))}
-                  </div>
+                <div className="field">
+                  <div className="label">Password</div>
+                  <input
+                    className="input"
+                    value={authForm.password}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                </div>
+              </div>
 
-                  {activeProduct.details ? (
-                    <div style={{ marginTop: 12 }}>
-                      {activeProduct.details.subtitle && (
-                        <div className="help">
-                          <b>{activeProduct.details.subtitle}</b>
-                        </div>
-                      )}
-                      {activeProduct.details.size && <div className="help">Size: {activeProduct.details.size}</div>}
-                      {Array.isArray(activeProduct.details.features) && (
-                        <ul style={{ marginTop: 10, paddingLeft: 18 }}>
-                          {activeProduct.details.features.map((f, idx) => (
-                            <li key={idx} className="help">
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {activeProduct.details.howToUse && (
-                        <div className="help" style={{ marginTop: 10 }}>
-                          <b>How to use:</b> {activeProduct.details.howToUse}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="help" style={{ marginTop: 12 }}>
-                      More details coming soon.
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Confirm password</div>
+                  <input
+                    className="input"
+                    value={authForm.confirmPassword}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                  {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
+                    <div className="help" style={{ color: "#b00020", fontWeight: 800 }}>
+                      Passwords do not match.
                     </div>
                   )}
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+              )}
 
-      {/* Cart Modal */}
-      <div className={`modal ${cartOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-        <div className="modalBackdrop" onClick={() => setCartOpen(false)} aria-label="Close cart modal" />
-        <div className="modalCard">
-          <div className="modalTop">
-            <div>
-              <div className="modalTitle">Your Cart</div>
-              <div className="help">{cartItems.length} item(s)</div>
-            </div>
-            <button className="modalClose" onClick={() => setCartOpen(false)} aria-label="Close" type="button">
-              ✕
-            </button>
-          </div>
-
-          <div className="modalBody">
-            {cartItems.length === 0 ? (
-              <div className="empty">
-                <div className="emptyIcon">🛍️</div>
-                <div className="emptyTitle">Your cart is empty</div>
-                <div className="emptyText">Add something you love.</div>
-              </div>
-            ) : (
-              <>
-                <ul className="cartList">
-                  {cartItems.map((item, i) => (
-                    <li key={i} className="cartRow">
-                      <div>
-                        <div className="cartName">{item.name}</div>
-                        <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
-                      </div>
-                      <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="cartTotal">
-                  <span>Total</span>
-                  <b>${totalPrice.toFixed(2)}</b>
-                </div>
-
-                <button
-                  className="btnCheckout"
-                  onClick={() => {
-                    if (!user) {
-                      setCartOpen(false);
-                      setAuthOpen(true);
-                      setMode("signin");
-                    } else {
-                      alert("Checkout backend coming next ✅");
+              <div className="authActions">
+                {authMode === "signin" ? (
+                  <button
+                    className="btnPrimary"
+                    onClick={signIn}
+                    disabled={!authForm.email.trim() || !authForm.password.trim()}
+                    style={{
+                      opacity: !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
+                      cursor: !authForm.email.trim() || !authForm.password.trim() ? "not-allowed" : "pointer",
+                    }}
+                    type="button"
+                  >
+                    Sign in
+                  </button>
+                ) : (
+                  <button
+                    className="btnPrimary"
+                    onClick={signUp}
+                    disabled={
+                      !authForm.name.trim() ||
+                      !authForm.email.trim() ||
+                      !authForm.password.trim() ||
+                      authForm.password !== authForm.confirmPassword
                     }
-                  }}
-                  type="button"
-                >
-                  Checkout
+                    style={{
+                      opacity:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? 0.6
+                          : 1,
+                      cursor:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? "not-allowed"
+                          : "pointer",
+                    }}
+                    type="button"
+                  >
+                    Create account
+                  </button>
+                )}
+
+                <div className="divider">or</div>
+
+                <button className="btnGhost" onClick={signInWithGoogle} type="button">
+                  Continue with Google
                 </button>
 
-                <div className="cartNote">
-                  {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
-                </div>
-              </>
-            )}
+                <button className="btnGhost" onClick={continueAsGuest} type="button">
+                  Continue as guest
+                </button>
+
+                <div className="help">(Firebase Auth is real. Guest mode is UI-only.)</div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main */}
-      <main className="main">
-        {/* HERO */}
-        <section
-          style={{
-            gridColumn: "1 / -1",
-            padding: "40px 32px",
-            borderRadius: 22,
-            background: "linear-gradient(135deg, #ffffff 0%, #f4f4f6 100%)",
-            border: "1px solid var(--line)",
-            boxShadow: "var(--shadow2)",
-            marginBottom: 24,
-          }}
-        >
-          <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>Effortless style, curated.</h1>
-          <p style={{ marginTop: 12, maxWidth: 520, color: "var(--muted)" }}>
-            Premium cosmetics & clothing selected for everyday elegance.
-          </p>
-
-          <button
-            className="btnPrimary"
-            style={{ width: 220, marginTop: 18 }}
-            onClick={() => setSelectedCategory("cosmetics")}
-            type="button"
-          >
-            Shop Best Sellers
-          </button>
-        </section>
-
-        <section>
-          <div className="sectionHeader">
-            <div style={{ width: "100%" }}>
-              <h2 style={{ fontSize: 22, margin: 0, fontWeight: 900 }}>Best Sellers</h2>
-
-              <h1 className="h1" style={{ marginTop: 10 }}>
-                {categoryTitle}
-              </h1>
-
-              <p className="sub">Curated essentials designed to feel effortless.</p>
-
-              {user && (
-                <p className="sub" style={{ marginTop: 6 }}>
-                  Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
-                </p>
-              )}
-
-              {/* ✅ Men/Women option appears when Clothing is selected */}
-              {selectedCategory === "clothing" && (
-                <div style={{ marginTop: 12, maxWidth: 420 }}>
-                  <div className="label" style={{ marginBottom: 8 }}>
-                    Clothing section
-                  </div>
-                  <div className="tabs" style={{ margin: 0 }}>
-                    <button
-                      className={`tab ${clothingGender === "women" ? "active" : ""}`}
-                      onClick={() => setClothingGender("women")}
-                      type="button"
-                    >
-                      Women
-                    </button>
-                    <button
-                      className={`tab ${clothingGender === "men" ? "active" : ""}`}
-                      onClick={() => setClothingGender("men")}
-                      type="button"
-                    >
-                      Men
-                    </button>
-                  </div>
-                </div>
-              )}
-
-           <div style={{ marginTop: 12 }}>
-  <div className="label">Search</div>
-
-  <div className="searchBar">
-    <input
-      className="input"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      placeholder="Search products…"
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault(); // already filters automatically
-        }
-      }}
-    />
-
-    <button
-      className="searchBtn"
-      type="button"
-      onClick={() => {
-        // search is already reactive — this just makes UX clear
-        setSearch(search.trim());
-      }}
-    >
-      Search
-    </button>
-  </div>
-</div>
-            </div>
-
-            <div className="sortHint">
-              Showing <b>{filteredProducts.length}</b> items
-            </div>
-          </div>
-
-          <div className="grid">
-            {filteredProducts.map((p) => {
-              const coverImg =
-                p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
-
-              return (
-                <article key={p.id} className="card">
-                  <div className="imgWrap">
-                    <img src={coverImg} alt={p.name} className="img" />
-                  </div>
-
-                  <div className="cardBody">
-                    <div className="cardTop">
-                      <h3 className="cardTitle">{p.name}</h3>
-                      <div className="price">${Number(p.price).toFixed(2)}</div>
-                    </div>
-
-                    <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
-                      ⭐ 4.8 · 120+ reviews
-                    </div>
-
-                    <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
-                      Add to Cart
-                    </button>
-
-                    <button className="btnCheckout" type="button" onClick={() => openLearnMore(p)}>
-                      Learn more
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Right side cart panel */}
-        <aside className="cart">
-          <div className="cartHeader">
-            <div className="cartTitle">Cart</div>
-            <div className="cartCount">{cartItems.length} items</div>
-          </div>
-
-          {cartItems.length === 0 ? (
-            <div className="empty">
-              <div className="emptyIcon">🛍️</div>
-              <div className="emptyTitle">Your cart is empty</div>
-              <div className="emptyText">Add something you love.</div>
-            </div>
-          ) : (
-            <>
-              <ul className="cartList">
-                {cartItems.map((item, i) => (
-                  <li key={i} className="cartRow">
-                    <div>
-                      <div className="cartName">{item.name}</div>
-                      <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
-                    </div>
-                    <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="cartTotal">
-                <span>Total</span>
-                <b>${totalPrice.toFixed(2)}</b>
+        {/* Cart Modal */}
+        <div className={`modal ${cartOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+          <div className="modalBackdrop" onClick={() => setCartOpen(false)} aria-label="Close cart modal" />
+          <div className="modalCard">
+            <div className="modalTop">
+              <div>
+                <div className="modalTitle">Your Cart</div>
+                <div className="help">{cartItems.length} item(s)</div>
               </div>
-
-              <button
-                className="btnCheckout"
-                onClick={() => {
-                  if (!user) {
-                    setAuthOpen(true);
-                    setMode("signin");
-                  } else {
-                    alert("Checkout backend coming next ✅");
-                  }
-                }}
-                type="button"
-              >
-                Checkout
+              <button className="modalClose" onClick={() => setCartOpen(false)} aria-label="Close" type="button">
+                ✕
               </button>
+            </div>
 
-              <div className="cartNote">
-                {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
-              </div>
-            </>
-          )}
-        </aside>
-      </main>
+            <div className="modalBody">
+              {cartItems.length === 0 ? (
+                <div className="empty">
+                  <div className="emptyIcon">🛍️</div>
+                  <div className="emptyTitle">Your cart is empty</div>
+                  <div className="emptyText">Add something you love.</div>
+                </div>
+              ) : (
+                <>
+                  <ul className="cartList">
+                    {cartItems.map((item, i) => (
+                      <li key={i} className="cartRow">
+                        <div>
+                          <div className="cartName">{item.name}</div>
+                          <div className="cartPrice">${Number(item.price).toFixed(2)}</div>
+                        </div>
+                        <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
+                          Remove
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
 
-      <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
-    </div>
+                  <div className="cartTotal">
+                    <span>Total</span>
+                    <b>${totalPrice.toFixed(2)}</b>
+                  </div>
+
+                  <button
+                    className="btnCheckout"
+                    onClick={() => {
+                      if (!user) {
+                        setCartOpen(false);
+                        setAuthOpen(true);
+                        setMode("signin");
+                      } else {
+                        alert("Checkout backend coming next ✅");
+                      }
+                    }}
+                    type="button"
+                  >
+                    Checkout
+                  </button>
+
+                  <div className="cartNote">
+                    {user ? "Secure checkout coming next." : "Sign in / sign up or continue as guest to proceed."}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ✅ ROUTES */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                categories={categories}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                clothingGender={clothingGender}
+                setClothingGender={setClothingGender}
+                filteredProducts={filteredProducts}
+                search={search}
+                setSearch={setSearch}
+                user={user}
+                cartItems={cartItems}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+                totalPrice={totalPrice}
+                setAuthOpen={setAuthOpen}
+                setMode={setMode}
+                setSidebarOpen={setSidebarOpen}
+              />
+            }
+          />
+          <Route path="/product/:id" element={<ProductPage products={products} addToCart={addToCart} />} />
+        </Routes>
+
+        <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
+      </div>
+    </BrowserRouter>
   );
 }
