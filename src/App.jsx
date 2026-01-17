@@ -935,6 +935,187 @@ const products = [
       features: ["Easy layering", "Clean minimal design", "All-season"],
       howToUse: "Wear open over a tee or buttoned up. Perfect for evenings.",
     },
+
+    id: 301,
+    name: "Max Factor Colour Adapt Foundation 80 Bronze",
+    price: 11,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-colour-adapt-80-bronze.jpg",
+      "/products/maxfactor-colour-adapt-80-bronze-2.jpg",
+      "/products/maxfactor-colour-adapt-80-bronze-3.jpg",
+    ],
+    details: {
+      subtitle: "Skin tone adapting liquid foundation",
+      size: "30 ml",
+      features: [
+        "Adapts to your natural skin tone",
+        "Light to medium coverage",
+        "Smooth, natural finish",
+      ],
+      howToUse:
+        "Apply 1–2 pumps to clean skin and blend evenly using a sponge or brush.",
+    },
+  },
+
+  {
+    id: 302,
+    name: "Bourjois Paris Blush 74 Rose Ambré",
+    price: 16,
+    category: "cosmetics",
+    images: [
+      "/products/bourjois-blush-74-rose-ambre.jpg",
+      "/products/bourjois-blush-74-rose-ambre-2.jpg",
+      "/products/bourjois-blush-74-rose-ambre-3.jpg",
+    ],
+    details: {
+      subtitle: "Soft compact blush with brush",
+      size: "2.5 g",
+      features: [
+        "Natural rosy glow",
+        "Silky smooth texture",
+        "Buildable color payoff",
+      ],
+      howToUse:
+        "Smile and sweep lightly over the apples of your cheeks, blending upward.",
+    },
+  },
+
+  {
+    id: 303,
+    name: "Bourjois Paris Bronzing Powder 10 Châtaigne Dorée",
+    price: 12,
+    category: "cosmetics",
+    images: [
+      "/products/bourjois-bronzer-10-chataigne-doree.jpg",
+      "/products/bourjois-bronzer-10-chataigne-doree-2.jpg",
+      "/products/bourjois-bronzer-10-chataigne-doree-3.jpg",
+    ],
+    details: {
+      subtitle: "Sun-kissed bronzing powder",
+      size: "10 g",
+      features: [
+        "Warm golden bronze shade",
+        "Lightweight blendable powder",
+        "Natural sun-kissed finish",
+      ],
+      howToUse:
+        "Apply to cheekbones, temples, and jawline using a fluffy brush.",
+    },
+  },
+{
+  id: 308,
+  name: "Max Factor Kohl Pencil Blue",
+  price: 4,
+  category: "cosmetics",
+  images: [
+    "/products/maxfactor-kohl-pencil.jpg",
+    "/products/maxfactor-kohl-pencil-2.jpg",
+    "/products/maxfactor-kohl-pencil-3.jpg",
+  ],
+  details: {
+    subtitle: "Smooth eyeliner pencil — Blue shade",
+    size: "1.2 g",
+    features: [
+      "Soft, easy-glide formula",
+      "Intense blue color payoff",
+      "Perfect for everyday and evening looks",
+    ],
+    howToUse:
+      "Apply along the upper or lower lash line. Smudge gently for a softer look.",
+  },
+},
+
+  {
+    id: 304,
+    name: "Max Factor Miracle Glow Duo Pro Illuminator",
+    price: 7,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-miracle-glow-duo.jpg",
+      "/products/maxfactor-miracle-glow-duo-2.jpg",
+      "/products/maxfactor-miracle-glow-duo-3.jpg",
+    ],
+    details: {
+      subtitle: "Dual-tone highlighter compact",
+      size: "6 g",
+      features: [
+        "Soft radiant glow",
+        "Two complementary shades",
+        "Enhances natural features",
+      ],
+      howToUse:
+        "Apply to cheekbones, nose bridge, and cupid’s bow for a luminous finish.",
+    },
+  },
+
+  {
+    id: 305,
+    name: "Miss Sporty Designer All In One Eye Palette Metal",
+    price: 5,
+    category: "cosmetics",
+    images: [
+      "/products/miss-sporty-designer-eye-palette-metal.jpg",
+      "/products/miss-sporty-designer-eye-palette-metal-2.jpg",
+      "/products/miss-sporty-designer-eye-palette-metal-3.jpg",
+    ],
+    details: {
+      subtitle: "Metallic all-in-one eyeshadow palette",
+      size: "8 g",
+      features: [
+        "Multiple metallic shades",
+        "Smooth blendable texture",
+        "Day to night looks",
+      ],
+      howToUse:
+        "Apply light shades on lid and darker tones in crease for depth.",
+    },
+  },
+
+  {
+    id: 306,
+    name: "Miss Sporty Designer Duo Sculpting Blush & Highlight",
+    price: 2.5,
+    category: "cosmetics",
+    images: [
+      "/products/miss-sporty-designer-duo-sculpting.jpg",
+      "/products/miss-sporty-designer-duo-sculpting-2.jpg",
+      "/products/miss-sporty-designer-duo-sculpting-3.jpg",
+    ],
+    details: {
+      subtitle: "Blush and highlighter duo compact",
+      size: "6 g",
+      features: [
+        "Blush + highlight in one",
+        "Natural sculpted look",
+        "Soft luminous finish",
+      ],
+      howToUse:
+        "Apply blush to cheeks and highlight to high points of the face.",
+    },
+  },
+
+  {
+    id: 307,
+    name: "Rimmel London Lasting Radiance Concealer & Eye Illuminator",
+    price: 6,
+    category: "cosmetics",
+    images: [
+      "/products/rimmel-lasting-radiance-concealer.jpg",
+      "/products/rimmel-lasting-radiance-concealer-2.jpg",
+      "/products/rimmel-lasting-radiance-concealer-3.jpg",
+    ],
+    details: {
+      subtitle: "Concealer with illuminating effect",
+      size: "7 ml",
+      features: [
+        "Brightens under eyes",
+        "Covers dark circles and blemishes",
+        "Natural radiant finish",
+      ],
+      howToUse:
+        "Apply under eyes and on imperfections, then blend with finger or sponge.",
+    },
   },
 ];
 
