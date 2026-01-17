@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 
 // Firebase
@@ -703,9 +704,6 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  // ✅ Page navigation (no router needed)
-const [page, setPage] = useState("shop"); // "shop" | "product"
-
   // ✅ Cart modal
   const [cartOpen, setCartOpen] = useState(false);
 
@@ -716,6 +714,7 @@ const [page, setPage] = useState("shop"); // "shop" | "product"
   const [user, setUser] = useState(null);
 
   // Learn More modal
+  const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
 
@@ -862,21 +861,12 @@ const [page, setPage] = useState("shop"); // "shop" | "product"
   };
 
   // Learn more open/close
-// ✅ Open product details page
-const openProductPage = (product) => {
-  setActiveProduct(product);
-  const first = product?.images?.[0] || product?.img || "";
-  setActiveImage(first);
-  setPage("product");
-};
-
-// ✅ Back to main shop page
-const goBackToShop = () => {
-  setPage("shop");
-  setActiveProduct(null);
-  setActiveImage("");
-};
-
+  const openLearnMore = (product) => {
+    setActiveProduct(product);
+    const first = product?.images?.[0] || product?.img || "";
+    setActiveImage(first);
+    setLearnMoreOpen(true);
+  };
 
   const closeLearnMore = () => {
     setLearnMoreOpen(false);
@@ -1355,9 +1345,6 @@ const goBackToShop = () => {
 
       {/* Main */}
       <main className="main">
-{page === "shop" && (
-  <>
-
         {/* HERO */}
         <section
           style={{
@@ -1486,9 +1473,10 @@ const goBackToShop = () => {
                     <button className="btnPrimary" onClick={() => addToCart(p)} type="button">
                       Add to Cart
                     </button>
-<button className="btnCheckout" type="button" onClick={() => openProductPage(p)}>
-  Learn more
-</button>
+
+                    <button className="btnCheckout" type="button" onClick={() => openLearnMore(p)}>
+                      Learn more
+                    </button>
                   </div>
                 </article>
               );
@@ -1551,89 +1539,6 @@ const goBackToShop = () => {
             </>
           )}
         </aside>
-          </>
-  )}
-    {page === "product" && activeProduct && (
-    <section style={{ gridColumn: "1 / -1" }}>
-
-      <button
-        onClick={goBackToShop}
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          padding: "10px 14px",
-          borderRadius: 12,
-          border: "1px solid var(--line)",
-          background: "#fff",
-          fontWeight: 900,
-          cursor: "pointer",
-        }}
-      >
-        ← Back
-      </button>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 32,
-          background: "#fff",
-          padding: 32,
-          borderRadius: 22,
-          border: "1px solid var(--line)",
-          boxShadow: "var(--shadow)",
-        }}
-      >
-        <div>
-          <div className="lmImgWrap">
-            <img src={activeImage} alt={activeProduct.name} className="lmImg" />
-          </div>
-
-          <div className="lmThumbs" style={{ marginTop: 12 }}>
-            {(activeProduct.images || [activeProduct.img]).map((src, i) => (
-              <button
-                key={i}
-                className={`lmThumbBtn ${src === activeImage ? "active" : ""}`}
-                onClick={() => setActiveImage(src)}
-              >
-                <img src={src} className="lmThumb" alt="" />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h1>{activeProduct.name}</h1>
-
-          <div style={{ fontSize: 20, fontWeight: 900 }}>
-            ${activeProduct.price.toFixed(2)}
-          </div>
-
-          <p>{activeProduct.details?.subtitle}</p>
-
-          <ul>
-            {activeProduct.details?.features.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-
-          <p>
-            <b>How to use:</b> {activeProduct.details?.howToUse}
-          </p>
-
-          <button
-            className="btnPrimary"
-            style={{ marginTop: 16 }}
-            onClick={() => addToCart(activeProduct)}
-          >
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </section>
-  )}
       </main>
 
       <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
