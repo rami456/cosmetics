@@ -959,7 +959,6 @@ const products = [
   images: [
     "/products/rimmel-lasting-finish-powder.jpg",
     "/products/rimmel-lasting-finish-powder-2.jpg",
-    "/products/rimmel-lasting-finish-powder-3.jpg",
   ],
   details: {
     subtitle: "Long-wear powder foundation",
