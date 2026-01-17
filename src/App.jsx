@@ -281,7 +281,9 @@ export default function App() {
     .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .cardTitle{ margin:0; font-size:14px; font-weight:900; }
     .price{ font-weight:900; font-size:14px; }
-
+<div style={{ fontSize: 12, color: "var(--muted)" }}>
+  ⭐ 4.8 · 120+ reviews
+</div>
     .btnPrimary{
       width:100%;
       padding:11px 12px;
@@ -492,7 +494,9 @@ export default function App() {
     @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
   `;
-
+<h2 style={{ fontSize: 22, marginBottom: 12 }}>
+  Best Sellers
+</h2>
   // ✅ Products
   const products = [
     // Cosmetics placeholders
@@ -610,6 +614,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [cartItems, setCartItems] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   // ✅ Cart modal
   const [cartOpen, setCartOpen] = useState(false);
@@ -630,10 +635,13 @@ export default function App() {
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
   const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
-  const filteredProducts = useMemo(
-    () => products.filter((p) => p.category === selectedCategory),
-    [selectedCategory]
+ const filteredProducts = useMemo(() => {
+  return products.filter(
+    (p) =>
+      p.category === selectedCategory &&
+      p.name.toLowerCase().includes(search.toLowerCase())
   );
+}, [selectedCategory, search]);
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
@@ -1199,6 +1207,34 @@ export default function App() {
 
       {/* Main */}
       <main className="main">
+       {/* HERO */}
+<section
+  style={{
+    gridColumn: "1 / -1",
+    padding: "40px 32px",
+    borderRadius: 22,
+    background:
+      "linear-gradient(135deg, #ffffff 0%, #f4f4f6 100%)",
+    border: "1px solid var(--line)",
+    boxShadow: "var(--shadow2)",
+    marginBottom: 24,
+  }}
+>
+  <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>
+    Effortless beauty, curated.
+  </h1>
+  <p style={{ marginTop: 12, maxWidth: 520, color: "var(--muted)" }}>
+    Premium cosmetics & fragrances selected for everyday elegance.
+  </p>
+
+  <button
+    className="btnPrimary"
+    style={{ width: 220, marginTop: 18 }}
+    onClick={() => setSelectedCategory("cosmetics")}
+  >
+    Shop Best Sellers
+  </button>
+</section>
         <section>
           <div className="sectionHeader">
             <div>
@@ -1304,7 +1340,8 @@ export default function App() {
         </aside>
       </main>
 
-      <footer className="footer">© 2026 auréa.com</footer>
+      <footer className="footer">© 2026 auréa  Authentic products · Secure checkout · Easy returns
+      </footer>
     </div>
   );
 }
