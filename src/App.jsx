@@ -738,6 +738,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 `;
 
 /** ✅ Products */
+  /** ✅ Products (ALL updated to have 3 images each) */
 const products = [
   // Cosmetics
   {
@@ -745,8 +746,11 @@ const products = [
     name: "MAxFactor X 101",
     price: 11,
     category: "cosmetics",
-    images: ["/products/maxfactor-101.jpg"]
-    ["/products/maxfactor-101-2.jpg"]
+    images: [
+      "/products/maxfactor101.png",
+      "/products/maxfactor101-2.png",
+      "/products/maxfactor101-3.png",
+    ],
     details: {
       subtitle: "Foundation — Shade 101 (light tone)",
       size: "30 ml",
@@ -759,7 +763,11 @@ const products = [
     name: "MaxFactor X 55 BEIGE",
     price: 13,
     category: "cosmetics",
-    images: ["/products/maxfactor-55-beige.jpg"],
+    images: [
+      "/products/maxfactor55beige.png",
+      "/products/maxfactor55beige-2.png",
+      "/products/maxfactor55beige-3.png",
+    ],
     details: {
       subtitle: "Foundation — Shade 55 Beige (medium tone)",
       size: "30 ml",
@@ -772,7 +780,11 @@ const products = [
     name: "MaxFactor SPF 20",
     price: 17,
     category: "cosmetics",
-    images: ["/products/maxfactor-spf20.jpg"],
+    images: [
+      "/products/maxfactorspf20.png",
+      "/products/maxfactorspf20-2.png",
+      "/products/maxfactorspf20-3.png",
+    ],
     details: {
       subtitle: "Foundation with SPF 20 — Everyday base",
       size: "30 ml",
@@ -785,7 +797,11 @@ const products = [
     name: "L’Oréal PARIS NUDE",
     price: 20,
     category: "cosmetics",
-    images: ["/products/loreal-nude.jpg"],
+    images: [
+      "/products/lorealnude.png",
+      "/products/lorealnude-2.png",
+      "/products/lorealnude-3.png",
+    ],
     details: {
       subtitle: "Nude finish foundation — Natural look",
       size: "30 ml",
@@ -798,7 +814,11 @@ const products = [
     name: "L’Oréal PARIS 24H C Cool",
     price: 12,
     category: "cosmetics",
-    images: ["/products/loreal-24h-c-cool.jpg"],
+    images: [
+      "/products/loreal24hccool.png",
+      "/products/loreal24hccool-2.png",
+      "/products/loreal24hccool-3.png",
+    ],
     details: {
       subtitle: "Shade: Cool undertone (C)",
       size: "30 ml",
@@ -811,7 +831,11 @@ const products = [
     name: "L’Oréal PARIS HN Normal",
     price: 12,
     category: "cosmetics",
-    images: ["/products/loreal-hn-normal.jpg"],
+    images: [
+      "/products/lorealhnnormal.png",
+      "/products/lorealhnnormal-2.png",
+      "/products/lorealhnnormal-3.png",
+    ],
     details: {
       subtitle: "Shade: HN (Neutral) — Balanced tone",
       size: "30 ml",
@@ -824,7 +848,11 @@ const products = [
     name: "HD Luminous",
     price: 10,
     category: "cosmetics",
-    images: ["/products/hd-luminous.jpg"],
+    images: [
+      "/products/hdluminous.png",
+      "/products/hdluminous-2.png",
+      "/products/hdluminous-3.png",
+    ],
     details: {
       subtitle: "HD Luminous Foundation — Bright, camera-ready finish",
       size: "30 ml",
@@ -840,7 +868,11 @@ const products = [
     price: 29,
     category: "clothing",
     gender: "women",
-    images: ["https://via.placeholder.com/900x900?text=Women+Blouse"],
+    images: [
+      "https://via.placeholder.com/900x900?text=Women+Blouse+1",
+      "https://via.placeholder.com/900x900?text=Women+Blouse+2",
+      "https://via.placeholder.com/900x900?text=Women+Blouse+3",
+    ],
     details: {
       subtitle: "Soft satin, relaxed fit",
       size: "S • M • L",
@@ -854,7 +886,11 @@ const products = [
     price: 39,
     category: "clothing",
     gender: "women",
-    images: ["https://via.placeholder.com/900x900?text=Women+Trousers"],
+    images: [
+      "https://via.placeholder.com/900x900?text=Women+Trousers+1",
+      "https://via.placeholder.com/900x900?text=Women+Trousers+2",
+      "https://via.placeholder.com/900x900?text=Women+Trousers+3",
+    ],
     details: {
       subtitle: "High-rise, straight leg",
       size: "XS • S • M • L",
@@ -870,7 +906,11 @@ const products = [
     price: 18,
     category: "clothing",
     gender: "men",
-    images: ["https://via.placeholder.com/900x900?text=Men+Tee"],
+    images: [
+      "https://via.placeholder.com/900x900?text=Men+Tee+1",
+      "https://via.placeholder.com/900x900?text=Men+Tee+2",
+      "https://via.placeholder.com/900x900?text=Men+Tee+3",
+    ],
     details: {
       subtitle: "Heavy cotton, classic cut",
       size: "S • M • L • XL",
@@ -884,7 +924,11 @@ const products = [
     price: 55,
     category: "clothing",
     gender: "men",
-    images: ["https://via.placeholder.com/900x900?text=Men+Overshirt"],
+    images: [
+      "https://via.placeholder.com/900x900?text=Men+Overshirt+1",
+      "https://via.placeholder.com/900x900?text=Men+Overshirt+2",
+      "https://via.placeholder.com/900x900?text=Men+Overshirt+3",
+    ],
     details: {
       subtitle: "Midweight layering piece",
       size: "M • L • XL",
@@ -893,6 +937,7 @@ const products = [
     },
   },
 ];
+
 
 const categories = [
   { key: "cosmetics", label: "Cosmetics" },
