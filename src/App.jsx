@@ -745,7 +745,8 @@ const products = [
     name: "MAxFactor X 101",
     price: 11,
     category: "cosmetics",
-    images: ["/products/maxfactor-101.jpg"],
+    images: ["/products/maxfactor-101.jpg"]
+    ["/products/maxfactor-101-2.jpg"]
     details: {
       subtitle: "Foundation — Shade 101 (light tone)",
       size: "30 ml",
