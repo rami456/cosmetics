@@ -134,6 +134,76 @@ button{ -webkit-tap-highlight-color: transparent; }
 
   .pill{ display:none; } /* keep hidden */
 }
+/* ✅ Brand banner carousel */
+.brandCarousel{
+  grid-column: 1 / -1;
+  border-radius:22px;
+  border:1px solid var(--line);
+  overflow:hidden;
+  box-shadow:var(--shadow2);
+  background:var(--panel);
+  position:relative;
+}
+
+.brandSlideBtn{
+  width:100%;
+  padding:0;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  display:block;
+}
+
+.brandSlideImg{
+  width:100%;
+  height:360px;
+  object-fit:cover;
+  display:block;
+}
+
+@media (max-width: 900px){
+  .brandSlideImg{ height:220px; }
+}
+
+.brandDots{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+
+.brandDot{
+  width:9px; height:9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.7);
+  background:transparent;
+  cursor:pointer;
+  padding:0;
+}
+.brandDot.active{
+  background:#fff;
+}
+
+.brandHint{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:10px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.35);
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  backdrop-filter: blur(10px);
+}
 
 
 /* Icon Button */
@@ -1786,12 +1856,69 @@ function HomePage({
   checkout,
   setAuthOpen,
   setMode,
+  setSearch,
+setMinPrice,
+setMaxPrice,
+setOnlyWished,
+setSort,
+
 }) {
   const navigate = useNavigate();
   const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
+  const slides = [
+    { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
+    { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
+    { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
+    { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
+  ];
+
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 3500);
+    return () => clearInterval(t);
+  }, []);
+
+  const goBrand = (brandSearch) => {
+    setSelectedCategory("cosmetics");
+    setSearch(brandSearch);      // ✅ filters products
+    setSort("featured");
+    setMinPrice("");
+    setMaxPrice("");
+    setOnlyWished(false);
+
+    // optional: scroll to products section
+    window.scrollTo({ top: 520, behavior: "smooth" });
+  };
 
   return (
     <main className="main">
+            {/* ✅ CLICKABLE BRAND BANNERS */}
+      <section className="brandCarousel">
+        <div className="brandHint">Tap banner to shop brand</div>
+
+        <button
+          className="brandSlideBtn"
+          type="button"
+          onClick={() => goBrand(slides[slide].brandSearch)}
+          aria-label={`Shop ${slides[slide].label}`}
+        >
+          <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
+        </button>
+
+        <div className="brandDots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`brandDot ${i === slide ? "active" : ""}`}
+              onClick={() => setSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+
       {/* HERO */}
       <section
         style={{
@@ -3126,6 +3253,12 @@ const filteredProducts = useMemo(() => {
           />
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
+          setSearch={setSearch}
+setMinPrice={setMinPrice}
+setMaxPrice={setMaxPrice}
+setOnlyWished={setOnlyWished}
+setSort={setSort}
+
         </Routes>
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
