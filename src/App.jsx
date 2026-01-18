@@ -1502,23 +1502,22 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
           <div>
             <div className="pImgWrap">
               <img className="pImg" src={activeImage || images[0]} alt={p.name} />
-            </div>
+            </div> 
+          {images.length > 1 && (
+  <div className="thumbRow">
+    {images.map((src, i) => (
+      <button
+        key={i}
+        className={`thumbBtn ${src === activeImage ? "active" : ""}`}
+        onClick={() => setActiveImage(src)}
+        type="button"
+      >
+        <img className="thumbImg" src={src} alt="" />
+      </button>
+    ))}
+  </div>
+)}
 
-            <div className="thumbRow">
-              {images.map((src, i) => (
-                <button
-                  key={i}
-                  className={`thumbBtn ${src === activeImage ? "active" : ""}`}
-                  onClick={() => setActiveImage(src)}
-                  type="button"
-                >
-                  <img className="thumbImg" src={src} alt="" />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
             <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>{p.name}</h1>
             <div style={{ marginTop: 8, color: "var(--muted)", fontWeight: 800 }}>
               ⭐ 4.8 · 120+ reviews
@@ -2190,6 +2189,8 @@ useEffect(() => {
         setAuthOpen(false);
         setCartOpen(false);
         setIntroOpen(false);
+        setFiltersOpen(false);
+        setAccountOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -2197,11 +2198,13 @@ useEffect(() => {
   }, []);
 
   // lock body scroll when drawer or modal open
-  useEffect(() => {
-    const locked = sidebarOpen || authOpen || cartOpen || introOpen;
-    document.body.style.overflow = locked ? "hidden" : "";
-    return () => (document.body.style.overflow = "");
-  }, [sidebarOpen, authOpen, cartOpen, introOpen]);
+useEffect(() => {
+  const locked =
+    sidebarOpen || authOpen || cartOpen || introOpen || filtersOpen || accountOpen;
+
+  document.body.style.overflow = locked ? "hidden" : "";
+  return () => (document.body.style.overflow = "");
+}, [sidebarOpen, authOpen, cartOpen, introOpen, filtersOpen, accountOpen]);
 
   // ✅ Filters
 const filteredProducts = useMemo(() => {
@@ -2465,9 +2468,10 @@ const filteredProducts = useMemo(() => {
   <span className="hamburger" />
 </button>
 
-          <a className="brand" href="https://aurea.com" rel="noreferrer">
-            auréa
-          </a>
+         <Link className="brand" to="/">
+  auréa
+</Link>
+
 
           <div className="topbarRight">
             <div className="pill">
@@ -2965,7 +2969,6 @@ const filteredProducts = useMemo(() => {
     </div>
   </div>
 </div>
-
                   {/* Promo */}
                   <div className="promoBox">
                     <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
