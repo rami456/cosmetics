@@ -155,10 +155,8 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 
 .brandSlideImg{
-  width:100%;
-  height:360px;
-  object-fit:cover;
-  display:block;
+  object-fit:contain;   /* ✅ no zoom */
+  background:#f2f2f3;
 }
 
 @media (max-width: 900px){
@@ -2212,15 +2210,7 @@ const saveAccount = async () => {
   try {
     const u = auth.currentUser;
     if (!u) return;
-const applyBrandFilter = (brand) => {
-  setSelectedCategory("cosmetics");
-  setSearch(brand);
-  setSort("featured");
-  setMinPrice("");
-  setMaxPrice("");
-  setOnlyWished(false);
-};
-    // update display name
+ // update display name
     const nextName = accountForm.displayName.trim();
     if (nextName && nextName !== (u.displayName || "")) {
       await updateProfile(u, { displayName: nextName });
@@ -2265,7 +2255,66 @@ useEffect(() => {
   // ✅ Intro overlay
   const [introOpen, setIntroOpen] = useState(true);
 
- 
+ <div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">Filters</div>
+        <div className="help">Sort and filter products.</div>
+      </div>
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
+    </div>
+
+    <div className="modalBody">
+      <div className="field">
+        <div className="label">Sort</div>
+        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: Low → High</option>
+          <option value="price_desc">Price: High → Low</option>
+          <option value="name_asc">Name: A → Z</option>
+        </select>
+      </div>
+
+      <div className="row2">
+        <div className="field">
+          <div className="label">Min price</div>
+          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
+        </div>
+        <div className="field">
+          <div className="label">Max price</div>
+          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
+        </div>
+      </div>
+
+      <div className="field" style={{ marginTop: 14 }}>
+        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
+          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          Only wishlist items
+        </label>
+      </div>
+
+      <div className="authActions">
+        <button
+          className="btnGhost"
+          type="button"
+          onClick={() => {
+            setSort("featured");
+            setMinPrice("");
+            setMaxPrice("");
+            setOnlyWished(false);
+          }}
+        >
+          Reset
+        </button>
+        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -2415,6 +2464,15 @@ const filteredProducts = useMemo(() => {
       return [...prev, { id: product.id, name: product.name, price: Number(product.price), qty, size }];
     });
   };
+const applyBrandFilter = (brand) => {
+  setSelectedCategory("cosmetics");
+  setSearch(brand);
+  setSort("featured");
+  setMinPrice("");
+  setMaxPrice("");
+  setOnlyWished(false);
+  window.scrollTo({ top: 520, behavior: "smooth" });
+};
 
   const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
 
@@ -3073,66 +3131,6 @@ const filteredProducts = useMemo(() => {
                       </li>
                     ))}
                   </ul>
-<div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
-  <div className="modalCard">
-    <div className="modalTop">
-      <div>
-        <div className="modalTitle">Filters</div>
-        <div className="help">Sort and filter products.</div>
-      </div>
-      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
-    </div>
-
-    <div className="modalBody">
-      <div className="field">
-        <div className="label">Sort</div>
-        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="featured">Featured</option>
-          <option value="price_asc">Price: Low → High</option>
-          <option value="price_desc">Price: High → Low</option>
-          <option value="name_asc">Name: A → Z</option>
-        </select>
-      </div>
-
-      <div className="row2">
-        <div className="field">
-          <div className="label">Min price</div>
-          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
-        </div>
-        <div className="field">
-          <div className="label">Max price</div>
-          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
-        </div>
-      </div>
-
-      <div className="field" style={{ marginTop: 14 }}>
-        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
-          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
-          Only wishlist items
-        </label>
-      </div>
-
-      <div className="authActions">
-        <button
-          className="btnGhost"
-          type="button"
-          onClick={() => {
-            setSort("featured");
-            setMinPrice("");
-            setMaxPrice("");
-            setOnlyWished(false);
-          }}
-        >
-          Reset
-        </button>
-        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
-          Done
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
                   {/* Promo */}
                   <div className="promoBox">
                     <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
@@ -3212,6 +3210,9 @@ const filteredProducts = useMemo(() => {
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 clothingGender={clothingGender}
+                 
+              setMinPrice={setMinPrice}
+              setMaxPrice={setMaxPrice}
                 setClothingGender={setClothingGender}
                 filteredProducts={filteredProducts}
                 user={user}
@@ -3262,11 +3263,6 @@ const filteredProducts = useMemo(() => {
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
           setSearch={setSearch}
-setMinPrice={setMinPrice}
-setMaxPrice={setMaxPrice}
-setOnlyWished={setOnlyWished}
-setSort={setSort}
-
         </Routes>
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
