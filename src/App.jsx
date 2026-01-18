@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useParams, Link } from "react-router-dom";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 
 // Firebase
 import { auth } from "./firebase";
@@ -25,13 +30,18 @@ const styles = `
   --shadow2:0 10px 30px rgba(0,0,0,0.10);
   --radius:18px;
 }
-*{ box-sizing:border-box; }
-body{
-  margin:0;
-  background:var(--soft);
-  color:var(--text);
-  font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+
+/* ✅ Dark mode overrides */
+[data-theme="dark"]{
+  --panel:#121214;
+  --soft:#0b0b0d;
+  --line:rgba(255,255,255,0.10);
+  --text:#f2f2f3;
+  --muted:rgba(242,242,243,0.62);
+  --shadow:0 18px 60px rgba(0,0,0,0.45);
+  --shadow2:0 10px 30px rgba(0,0,0,0.35);
 }
+
 button{ -webkit-tap-highlight-color: transparent; }
 .app{ min-height:100vh; }
 
@@ -53,6 +63,22 @@ button{ -webkit-tap-highlight-color: transparent; }
   font-size:22px;
   text-transform:lowercase;
 }
+/* ✅ Hamburger morph to X */
+.iconBtn.active .hamburger{
+  background:transparent;
+}
+.iconBtn.active .hamburger::before{
+  top:0;
+  transform:rotate(45deg);
+}
+.iconBtn.active .hamburger::after{
+  top:0;
+  transform:rotate(-45deg);
+}
+.hamburger, .hamburger::before, .hamburger::after{
+  transition:transform 180ms ease, top 180ms ease, background 180ms ease;
+}
+
 .topbarRight{ margin-left:auto; display:flex; align-items:center; gap:10px; }
 .pill{
   display:flex; align-items:center; gap:10px;
@@ -63,6 +89,9 @@ button{ -webkit-tap-highlight-color: transparent; }
   font-size:12px;
   color:var(--muted);
   white-space:nowrap;
+  <button className="iconBtn" type="button" title="Filters" onClick={() => setFiltersOpen(true)}>
+  ⛭
+</button>
 }
 .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
 
@@ -81,8 +110,27 @@ button{ -webkit-tap-highlight-color: transparent; }
   .topSearch .input{ width:160px; }
 }
 @media (max-width: 520px){
-  .topSearch{ display:none; } /* optional */
+  .topbar{
+    flex-wrap:wrap;
+    height:auto;
+    padding:12px 14px;
+    gap:10px;
+  }
+
+  .topSearch{
+    display:flex;
+    width:100%;
+    max-width:none;
+  }
+
+  .topSearch .input{
+    width:100%;
+    flex:1;
+  }
+
+  .pill{ display:none; } /* keep hidden */
 }
+
 
 /* Icon Button */
 .iconBtn{
@@ -775,7 +823,7 @@ const products = [
   {
     id: 11,
     name: "MaxFactor SPF 20",
-    price: 21,
+    price: 11,
     category: "cosmetics",
     images: [
       "/products/maxfactorspf20.jpg",
@@ -1027,7 +1075,9 @@ const products = [
       features: ["Easy layering", "Clean minimal design", "All-season"],
       howToUse: "Wear open over a tee or buttoned up. Perfect for evenings.",
     },
-
+},
+// ✅ then id: 301 starts as a new object:
+{
     id: 301,
     name: "Max Factor Colour Adapt Foundation 80 Bronze",
     price: 11,
@@ -1992,6 +2042,23 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [clothingGender, setClothingGender] = useState("women");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+const [filtersOpen, setFiltersOpen] = useState(false);
+const [sort, setSort] = useState("featured"); // featured | price_asc | price_desc | name_asc
+const [minPrice, setMinPrice] = useState("");
+const [maxPrice, setMaxPrice] = useState("");
+const [onlyWished, setOnlyWished] = useState(false);
+const [accountOpen, setAccountOpen] = useState(false);
+const [accountForm, setAccountForm] = useState({
+  displayName: "",
+  currentPassword: "",
+  newPassword: "",
+});
+
+useEffect(() => {
+  if (user?.mode === "user") {
+    setAccountForm((p) => ({ ...p, displayName: user.name || "" }));
+  }
+}, [user]);
 
   // ✅ Search in topbar
   const [search, setSearch] = useState("");
@@ -2108,15 +2175,31 @@ export default function App() {
   }, [sidebarOpen, authOpen, cartOpen, introOpen]);
 
   // ✅ Filters
-  const filteredProducts = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    return products.filter((p) => {
-      const inCategory = p.category === selectedCategory;
-      const matchesSearch = !q || p.name.toLowerCase().includes(q);
-      const matchesGender = selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
-      return inCategory && matchesGender && matchesSearch;
-    });
-  }, [selectedCategory, clothingGender, search]);
+const filteredProducts = useMemo(() => {
+  const q = search.toLowerCase().trim();
+
+  let list = products.filter((p) => {
+    const inCategory = p.category === selectedCategory;
+    const matchesSearch = !q || p.name.toLowerCase().includes(q);
+    const matchesGender =
+      selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+
+    const wishedOk = !onlyWished || wishlistIds.includes(p.id);
+
+    const price = Number(p.price || 0);
+    const minOk = minPrice === "" ? true : price >= Number(minPrice);
+    const maxOk = maxPrice === "" ? true : price <= Number(maxPrice);
+
+    return inCategory && matchesGender && matchesSearch && wishedOk && minOk && maxOk;
+  });
+
+  if (sort === "price_asc") list.sort((a, b) => Number(a.price) - Number(b.price));
+  if (sort === "price_desc") list.sort((a, b) => Number(b.price) - Number(a.price));
+  if (sort === "name_asc") list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+
+  return list;
+}, [selectedCategory, clothingGender, search, sort, minPrice, maxPrice, onlyWished, wishlistIds]);
+
 
   // ✅ Cart helpers (merge by product id + size)
   const addToCart = (product, opts = { qty: 1, size: "" }) => {
@@ -2344,9 +2427,14 @@ export default function App() {
 
         {/* Top Bar */}
         <header className="topbar">
-          <button className="iconBtn" aria-label="Open menu" onClick={() => setSidebarOpen(true)} type="button">
-            <span className="hamburger" />
-          </button>
+         <button
+  className={`iconBtn ${sidebarOpen ? "active" : ""}`}
+  aria-label="Open menu"
+  onClick={() => setSidebarOpen(true)}
+  type="button"
+>
+  <span className="hamburger" />
+</button>
 
           <a className="brand" href="https://aurea.com" rel="noreferrer">
             auréa
@@ -2476,37 +2564,56 @@ export default function App() {
               </div>
 
               <div className="accountActions">
-                {user ? (
-                  <button className="smallBtn" onClick={signOut} type="button">
-                    Sign out
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      className="smallBtn primary"
-                      onClick={() => {
-                        setSidebarOpen(false);
-                        setAuthOpen(true);
-                        setMode("signin");
-                      }}
-                      type="button"
-                    >
-                      Sign in
-                    </button>
-                    <button
-                      className="smallBtn"
-                      onClick={() => {
-                        setSidebarOpen(false);
-                        setAuthOpen(true);
-                        setMode("signup");
-                      }}
-                      type="button"
-                    >
-                      Sign up
-                    </button>
-                  </>
-                )}
-              </div>
+  {user ? (
+    <>
+      {/* ✅ My Account button (only for real users, not guests) */}
+      {user.mode === "user" && (
+        <button
+          className="smallBtn primary"
+          type="button"
+          onClick={() => {
+            setSidebarOpen(false);
+            setAccountOpen(true);
+          }}
+        >
+          My Account
+        </button>
+      )}
+
+      {/* Sign out always visible when logged in */}
+      <button className="smallBtn" onClick={signOut} type="button">
+        Sign out
+      </button>
+    </>
+  ) : (
+    <>
+      <button
+        className="smallBtn primary"
+        onClick={() => {
+          setSidebarOpen(false);
+          setAuthOpen(true);
+          setMode("signin");
+        }}
+        type="button"
+      >
+        Sign in
+      </button>
+
+      <button
+        className="smallBtn"
+        onClick={() => {
+          setSidebarOpen(false);
+          setAuthOpen(true);
+          setMode("signup");
+        }}
+        type="button"
+      >
+        Sign up
+      </button>
+    </>
+  )}
+</div>
+
             </div>
 
             <div className="miniCard">
@@ -2515,6 +2622,73 @@ export default function App() {
             </div>
           </div>
         </aside>
+<div className={`modal ${accountOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setAccountOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">My Account</div>
+        <div className="help">Edit username + password.</div>
+      </div>
+      <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">✕</button>
+    </div>
+
+    <div className="modalBody">
+      {!user || user.mode !== "user" ? (
+        <div className="empty">
+          <div className="emptyIcon">🔒</div>
+          <div className="emptyTitle">Sign in required</div>
+          <div className="emptyText">Only signed-in users can edit account details.</div>
+        </div>
+      ) : (
+        <>
+          <div className="field">
+            <div className="label">Username</div>
+            <input
+              className="input"
+              value={accountForm.displayName}
+              onChange={(e) => setAccountForm((p) => ({ ...p, displayName: e.target.value }))}
+              placeholder="Your name"
+            />
+          </div>
+
+          <div className="divider">Change password (optional)</div>
+
+          <div className="field">
+            <div className="label">Current password</div>
+            <input
+              className="input"
+              type="password"
+              value={accountForm.currentPassword}
+              onChange={(e) => setAccountForm((p) => ({ ...p, currentPassword: e.target.value }))}
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div className="field">
+            <div className="label">New password</div>
+            <input
+              className="input"
+              type="password"
+              value={accountForm.newPassword}
+              onChange={(e) => setAccountForm((p) => ({ ...p, newPassword: e.target.value }))}
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div className="authActions">
+            <button className="btnPrimary" type="button" onClick={saveAccount}>
+              Save changes
+            </button>
+            <button className="btnGhost" type="button" onClick={() => setAccountOpen(false)}>
+              Cancel
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>
 
         {/* Auth Modal */}
         <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
@@ -2699,6 +2873,66 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
+<div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">Filters</div>
+        <div className="help">Sort and filter products.</div>
+      </div>
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
+    </div>
+
+    <div className="modalBody">
+      <div className="field">
+        <div className="label">Sort</div>
+        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: Low → High</option>
+          <option value="price_desc">Price: High → Low</option>
+          <option value="name_asc">Name: A → Z</option>
+        </select>
+      </div>
+
+      <div className="row2">
+        <div className="field">
+          <div className="label">Min price</div>
+          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
+        </div>
+        <div className="field">
+          <div className="label">Max price</div>
+          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
+        </div>
+      </div>
+
+      <div className="field" style={{ marginTop: 14 }}>
+        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
+          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          Only wishlist items
+        </label>
+      </div>
+
+      <div className="authActions">
+        <button
+          className="btnGhost"
+          type="button"
+          onClick={() => {
+            setSort("featured");
+            setMinPrice("");
+            setMaxPrice("");
+            setOnlyWished(false);
+          }}
+        >
+          Reset
+        </button>
+        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
                   {/* Promo */}
                   <div className="promoBox">
