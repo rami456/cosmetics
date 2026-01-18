@@ -113,8 +113,8 @@ const styles = `
 
 .ss-login {
   background: transparent;
-  border: 1px solid #334155;
-  color: #e5e7eb;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ffffff;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -128,20 +128,21 @@ const styles = `
 }
 
 .ss-register {
-  background: linear-gradient(135deg, #ffffff, #ffffff);
+  background: #ffffff;      /* ✅ white */
   border: none;
-  color: #000000;
+  color: #000000;           /* ✅ black text */
   padding: 8px 18px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
 .ss-register:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 1px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 20px rgba(255,255,255,0.18);
 }
+
 
 /* Burger menu */
 .ss-burger {
