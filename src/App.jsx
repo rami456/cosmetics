@@ -89,10 +89,6 @@ button{ -webkit-tap-highlight-color: transparent; }
   font-size:12px;
   color:var(--muted);
   white-space:nowrap;
-  <button className="iconBtn" type="button" title="Filters" onClick={() => setFiltersOpen(true)}>
-  ⛭
-</button>
-}
 .pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
 
 /* ✅ Topbar search */
@@ -802,7 +798,7 @@ const products = [
       subtitle: "Foundation — Shade 101 (light tone)",
       size: "30 ml",
       features: ["Buildable coverage (light → medium)", "Smooth, natural-looking finish", "Best for everyday wear"],
-      howToUse: "Apply 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
+      howToUse: "(App)ly 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
     },
   },
   {
@@ -2053,7 +2049,41 @@ const [accountForm, setAccountForm] = useState({
   currentPassword: "",
   newPassword: "",
 });
+const saveAccount = async () => {
+  try {
+    const u = auth.currentUser;
+    if (!u) return;
 
+    // update display name
+    const nextName = accountForm.displayName.trim();
+    if (nextName && nextName !== (u.displayName || "")) {
+      await updateProfile(u, { displayName: nextName });
+      setUser((prev) => (prev ? { ...prev, name: nextName } : prev));
+    }
+
+    // update password (requires re-auth)
+    if (accountForm.newPassword.trim()) {
+      if (!u.email) throw new Error("No email on this account.");
+      if (!accountForm.currentPassword.trim()) {
+        alert("Enter current password to change password.");
+        return;
+      }
+
+      const cred = EmailAuthProvider.credential(u.email, accountForm.currentPassword);
+      await reauthenticateWithCredential(u, cred);
+      await updatePassword(u, accountForm.newPassword.trim());
+    }
+
+    alert("Account updated ✅");
+    setAccountOpen(false);
+    setAccountForm({ displayName: nextName, currentPassword: "", newPassword: "" });
+  } catch (err) {
+    alert(err?.code || err?.message || "Account update failed");
+  }
+};
+
+ // user = { name, email, mode: "user" | "guest" }
+  const [user, setUser] = useState(null);
 useEffect(() => {
   if (user?.mode === "user") {
     setAccountForm((p) => ({ ...p, displayName: user.name || "" }));
@@ -2069,8 +2099,7 @@ useEffect(() => {
   // ✅ Intro overlay
   const [introOpen, setIntroOpen] = useState(true);
 
-  // user = { name, email, mode: "user" | "guest" }
-  const [user, setUser] = useState(null);
+ 
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -2458,6 +2487,9 @@ const filteredProducts = useMemo(() => {
                 Search
               </button>
             </div>
+<button className="iconBtn" type="button" title="Filters" onClick={() => setFiltersOpen(true)}>
+  ⛭
+</button>
 
             {/* Cart bubble */}
             <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
