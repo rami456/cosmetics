@@ -2108,22 +2108,7 @@ setSort
           marginBottom: 24,
         }}
       >
-        <h1 style={{ fontSize: 42, margin: 0, fontWeight: 900 }}>Effortless style, curated.</h1>
-        <p style={{ marginTop: 12, maxWidth: 520, color: "var(--muted)" }}>
-          Premium cosmetics & clothing selected for everyday elegance.
-        </p>
-
-        <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button className="btnPrimary" style={{ width: 220 }} onClick={() => setSelectedCategory("cosmetics")} type="button">
-            Shop Best Sellers
-          </button>
-          <button className="btnCheckout" style={{ width: 220 }} onClick={() => navigate("/wishlist")} type="button">
-            View Wishlist
-          </button>
-        </div>
-      </section>
-
-      <section>
+  
         <div className="sectionHeader">
           <div style={{ width: "100%" }}>
             <h2 style={{ fontSize: 22, margin: 0, fontWeight: 900 }}>Best Sellers</h2>
