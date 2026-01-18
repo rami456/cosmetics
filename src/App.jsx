@@ -60,7 +60,11 @@ const styles = `
   color: #ffffff;
 }
 
-.ss-logo-accent { color: #dcdcdc; opacity: 0.9; 
+.ss-logo-accent { 
+  color: #dcdcdc; 
+  opacity: 0.9; 
+}
+ 
 
 /* Navigation */
 .ss-nav {
@@ -991,6 +995,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   padding:12px;
   box-sizing:border-box;
   display:block;
+  }
   .thumbRow{
   margin-top:10px;
   display:flex;
@@ -2460,66 +2465,6 @@ useEffect(() => {
   // ✅ Intro overlay
   const [introOpen, setIntroOpen] = useState(true);
 
- <div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
-  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
-  <div className="modalCard">
-    <div className="modalTop">
-      <div>
-        <div className="modalTitle">Filters</div>
-        <div className="help">Sort and filter products.</div>
-      </div>
-      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
-    </div>
-
-    <div className="modalBody">
-      <div className="field">
-        <div className="label">Sort</div>
-        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="featured">Featured</option>
-          <option value="price_asc">Price: Low → High</option>
-          <option value="price_desc">Price: High → Low</option>
-          <option value="name_asc">Name: A → Z</option>
-        </select>
-      </div>
-
-      <div className="row2">
-        <div className="field">
-          <div className="label">Min price</div>
-          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
-        </div>
-        <div className="field">
-          <div className="label">Max price</div>
-          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
-        </div>
-      </div>
-
-      <div className="field" style={{ marginTop: 14 }}>
-        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
-          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
-          Only wishlist items
-        </label>
-      </div>
-
-      <div className="authActions">
-        <button
-          className="btnGhost"
-          type="button"
-          onClick={() => {
-            setSort("featured");
-            setMinPrice("");
-            setMaxPrice("");
-            setOnlyWished(false);
-          }}
-        >
-          Reset
-        </button>
-        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
-          Done
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -3002,6 +2947,68 @@ const applyBrandFilter = (brand) => {
     </div>
   </div>
 </div>
+ 
+
+ <div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">Filters</div>
+        <div className="help">Sort and filter products.</div>
+      </div>
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
+    </div>
+
+    <div className="modalBody">
+      <div className="field">
+        <div className="label">Sort</div>
+        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: Low → High</option>
+          <option value="price_desc">Price: High → Low</option>
+          <option value="name_asc">Name: A → Z</option>
+        </select>
+      </div>
+
+      <div className="row2">
+        <div className="field">
+          <div className="label">Min price</div>
+          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
+        </div>
+        <div className="field">
+          <div className="label">Max price</div>
+          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
+        </div>
+      </div>
+
+      <div className="field" style={{ marginTop: 14 }}>
+        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
+          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          Only wishlist items
+        </label>
+      </div>
+
+      <div className="authActions">
+        <button
+          className="btnGhost"
+          type="button"
+          onClick={() => {
+            setSort("featured");
+            setMinPrice("");
+            setMaxPrice("");
+            setOnlyWished(false);
+          }}
+        >
+          Reset
+        </button>
+        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* Auth Modal */}
         <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
@@ -3262,6 +3269,7 @@ const applyBrandFilter = (brand) => {
             path="/"
             element={
               <HomePage
+               setSearch={setSearch}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 clothingGender={clothingGender}
@@ -3317,7 +3325,6 @@ const applyBrandFilter = (brand) => {
           />
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
-          setSearch={setSearch}
         </Routes>
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
