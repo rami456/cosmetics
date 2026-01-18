@@ -89,7 +89,15 @@ button{ -webkit-tap-highlight-color: transparent; }
   font-size:12px;
   color:var(--muted);
   white-space:nowrap;
-.pillDot{ width:8px; height:8px; border-radius:999px; background:#0e0e10; opacity:0.9; }
+}
+
+.pillDot{
+  width:8px; height:8px;
+  border-radius:999px;
+  background:#0e0e10;
+  opacity:0.9;
+}
+
 
 /* ✅ Topbar search */
 .topSearch{
