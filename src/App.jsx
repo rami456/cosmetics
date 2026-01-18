@@ -20,6 +20,7 @@ import {
 
 /** ✅ CSS (one file) */
 const styles = `
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 :root{
   --panel:#ffffff;
   --soft:#f6f6f7;
@@ -58,11 +59,16 @@ button{ -webkit-tap-highlight-color: transparent; }
 .brand{
   text-decoration:none;
   color:var(--text);
-  font-weight:900;
-  letter-spacing:0.06em;
-  font-size:22px;
+  font-family: 'Playfair Display', serif;
+  font-weight:800;
+  letter-spacing:0.12em;
+  font-size:26px;
   text-transform:lowercase;
 }
+.brand:hover{
+  opacity:0.85;
+}
+
 /* ✅ Hamburger morph to X */
 .iconBtn.active .hamburger{
   background:transparent;
