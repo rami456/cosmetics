@@ -2746,65 +2746,48 @@ const applyBrandFilter = (brand) => {
         )}
 
         {/* Top Bar */}
-        <header className="topbar">
-         <button
-  className={`iconBtn ${sidebarOpen ? "active" : ""}`}
-  aria-label="Open menu"
-  onClick={() => setSidebarOpen(true)}
-  type="button"
->
-  <span className="hamburger" />
-</button>
+       <header className="ss-header">
+  <div className="ss-container">
 
-         <Link className="brand" to="/">
-  auréa
-</Link>
+    {/* Logo */}
+    <Link to="/" className="ss-logo">
+      <span className="ss-logo-main">aur</span>
+      <span className="ss-logo-accent">éa</span>
+    </Link>
 
+    {/* Navigation */}
+    <nav className={`ss-nav ${sidebarOpen ? "open" : ""}`}>
+      <Link to="/">Home</Link>
+      <a href="#cosmetics" onClick={() => setSelectedCategory("cosmetics")}>Cosmetics</a>
+      <a href="#clothing" onClick={() => setSelectedCategory("clothing")}>Clothing</a>
+      <Link to="/wishlist">Wishlist</Link>
+    </nav>
 
-          <div className="topbarRight">
-            <div className="pill">
-              <span className="pillDot" />
-              <span>Free shipping over $75</span>
-            </div>
+    {/* Right actions */}
+    <div className="ss-actions">
+      {user ? (
+        <button className="ss-login" onClick={signOut}>
+          {user.name}
+        </button>
+      ) : (
+        <>
+          <button className="ss-login" onClick={() => { setAuthOpen(true); setMode("signin"); }}>
+            Login
+          </button>
+          <button className="ss-register" onClick={() => { setAuthOpen(true); setMode("signup"); }}>
+            Register
+          </button>
+        </>
+      )}
 
-            {/* ✅ Search bar next to pill */}
-            <div className="topSearch">
-              <input
-                className="input"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search products…"
-              />
-              <button className="searchBtn" type="button" onClick={() => setSearch(search.trim())}>
-                Search
-              </button>
-            </div>
+      {/* Mobile menu icon */}
+      <div className="ss-burger" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        ☰
+      </div>
+    </div>
 
-            {/* Cart bubble */}
-            <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
-              🛒
-              {cartItems.length > 0 && <span className="cartBadge">{cartItems.reduce((s, x) => s + x.qty, 0)}</span>}
-            </button>
-
-            {user ? (
-              <button className="authBtn" onClick={signOut} aria-label="Sign out" type="button">
-                {user.mode === "guest" ? "Guest" : user.name} · Sign out
-              </button>
-            ) : (
-              <button
-                className="authBtn"
-                onClick={() => {
-                  setAuthOpen(true);
-                  setMode("signin");
-                }}
-                aria-label="Open sign in"
-                type="button"
-              >
-                Sign in
-              </button>
-            )}
-          </div>
-        </header>
+  </div>
+</header>
 
         {/* Overlay (sidebar) */}
         <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
