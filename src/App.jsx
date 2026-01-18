@@ -155,9 +155,17 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 
 .brandSlideImg{
-  object-fit:contain;   /* ✅ no zoom */
+  width:100%;
+  height:360px;
+  object-fit:contain;
+  display:block;
   background:#f2f2f3;
 }
+  .brandSlideBtn:hover .brandSlideImg{
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
+
 
 @media (max-width: 900px){
   .brandSlideImg{ height:220px; }
