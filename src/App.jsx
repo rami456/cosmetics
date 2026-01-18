@@ -375,7 +375,15 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
 .imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; position:relative; }
-.img{ width:100%; height:100%; object-fit:cover; display:block; }
+.img{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* ✅ no crop */
+  display:block;
+  background:#f2f2f3;         /* ✅ nice backdrop for transparent/empty space */
+  padding:10px;               /* ✅ gives breathing room */
+  box-sizing:border-box;
+}
 .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
 .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
 .cardTitle{ margin:0; font-size:14px; font-weight:900; }
@@ -706,13 +714,21 @@ button{ -webkit-tap-highlight-color: transparent; }
   border-radius:18px;
   overflow:hidden;
   background:#f2f2f3;
+  aspect-ratio: 1 / 1;        /* ✅ keeps a clean frame */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
+
 .pImg{
   width:100%;
-  height:auto;
+  height:100%;
+  object-fit:contain;         /* ✅ no crop */
+  padding:12px;
+  box-sizing:border-box;
   display:block;
 }
-.thumbRow{
+thumbRow{
   margin-top:10px;
   display:flex;
   gap:10px;
@@ -728,7 +744,16 @@ button{ -webkit-tap-highlight-color: transparent; }
   overflow:hidden;
 }
 .thumbBtn.active{ border-color:#0e0e10; }
-.thumbImg{ width:100%; height:100%; object-fit:cover; display:block; }
+.thumbImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* ✅ no crop */
+  background:#f2f2f3;
+  padding:6px;
+  box-sizing:border-box;
+  display:block;
+}
+s
 
 .sizeRow{
   margin-top:14px;
