@@ -2524,9 +2524,6 @@ const filteredProducts = useMemo(() => {
                 Search
               </button>
             </div>
-<button className="iconBtn" type="button" title="Filters" onClick={() => setFiltersOpen(true)}>
-  ⛭
-</button>
 
             {/* Cart bubble */}
             <button className="cartBubble" aria-label="Open cart" title="Your cart" onClick={() => setCartOpen(true)} type="button">
