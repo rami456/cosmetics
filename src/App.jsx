@@ -210,7 +210,31 @@ button{ -webkit-tap-highlight-color: transparent; }
   text-transform:uppercase;
   backdrop-filter: blur(10px);
 }
+.brandLabel{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.85);
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:0.04em;
+  box-shadow:var(--shadow2);
+}
 
+.brandLabel{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:rgba(255, 0, 0, 0.85);
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:0.04em;
+  box-shadow:var(--shadow2);
+}
 
 /* Icon Button */
 .iconBtn{
@@ -1911,6 +1935,7 @@ setSort
         >
           <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
         </button>
+<div className="brandLabel">{slides[slide].label}</div>
 
         <div className="brandDots">
           {slides.map((_, i) => (
