@@ -1861,7 +1861,7 @@ setMinPrice,
 setMaxPrice,
 setOnlyWished,
 setSort,
-
+applyBrandFilter,
 }) {
   const navigate = useNavigate();
   const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
@@ -1871,6 +1871,13 @@ setSort,
     { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
     { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
   ];
+<button
+  className="brandSlideBtn"
+  type="button"
+  onClick={() => applyBrandFilter(slides[slide].brandSearch)}
+>
+  <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
+</button>
 
   const [slide, setSlide] = useState(0);
 
@@ -2227,6 +2234,19 @@ const saveAccount = async () => {
         alert("Enter current password to change password.");
         return;
       }
+const applyBrandFilter = (brand) => {
+  setSelectedCategory("cosmetics");
+  setClothingGender("women"); // optional
+  setSearch(brand);
+
+  // reset optional filters so results show
+  setSort("featured");
+  setMinPrice("");
+  setMaxPrice("");
+  setOnlyWished(false);
+
+  window.scrollTo({ top: 520, behavior: "smooth" });
+};
 
       const cred = EmailAuthProvider.credential(u.email, accountForm.currentPassword);
       await reauthenticateWithCredential(u, cred);
@@ -3210,6 +3230,7 @@ const filteredProducts = useMemo(() => {
                 user={user}
                 wishlistIds={wishlistIds}
                 toggleWishlist={toggleWishlist}
+                applyBrandFilter={applyBrandFilter}
                 cartItems={cartItems}
                 addToCart={addToCart}
                 removeFromCart={removeFromCart}
