@@ -744,12 +744,11 @@ const products = [
   {
     id: 9,
     name: "MAxFactor X 101",
-    price: 11,
+    price: 10,
     category: "cosmetics",
     images: [
       "/products/maxfactor-101.jpg",
       "/products/maxfactor-101-2.jpg",
-      "/products/maxfactor-101-3.jpg",
     ],
     details: {
       subtitle: "Foundation — Shade 101 (light tone)",
@@ -761,13 +760,13 @@ const products = [
   {
     id: 10,
     name: "MaxFactor X 55 BEIGE",
-    price: 13,
+    price: 12,
     category: "cosmetics",
     images: [
       "/products/maxfactor55beige.jpg",
     ],
     details: {
-      subtitle: "Foundation — Shade 55 Beige (medium tone)",
+      subtitle: "Foundation — Shade 55s Beige (medium tone)",
       size: "30 ml",
       features: ["Medium coverage for an even tone", "Comfortable wear with a soft finish", "Great for daily looks"],
       howToUse: "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
@@ -776,7 +775,7 @@ const products = [
   {
     id: 11,
     name: "MaxFactor SPF 20",
-    price: 17,
+    price: 21,
     category: "cosmetics",
     images: [
       "/products/maxfactorspf20.jpg",
@@ -786,23 +785,6 @@ const products = [
       size: "30 ml",
       features: ["Evens skin tone with medium coverage", "SPF 20 (bonus protection)", "Pairs well with setting powder"],
       howToUse: "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
-    },
-  },
-  {
-    id: 12,
-    name: "L’Oréal PARIS NUDE",
-    price: 20,
-    category: "cosmetics",
-    images: [
-      "/products/lorealnude.jpg",
-      "/products/lorealnude-2.jpg",
-      "/products/lorealnude-3.jpg",
-    ],
-    details: {
-      subtitle: "Nude finish foundation — Natural look",
-      size: "30 ml",
-      features: ["Skin-like nude finish", "Light → medium buildable coverage", "Ideal for minimal makeup styles"],
-      howToUse: "Use a damp sponge for the most natural finish. Build coverage only where needed (T-zone, cheeks).",
     },
   },
 {
@@ -1223,7 +1205,159 @@ const products = [
         "Apply under eyes and on imperfections, then blend with finger or sponge.",
     },
   },
+ {
+    id: 501,
+    name: "Max Factor Colour Elixir Lipstick 010 Starlight Coral",
+    price: 9,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-colour-elixir-010-starlight-coral.jpg",
+      "/products/maxfactor-colour-elixir-010-starlight-coral-2.jpg",
+      "/products/maxfactor-colour-elixir-010-starlight-coral-3.jpg",
+    ],
+    details: {
+      subtitle: "Moisturising colour lipstick",
+      features: ["Creamy comfort", "Rich colour payoff", "Smooth finish"],
+      howToUse: "Apply directly to lips. Layer for more intensity.",
+    },
+  },
+
+  {
+    id: 502,
+    name: "Max Factor Colour Elixir Lipstick 015 Nude Glory",
+    price: 9,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-colour-elixir-015-nude-glory.jpg",
+      "/products/maxfactor-colour-elixir-015-nude-glory-2.jpg",
+      "/products/maxfactor-colour-elixir-015-nude-glory-3.jpg",
+    ],
+    details: {
+      subtitle: "Moisturising nude lipstick",
+      features: ["Everyday nude shade", "Hydrating feel", "Soft shine"],
+      howToUse: "Apply from the center outward. Reapply as needed.",
+    },
+  },
+
+  {
+    id: 503,
+    name: "Max Factor Mastertouch Concealer",
+    price: 8.5,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-mastertouch-concealer.jpg",
+      "/products/maxfactor-mastertouch-concealer-2.jpg",
+      "/products/maxfactor-mastertouch-concealer-3.jpg",
+    ],
+    details: {
+      subtitle: "Concealer with precision applicator",
+      features: ["Targets dark circles", "Buildable coverage", "Natural finish"],
+      howToUse: "Apply under eyes or on blemishes, then blend gently.",
+    },
+  },
+
+  {
+    id: 504,
+    name: "Rimmel London Stay Matte Liquid",
+    price: 5,
+    category: "cosmetics",
+    images: [
+      "/products/rimmel-stay-matte-liquid.jpg",
+      "/products/rimmel-stay-matte-liquid-2.jpg",
+      "/products/rimmel-stay-matte-liquid-3.jpg",
+    ],
+    details: {
+      subtitle: "Liquid foundation with matte finish",
+      features: ["Shine control", "Lightweight feel", "Smooth matte look"],
+      howToUse: "Blend evenly with sponge or brush. Set if needed.",
+    },
+  },
+
+  {
+    id: 505,
+    name: "Max Factor Masterpiece Liquid Eyeliner 002 Charcoal Black",
+    price: 16,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg",
+      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-2.jpg",
+      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-3.jpg",
+    ],
+    details: {
+      subtitle: "Liquid eyeliner — Charcoal Black",
+      features: ["Precise tip", "Bold definition", "Smooth application"],
+      howToUse: "Trace along lash line. Build thickness for a wing.",
+    },
+  },
+
+  {
+    id: 506,
+    name: "Bourjois Liner Reveal Liquid Eyeliner 01 Shiny Black",
+    price: 14,
+    category: "cosmetics",
+    images: [
+      "/products/bourjois-liner-reveal-01-shiny-black.jpg",
+      "/products/bourjois-liner-reveal-01-shiny-black-2.jpg",
+      "/products/bourjois-liner-reveal-01-shiny-black-3.jpg",
+    ],
+    details: {
+      subtitle: "Liquid eyeliner — Shiny Black",
+      features: ["Glossy black finish", "Easy glide", "Sharp lines"],
+      howToUse: "Apply close to lash line. Let dry before blinking fully.",
+    },
+  },
+
+  {
+    id: 507,
+    name: "Max Factor Masterpiece High Precision Liquid Eyeliner",
+    price: 8,
+    category: "cosmetics",
+    images: [
+      "/products/maxfactor-masterpiece-high-precision-eyeliner.jpg",
+      "/products/maxfactor-masterpiece-high-precision-eyeliner-2.jpg",
+      "/products/maxfactor-masterpiece-high-precision-eyeliner-3.jpg",
+    ],
+    details: {
+      subtitle: "High precision liquid eyeliner",
+      features: ["Ultra-precise applicator", "Intense definition", "Quick-dry"],
+      howToUse: "Draw thin line for day, thicken for drama. Allow to set.",
+    },
+  },
+
+  {
+    id: 508,
+    name: "L'Oréal Paris True Match Nude Plumping Tinted Serum 2-3 Light",
+    price: 12,
+    category: "cosmetics",
+    images: [
+      "/products/loreal-true-match-nude-serum-2-3-light.jpg",
+      "/products/loreal-true-match-nude-serum-2-3-light-2.jpg",
+      "/products/loreal-true-match-nude-serum-2-3-light-3.jpg",
+    ],
+    details: {
+      subtitle: "Plumping tinted serum — Shade 2-3 Light",
+      features: ["Lightweight serum feel", "Natural glow", "Evens skin tone"],
+      howToUse: "Shake well. Apply a few drops and blend with fingers or sponge.",
+    },
+  },
+
+  {
+    id: 509,
+    name: "L'Oréal Paris True Match Super-Blendable Foundation",
+    price: 10,
+    category: "cosmetics",
+    images: [
+      "/products/loreal-true-match-super-blendable-foundation.jpg",
+      "/products/loreal-true-match-super-blendable-foundation-2.jpg",
+    ],
+    details: {
+      subtitle: "Super-blendable foundation",
+      features: ["Smooth blend", "Natural-looking coverage", "Everyday wear"],
+      howToUse: "Apply from center outward and blend. Build coverage as needed.",
+    },
+  },
 ];
+
 
 
 const categories = [
