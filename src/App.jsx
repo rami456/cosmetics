@@ -915,7 +915,31 @@ s
   .pill{ display:none; }
   .productBody{ grid-template-columns: 1fr; }
 }
-@media (max-width: 620px){ .grid{ grid-template-columns: 1fr; } }
+@media (max-width: 620px){
+  .grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px;
+  }
+
+  .cardBody{
+    padding:10px;
+  }
+
+  .cardTitle{
+    font-size:12px;
+  }
+
+  .price{
+    font-size:12px;
+  }
+
+  .btnPrimary,
+  .btnCheckout{
+    padding:8px 10px;
+    font-size:12px;
+  }
+}
+
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
