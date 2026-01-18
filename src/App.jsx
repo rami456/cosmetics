@@ -20,7 +20,123 @@ import {
 
 /** ✅ CSS (one file) */
 const styles = `
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;600;700&display=swap');
+
+.ss-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid var(--line);
+}
+
+.ss-container{
+  max-width:1280px;
+  margin:0 auto;
+  padding:14px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* Logo */
+.ss-logo{
+  text-decoration:none;
+  font-family:'Playfair Display', serif;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:0.12em;
+  display:flex;
+  align-items:center;
+}
+
+.ss-logo-main{
+  color:#0e0e10;
+}
+
+.ss-logo-accent{
+  color:#8a6cff;
+  margin-left:2px;
+}
+
+/* Nav */
+.ss-nav{
+  display:flex;
+  gap:26px;
+}
+
+.ss-nav a{
+  text-decoration:none;
+  font-family:Inter, sans-serif;
+  font-weight:600;
+  color:#0e0e10;
+  opacity:0.75;
+  transition:opacity 0.2s ease;
+}
+
+.ss-nav a:hover{
+  opacity:1;
+}
+
+/* Actions */
+.ss-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.ss-login{
+  background:none;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.ss-register{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid #0e0e10;
+  background:#0e0e10;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* Burger */
+.ss-burger{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .ss-nav{
+    position:fixed;
+    top:64px;
+    left:0;
+    right:0;
+    background:#fff;
+    flex-direction:column;
+    gap:18px;
+    padding:20px;
+    border-bottom:1px solid var(--line);
+    transform:translateY(-120%);
+    transition:transform 0.25s ease;
+  }
+
+  .ss-nav.open{
+    transform:translateY(0);
+  }
+
+  .ss-burger{
+    display:block;
+  }
+}
+
 :root{
   --panel:#ffffff;
   --soft:#f6f6f7;
