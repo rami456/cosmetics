@@ -1871,13 +1871,6 @@ applyBrandFilter,
     { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
     { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
   ];
-<button
-  className="brandSlideBtn"
-  type="button"
-  onClick={() => applyBrandFilter(slides[slide].brandSearch)}
->
-  <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
-</button>
 
   const [slide, setSlide] = useState(0);
 
