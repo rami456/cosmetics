@@ -229,7 +229,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   left:20px;
   padding:14px 18px;
   border-radius:14px;
-  background:rgba(255, 0, 0, 0.85);
+  background:rgba(250, 250, 250, 0.41);
   font-weight:900;
   font-size:20px;
   letter-spacing:0.04em;
