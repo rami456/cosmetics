@@ -2212,7 +2212,14 @@ const saveAccount = async () => {
   try {
     const u = auth.currentUser;
     if (!u) return;
-
+const applyBrandFilter = (brand) => {
+  setSelectedCategory("cosmetics");
+  setSearch(brand);
+  setSort("featured");
+  setMinPrice("");
+  setMaxPrice("");
+  setOnlyWished(false);
+};
     // update display name
     const nextName = accountForm.displayName.trim();
     if (nextName && nextName !== (u.displayName || "")) {
@@ -2227,19 +2234,6 @@ const saveAccount = async () => {
         alert("Enter current password to change password.");
         return;
       }
-const applyBrandFilter = (brand) => {
-  setSelectedCategory("cosmetics");
-  setClothingGender("women"); // optional
-  setSearch(brand);
-
-  // reset optional filters so results show
-  setSort("featured");
-  setMinPrice("");
-  setMaxPrice("");
-  setOnlyWished(false);
-
-  window.scrollTo({ top: 520, behavior: "smooth" });
-};
 
       const cred = EmailAuthProvider.credential(u.email, accountForm.currentPassword);
       await reauthenticateWithCredential(u, cred);
