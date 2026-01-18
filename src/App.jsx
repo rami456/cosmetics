@@ -1068,10 +1068,11 @@ button{ -webkit-tap-highlight-color: transparent; }
 
 /* Responsive */
 @media (max-width: 1100px){
-  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .main{ grid-template-columns: 1fr 340px; }
 }
 @media (max-width: 900px){
+.grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .main{ grid-template-columns: 1fr; }
   .cart{ position:relative; top:auto; }
   .pill{ display:none; }
@@ -1079,26 +1080,22 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 @media (max-width: 620px){
   .grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap:10px;
   }
 
   .cardBody{
-    padding:10px;
-  }
-
-  .cardTitle{
-    font-size:12px;
-  }
-
+    padding:10px 12px;
+}
+.cardTitle{ font-size:13px; }
   .price{
     font-size:12px;
   }
 
   .btnPrimary,
   .btnCheckout{
-    padding:8px 10px;
-    font-size:12px;
+    padding:10px 12px;
+    font-size:13px;
   }
 }
 
