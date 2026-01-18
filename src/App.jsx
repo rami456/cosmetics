@@ -1850,6 +1850,7 @@ function HomePage({
   setPromoInput,
   promoMessage,
   applyPromo,
+  applyBrandFilter,
   discount,
   shipping,
   total,
@@ -1860,8 +1861,7 @@ function HomePage({
 setMinPrice,
 setMaxPrice,
 setOnlyWished,
-setSort,
-applyBrandFilter,
+setSort
 }) {
   const navigate = useNavigate();
   const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
@@ -1900,7 +1900,7 @@ applyBrandFilter,
         <button
           className="brandSlideBtn"
           type="button"
-          onClick={() => goBrand(slides[slide].brandSearch)}
+          onClick={() => applyBrandFilter(slides[slide].brandSearch)}
           aria-label={`Shop ${slides[slide].label}`}
         >
           <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
