@@ -28,12 +28,13 @@ const styles = `
 
 .ss-header {
   width: 100%;
-  background: linear-gradient(135deg, #0b0f19, #111827);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+  background: #000; /* ✅ black */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.32);
   position: sticky;
   top: 0;
   z-index: 999;
 }
+
 
 .ss-container {
   max-width: 1400px;
@@ -59,9 +60,7 @@ const styles = `
   color: #ffffff;
 }
 
-.ss-logo-accent {
-  color: #facc15;
-}
+.ss-logo-accent { color: #dcdcdc; opacity: 0.9; 
 
 /* Navigation */
 .ss-nav {
@@ -124,14 +123,14 @@ const styles = `
 }
 
 .ss-login:hover {
-  border-color: #facc15;
+  border-color: #ffffff;
   color: #ffffff;
 }
 
 .ss-register {
-  background: linear-gradient(135deg, #facc15, #eab308);
+  background: linear-gradient(135deg, #ffffff, #ffffff);
   border: none;
-  color: #0b0f19;
+  color: #000000;
   padding: 8px 18px;
   border-radius: 8px;
   font-weight: 700;
@@ -141,7 +140,7 @@ const styles = `
 
 .ss-register:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.35);
+  box-shadow: 0 6px 1px rgba(255, 255, 255, 0.35);
 }
 
 /* Burger menu */
@@ -159,7 +158,7 @@ const styles = `
     top: 70px;
     left: 0;
     width: 100%;
-    background: #0b0f19;
+    background: #000000;
     flex-direction: column;
     align-items: center;
     gap: 20px;
@@ -171,9 +170,13 @@ const styles = `
     display: flex;
   }
 
-  .ss-burger {
-    display: block;
-  }
+ .ss-burger {
+  display: block;     /* ✅ show on PC too */
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-left: 6px;
+}
 }
 :root{
   --panel:#ffffff;
@@ -2895,7 +2898,7 @@ const applyBrandFilter = (brand) => {
     </Link>
 
     {/* Navigation */}
-    <nav className={`ss-nav ${sidebarOpen ? "open" : ""}`}>
+    <nav className={`ss-nav ${sidebarOpen ? "active" : ""}`}>
       <Link to="/">Home</Link>
       <a href="#cosmetics" onClick={() => setSelectedCategory("cosmetics")}>Cosmetics</a>
       <a href="#clothing" onClick={() => setSelectedCategory("clothing")}>Clothing</a>
@@ -2928,8 +2931,7 @@ const applyBrandFilter = (brand) => {
   </div>
 </header>
 
-        {/* Overlay (sidebar) */}
-        <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
+    
 
         {/* Sidebar */}
 
