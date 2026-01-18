@@ -990,8 +990,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   padding:12px;
   box-sizing:border-box;
   display:block;
-}
-thumbRow{
+  .thumbRow{
   margin-top:10px;
   display:flex;
   gap:10px;
@@ -1016,7 +1015,7 @@ thumbRow{
   box-sizing:border-box;
   display:block;
 }
-s
+
 
 .sizeRow{
   margin-top:14px;
