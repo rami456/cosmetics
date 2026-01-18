@@ -22,121 +22,159 @@ import {
 const styles = `
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;600;700&display=swap');
+/* ============================= */
+/*      AURÉA PREMIUM HEADER     */
+/* ============================= */
 
-.ss-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter: blur(14px);
-  border-bottom:1px solid var(--line);
+.ss-header {
+  width: 100%;
+  background: linear-gradient(135deg, #0b0f19, #111827);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
-.ss-container{
-  max-width:1280px;
-  margin:0 auto;
-  padding:14px 22px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.ss-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Logo */
-.ss-logo{
-  text-decoration:none;
-  font-family:'Playfair Display', serif;
-  font-size:26px;
-  font-weight:800;
-  letter-spacing:0.12em;
-  display:flex;
-  align-items:center;
+.ss-logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
-.ss-logo-main{
-  color:#0e0e10;
+.ss-logo-main {
+  color: #ffffff;
 }
 
-.ss-logo-accent{
-  color:#8a6cff;
-  margin-left:2px;
+.ss-logo-accent {
+  color: #facc15;
 }
 
-/* Nav */
-.ss-nav{
-  display:flex;
-  gap:26px;
+/* Navigation */
+.ss-nav {
+  display: flex;
+  gap: 28px;
 }
 
-.ss-nav a{
-  text-decoration:none;
-  font-family:Inter, sans-serif;
-  font-weight:600;
-  color:#0e0e10;
-  opacity:0.75;
-  transition:opacity 0.2s ease;
+.ss-nav a,
+.ss-nav button {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s ease;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
 }
 
-.ss-nav a:hover{
-  opacity:1;
+.ss-nav a:hover,
+.ss-nav button:hover {
+  color: #ffffff;
+}
+
+.ss-nav a::after,
+.ss-nav button::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #facc15;
+  transition: 0.3s ease;
+}
+
+.ss-nav a:hover::after,
+.ss-nav button:hover::after {
+  width: 100%;
 }
 
 /* Actions */
-.ss-actions{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.ss-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.ss-login{
-  background:none;
-  border:none;
-  font-weight:700;
-  cursor:pointer;
+.ss-login {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
 }
 
-.ss-register{
-  padding:8px 14px;
-  border-radius:999px;
-  border:1px solid #0e0e10;
-  background:#0e0e10;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
+.ss-login:hover {
+  border-color: #facc15;
+  color: #ffffff;
 }
 
-/* Burger */
-.ss-burger{
-  display:none;
-  font-size:22px;
-  cursor:pointer;
+.ss-register {
+  background: linear-gradient(135deg, #facc15, #eab308);
+  border: none;
+  color: #0b0f19;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ss-register:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.35);
+}
+
+/* Burger menu */
+.ss-burger {
+  display: none;
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 /* Mobile */
-@media (max-width: 900px){
-  .ss-nav{
-    position:fixed;
-    top:64px;
-    left:0;
-    right:0;
-    background:#fff;
-    flex-direction:column;
-    gap:18px;
-    padding:20px;
-    border-bottom:1px solid var(--line);
-    transform:translateY(-120%);
-    transition:transform 0.25s ease;
+@media (max-width: 900px) {
+  .ss-nav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0b0f19;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    display: none;
   }
 
-  .ss-nav.open{
-    transform:translateY(0);
+  .ss-nav.active {
+    display: flex;
   }
 
-  .ss-burger{
-    display:block;
+  .ss-burger {
+    display: block;
   }
 }
-
 :root{
   --panel:#ffffff;
   --soft:#f6f6f7;
@@ -2894,139 +2932,7 @@ const applyBrandFilter = (brand) => {
         <div className={`overlay ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
 
         {/* Sidebar */}
-        <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-          <div className="sidebarHeader">
-            <div>
-              <div className="sidebarTitle">Browse</div>
-              <div className="sidebarSub">Select a category</div>
-            </div>
 
-            <button className="closeBtn" aria-label="Close menu" onClick={() => setSidebarOpen(false)} type="button">
-              ✕
-            </button>
-          </div>
-
-          <nav>
-            <ul className="menuList">
-              {categories.map((c) => {
-                const active = selectedCategory === c.key;
-                return (
-                  <li key={c.key}>
-                    <button
-                      className={`menuItem ${active ? "active" : ""}`}
-                      onClick={() => {
-                        setSelectedCategory(c.key);
-                        if (c.key === "clothing") setClothingGender((g) => g || "women");
-                        setSidebarOpen(false);
-                      }}
-                      type="button"
-                    >
-                      <span className="menuText">{c.label}</span>
-                      <span className="menuArrow">›</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {selectedCategory === "clothing" && (
-              <div style={{ marginTop: 12 }}>
-                <div className="sidebarSub" style={{ marginBottom: 10 }}>
-                  Choose section
-                </div>
-                <div className="tabs" style={{ margin: 0 }}>
-                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
-                    Women
-                  </button>
-                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
-                    Men
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div style={{ marginTop: 12 }}>
-              <Link
-                to="/wishlist"
-                className="menuItem"
-                style={{ textDecoration: "none", color: "inherit" }}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <span className="menuText">Wishlist</span>
-                <span className="menuArrow">♥</span>
-              </Link>
-            </div>
-          </nav>
-
-          <div className="sidebarFooter">
-            {/* ✅ Small account view in hamburger */}
-            <div className="accountMini">
-              <div className="accountMiniTop">
-                <div style={{ minWidth: 0 }}>
-                  <div className="accountName">{user ? (user.mode === "guest" ? "Guest" : user.name) : "Not signed in"}</div>
-                  <div className="accountEmail">{user?.email || "—"}</div>
-                </div>
-              </div>
-
-              <div className="accountActions">
-  {user ? (
-    <>
-      {/* ✅ My Account button (only for real users, not guests) */}
-      {user.mode === "user" && (
-        <button
-          className="smallBtn primary"
-          type="button"
-          onClick={() => {
-            setSidebarOpen(false);
-            setAccountOpen(true);
-          }}
-        >
-          My Account
-        </button>
-      )}
-
-      {/* Sign out always visible when logged in */}
-      <button className="smallBtn" onClick={signOut} type="button">
-        Sign out
-      </button>
-    </>
-  ) : (
-    <>
-      <button
-        className="smallBtn primary"
-        onClick={() => {
-          setSidebarOpen(false);
-          setAuthOpen(true);
-          setMode("signin");
-        }}
-        type="button"
-      >
-        Sign in
-      </button>
-
-      <button
-        className="smallBtn"
-        onClick={() => {
-          setSidebarOpen(false);
-          setAuthOpen(true);
-          setMode("signup");
-        }}
-        type="button"
-      >
-        Sign up
-      </button>
-    </>
-  )}
-</div>
-
-            </div>
-
-            <div className="miniCard">
-              <div className="miniCardTitle">Auréa Standard</div>
-              <div className="miniCardText">Authentic items • Curated selection</div>
-            </div>
-          </div>
-        </aside>
 <div className={`modal ${accountOpen ? "show" : ""}`} role="dialog" aria-modal="true">
   <div className="modalBackdrop" onClick={() => setAccountOpen(false)} />
   <div className="modalCard">
