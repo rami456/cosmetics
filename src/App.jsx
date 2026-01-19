@@ -3352,8 +3352,7 @@ const applyBrandFilter = (brand) => {
       <div className="trustIcon">
         {/* Verified badge */}
         <svg className="trustSvg" viewBox="0 0 24 24">
-          <path d="M12 2l3 2 4 1-1 4 1 4-4 1-3 2-3-2-4-1 1-4-1-4 4-1 3-2z"/>
-          <path d="M8.5 12l2.2 2.2L15.8 9.3"/>
+         
         </svg>
       </div>
     
