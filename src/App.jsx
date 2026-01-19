@@ -731,7 +731,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   display:grid;
   grid-template-columns: 1fr ;
   gap:18px;
-  padding:22px;
+  padding:22px 22px 0;
   max-width:1280px;
   margin:0 auto;
   margin-left:0;
@@ -1214,6 +1214,17 @@ button{ -webkit-tap-highlight-color: transparent; }
     font-size:12px;
   }
   
+/* ===== FIX EXTRA WHITE SPACE ABOVE TRUST STRIP ===== */
+
+.trustStrip{
+  margin-top: 0 !important;
+  padding-top: 18px !important;
+}
+
+.footer{
+  margin-top: 0 !important;
+  padding-top: 12px !important;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
