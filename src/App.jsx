@@ -128,7 +128,9 @@ const styles = `
   border:none;
   font:inherit;
   color:#000;
+  text-decoration:none; /* ✅ important for Link */
 }
+
 
 .ss-icon-btn:hover{
   opacity:0.7;
@@ -2866,12 +2868,11 @@ const applyBrandFilter = (brand) => {
         👤 ACCOUNT
       </button>
 
-      <button
-        className="ss-icon-btn"
-        onClick={() => navigate("/wishlist")}
-      >
-        ♥ WISHLIST
-      </button>
+  
+       <Link className="ss-icon-btn" to="/wishlist">
+  ♥ WISHLIST
+</Link>
+
 
       <button
         className="ss-icon-btn"
