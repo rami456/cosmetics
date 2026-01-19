@@ -711,7 +711,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 /* Main layout */
 .main{
   display:grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: 1fr ;
   gap:18px;
   padding:22px;
   max-width:1280px;
@@ -2376,126 +2376,7 @@ setSort
       </section>
 
       {/* Right side cart panel */}
-      <aside className="cart">
-        <div className="cartHeader">
-          <div className="cartTitle">Cart</div>
-          <div className="cartCount">{cartItems.reduce((s, x) => s + x.qty, 0)} items</div>
-        </div>
-
-        {cartItems.length === 0 ? (
-          <div className="empty">
-            <div className="emptyIcon">🛍️</div>
-            <div className="emptyTitle">Your cart is empty</div>
-            <div className="emptyText">Add something you love.</div>
-          </div>
-        ) : (
-          <>
-            <ul className="cartList">
-              {cartItems.map((item, i) => (
-                <li key={`${item.id}-${item.size || "nosize"}-${i}`} className="cartRow">
-                  <div style={{ minWidth: 0 }}>
-                    <div className="cartName">{item.name}</div>
-                    <div className="cartMeta">
-                      {money(item.price)} {item.size ? `• Size ${item.size}` : ""} • Line: <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
-                    </div>
-                    <div className="qtyBox">
-                      <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">−</button>
-                      <div className="qtyNum">{item.qty}</div>
-                      <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
-                    </div>
-                  </div>
-                  <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            {/* Promo */}
-            <div className="promoBox">
-              <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
-              <div className="promoRow">
-                <input
-                  className="input"
-                  value={promoInput}
-                  onChange={(e) => setPromoInput(e.target.value)}
-                  placeholder="AUREA10, SAVE5, FREESHIP…"
-                />
-                <button className="searchBtn" type="button" onClick={applyPromo}>
-                  Apply
-                </button>
-              </div>
-              {promoMessage && (
-                <div className={`promoMsg ${promoMessage.ok ? "ok" : "bad"}`}>
-                  {promoMessage.text}
-                </div>
-              )}
-              {promoCode && PROMOS[promoCode] && (
-                <div className="promoMsg ok">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
-              )}
-            </div>
-
-            {/* Summary */}
-            <div className="summary">
-              <div className="sumRow">
-                <span>Subtotal</span>
-                <b>{money(subtotal)}</b>
-              </div>
-              <div className="sumRow">
-                <span>Discount</span>
-                <b>-{money(discount)}</b>
-              </div>
-              <div className="sumRow">
-                <span>Shipping</span>
-                <b>{shipping === 0 ? "Free" : money(shipping)}</b>
-              </div>
-
-              <div className="sumRow" style={{ marginTop: 6 }}>
-                <span style={{ fontSize: 12 }}>
-                  {subtotal >= FREE_SHIPPING_THRESHOLD ? (
-                    "Free shipping unlocked ✅"
-                  ) : (
-                    `Add ${money(FREE_SHIPPING_THRESHOLD - subtotal)} for free shipping`
-                  )}
-                </span>
-              </div>
-
-              <div className="sumRow total">
-                <span>Total</span>
-                <b>{money(total)}</b>
-              </div>
-            </div>
-
-            <button
-              className="btnCheckout"
-              onClick={() => {
-                if (!user) {
-                  setAuthOpen(true);
-                  setMode("signin");
-                } else {
-                  checkout();
-                }
-              }}
-              type="button"
-            >
-              Checkout (Whish Money)
-            </button>
-
-            <div className="cartNote">
-              {user ? "You’ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
-            </div>
-
-            <button
-              className="btnGhost"
-              style={{ marginTop: 10 }}
-              type="button"
-              onClick={() => navigate("/wishlist")}
-            >
-              Wishlist
-            </button>
-          </>
-        )}
-      </aside>
+      
     </main>
   );
 }
