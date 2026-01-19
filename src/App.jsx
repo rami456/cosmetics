@@ -23,17 +23,121 @@ const styles = `
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 /* ============================= */
-/*      AURÉA PREMIUM HEADER     */
+/*   AURÉA LUXURY HEADER LAYOUT  */
 /* ============================= */
 
-.ss-header {
-  width: 100%;
-  background: #000; /* ✅ black */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.32);
-  position: sticky;
-  top: 0;
-  z-index: 999;
+.ss-header{
+  width:100%;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  position:sticky;
+  top:0;
+  z-index:999;
 }
+
+/* Top info strip */
+.ss-topstrip{
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  background:#fff;
+  font-size:12px;
+  color:#111;
+}
+
+.ss-topstrip-left,
+.ss-topstrip-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  font-weight:700;
+  letter-spacing:0.04em;
+}
+
+.ss-topstrip-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:0.9;
+}
+
+/* Main header row */
+.ss-mainbar{
+  height:74px;
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items:center;
+  padding:0 28px;
+}
+
+/* Left search */
+.ss-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:320px;
+}
+
+.ss-search input{
+  width:100%;
+  height:42px;
+  border:none;
+  border-bottom:1px solid #000;
+  font-size:13px;
+  font-weight:700;
+  outline:none;
+  background:transparent;
+  padding:0 6px;
+}
+
+.ss-search input::placeholder{
+  letter-spacing:0.12em;
+  font-weight:800;
+}
+
+/* Center logo */
+.ss-logo{
+  justify-self:center;
+  font-family:'Playfair Display', serif;
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:0.18em;
+  text-transform:lowercase;
+  color:#000;
+}
+
+/* Right icons */
+.ss-icons{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:26px;
+  font-weight:800;
+  font-size:13px;
+}
+
+.ss-icon-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  font:inherit;
+  color:#000;
+}
+
+.ss-icon-btn:hover{
+  opacity:0.7;
+}
+
+.ss-cart-count{
+  font-weight:900;
+}
+
 
 
 .ss-container {
@@ -2830,48 +2934,76 @@ const applyBrandFilter = (brand) => {
         )}
 
         {/* Top Bar */}
-       <header className="ss-header">
-  <div className="ss-container">
+   <header className="ss-header">
 
-    {/* Logo */}
+  {/* Top strip */}
+  <div className="ss-topstrip">
+    <div className="ss-topstrip-left">
+      <div className="ss-topstrip-item">🚚 FREE DELIVERY</div>
+      <div className="ss-topstrip-item">↩ EASY RETURN</div>
+      <div className="ss-topstrip-item">💳 PAY BY CASH OR CARD</div>
+    </div>
+
+    <div className="ss-topstrip-right">
+      <span>LOYALTY PROGRAM</span>
+      <span>OUR STORE</span>
+      <span>GIFT CARDS</span>
+    </div>
+  </div>
+
+  {/* Main header row */}
+  <div className="ss-mainbar">
+
+    {/* LEFT — SEARCH */}
+    <div className="ss-search">
+      🔍
+      <input
+        placeholder="SEARCH"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
+
+    {/* CENTER — LOGO */}
     <Link to="/" className="ss-logo">
-      <span className="ss-logo-main">aur</span>
-      <span className="ss-logo-accent">éa</span>
+      auréa
     </Link>
 
-    {/* Navigation */}
-    <nav className={`ss-nav ${sidebarOpen ? "active" : ""}`}>
-      <Link to="/">Home</Link>
-      <a href="#cosmetics" onClick={() => setSelectedCategory("cosmetics")}>Cosmetics</a>
-      <a href="#clothing" onClick={() => setSelectedCategory("clothing")}>Clothing</a>
-      <Link to="/wishlist">Wishlist</Link>
-    </nav>
+    {/* RIGHT — ACCOUNT / WISHLIST / CART */}
+    <div className="ss-icons">
 
-    {/* Right actions */}
-    <div className="ss-actions">
-      {user ? (
-        <button className="ss-login" onClick={signOut}>
-          {user.name}
-        </button>
-      ) : (
-        <>
-          <button className="ss-login" onClick={() => { setAuthOpen(true); setMode("signin"); }}>
-            Login
-          </button>
-          <button className="ss-register" onClick={() => { setAuthOpen(true); setMode("signup"); }}>
-            Register
-          </button>
-        </>
-      )}
+      <button
+        className="ss-icon-btn"
+        onClick={() => {
+          if (user) setAccountOpen(true);
+          else {
+            setAuthOpen(true);
+            setMode("signin");
+          }
+        }}
+      >
+        👤 ACCOUNT
+      </button>
 
-      {/* Mobile menu icon */}
-      <div className="ss-burger" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        ☰
-      </div>
+      <button
+        className="ss-icon-btn"
+        onClick={() => navigate("/wishlist")}
+      >
+        ♥ WISHLIST
+      </button>
+
+      <button
+        className="ss-icon-btn"
+        onClick={() => setCartOpen(true)}
+      >
+        🛒 CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
+      </button>
+
     </div>
 
   </div>
 </header>
+
 
     
 
