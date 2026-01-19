@@ -3356,9 +3356,8 @@ const applyBrandFilter = (brand) => {
           <path d="M8.5 12l2.2 2.2L15.8 9.3"/>
         </svg>
       </div>
-      <div className="trustText">
-        100% <span>Authentic Products</span>
-      </div>
+    
+      
     </div>
 
    <div className="trustItem">
