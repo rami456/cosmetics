@@ -2898,12 +2898,15 @@ const applyBrandFilter = (brand) => {
 
 
 
-      <button
-        className="ss-icon-btn"
-        onClick={() => setCartOpen(true)}
-      >
-        🛒 CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
-      </button>
+     <button className="ss-icon-btn" onClick={() => setCartOpen(true)}>
+  <svg className="ss-icon" viewBox="0 0 24 24">
+    <circle cx="9" cy="21" r="1"/>
+    <circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+  </svg>
+  CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
+</button>
+
 
     </div>
 
