@@ -82,7 +82,7 @@ const styles = `
 
 /* Main header row */
 .ss-mainbar{
-  height:74px;
+  height:64px;
   display:grid;
   grid-template-columns: 1fr auto 1fr;
   align-items:center;
@@ -2835,21 +2835,7 @@ const applyBrandFilter = (brand) => {
         {/* Top Bar */}
    <header className="ss-header">
 
-  {/* Top strip */}
-  <div className="ss-topstrip">
-    <div className="ss-topstrip-left">
-      <div className="ss-topstrip-item">🚚 FREE DELIVERY</div>
-      <div className="ss-topstrip-item">↩ EASY RETURN</div>
-      <div className="ss-topstrip-item">💳 PAY BY CASH OR CARD</div>
-    </div>
-
-    <div className="ss-topstrip-right">
-      <span>LOYALTY PROGRAM</span>
-      <span>OUR STORE</span>
-      <span>GIFT CARDS</span>
-    </div>
-  </div>
-
+  
   {/* Main header row */}
   <div className="ss-mainbar">
 
