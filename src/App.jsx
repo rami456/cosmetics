@@ -1225,6 +1225,9 @@ button{ -webkit-tap-highlight-color: transparent; }
   margin-top: 0 !important;
   padding-top: 12px !important;
 }
+section{
+  margin-bottom: 0 !important;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
