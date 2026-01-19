@@ -1215,62 +1215,69 @@ button{ -webkit-tap-highlight-color: transparent; }
   }
   
 /* ============================= */
-/*        TRUST STRIP (FOOTER)   */
+/*   SKINSOCIETY-STYLE TRUST BAR */
 /* ============================= */
+
 .trustStrip{
   width:100%;
   background:#fff;
   border-top:1px solid rgba(0,0,0,0.08);
-  padding:46px 18px;
+  padding:36px 18px 28px;
 }
 
 .trustStripInner{
-  max-width:1100px;
+  max-width:1000px;
   margin:0 auto;
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:42px;
+  gap:60px;
   justify-items:center;
-  align-items:center;
 }
 
 .trustItem{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:14px;
+  gap:12px;
   text-align:center;
 }
 
 .trustIcon{
-  width:110px;
-  height:110px;
+  width:78px;
+  height:78px;
   border-radius:999px;
-  background:#f3a38f; /* soft coral like the screenshot */
+  background:#f39a83; /* EXACT soft coral tone */
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
 .trustSvg{
-  width:40px;
-  height:40px;
+  width:30px;
+  height:30px;
   stroke:#000;
-  stroke-width:1.8;
+  stroke-width:1.6;
   fill:none;
 }
 
 .trustText{
-  font-size:20px;
-  font-weight:900;
+  font-size:17px;
   color:#000;
+  font-weight:800;
 }
 
-@media (max-width: 700px){
-  .trustStripInner{ grid-template-columns: 1fr; gap:26px; }
-  .trustIcon{ width:96px; height:96px; }
-  .trustText{ font-size:18px; }
+.trustText span{
+  font-weight:400;
+  font-style:italic;
 }
+
+@media (max-width:700px){
+  .trustStripInner{
+    grid-template-columns:1fr;
+    gap:34px;
+  }
+}
+
 
   .btnPrimary,
   .btnCheckout{
@@ -3408,34 +3415,39 @@ const applyBrandFilter = (brand) => {
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
         </Routes>
-{/* ✅ TRUST STRIP (BOTTOM) */}
+{/* ✅ TRUST STRIP (SKINSOCIETY STYLE) */}
 <section className="trustStrip">
   <div className="trustStripInner">
 
     <div className="trustItem">
       <div className="trustIcon">
-        {/* Badge / check icon */}
+        {/* Verified badge */}
         <svg className="trustSvg" viewBox="0 0 24 24">
           <path d="M12 2l3 2 4 1-1 4 1 4-4 1-3 2-3-2-4-1 1-4-1-4 4-1 3-2z"/>
           <path d="M8.5 12l2.2 2.2L15.8 9.3"/>
         </svg>
       </div>
-      <div className="trustText">100% Authentic Products</div>
+      <div className="trustText">
+        100% <span>Authentic Products</span>
+      </div>
     </div>
 
     <div className="trustItem">
       <div className="trustIcon">
-        {/* Shield icon */}
+        {/* Shield */}
         <svg className="trustSvg" viewBox="0 0 24 24">
           <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"/>
           <path d="M9 12l2 2 4-4"/>
         </svg>
       </div>
-      <div className="trustText">Secure Shopping</div>
+      <div className="trustText">
+        Secure <span>Shopping</span>
+      </div>
     </div>
 
   </div>
 </section>
+
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
       </div>
