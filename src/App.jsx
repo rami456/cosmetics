@@ -1317,6 +1317,11 @@ button{ -webkit-tap-highlight-color: transparent; }
   font-weight:400 !important;
   font-style:italic !important;
 }
+.trustImg{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -3464,18 +3469,31 @@ const applyBrandFilter = (brand) => {
       </div>
     </div>
 
-    <div className="trustItem">
-      <div className="trustIcon">
-        {/* Shield */}
-        <svg className="trustSvg" viewBox="0 0 24 24">
-          <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"/>
-          <path d="M9 12l2 2 4-4"/>
-        </svg>
-      </div>
-      <div className="trustText">
-        Secure <span>Shopping</span>
-      </div>
-    </div>
+   <div className="trustItem">
+  <div className="trustIcon">
+    <img
+      src="/icons/authentic-products.svg"
+      alt="100% Authentic Products"
+      className="trustImg"
+    />
+  </div>
+  <div className="trustText">
+    100% <span>Authentic Products</span>
+  </div>
+</div>
+
+<div className="trustItem">
+  <div className="trustIcon">
+    <img
+      src="/icons/secure-shopping.svg"
+      alt="Secure Shopping"
+      className="trustImg"
+    />
+  </div>
+  <div className="trustText">
+    Secure <span>Shopping</span>
+  </div>
+</div>
 
   </div>
 </section>
