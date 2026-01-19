@@ -1285,6 +1285,38 @@ button{ -webkit-tap-highlight-color: transparent; }
     font-size:13px;
   }
 }
+/* ===== FORCE SMALL SKINSOCIETY TRUST ICONS ===== */
+
+.trustStrip{
+  padding:28px 18px 22px !important;
+}
+
+.trustStripInner{
+  max-width:900px !important;
+  gap:70px !important;
+}
+
+.trustIcon{
+  width:64px !important;
+  height:64px !important;
+  background:#f39a83 !important; /* exact SkinSociety coral */
+}
+
+.trustSvg{
+  width:24px !important;
+  height:24px !important;
+  stroke-width:1.5 !important;
+}
+
+.trustText{
+  font-size:15px !important;
+  font-weight:800 !important;
+}
+
+.trustText span{
+  font-weight:400 !important;
+  font-style:italic !important;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
