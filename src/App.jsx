@@ -3361,18 +3361,7 @@ const applyBrandFilter = (brand) => {
 {/* ✅ TRUST STRIP (SKINSOCIETY STYLE) */}
 <section className="trustStrip">
   <div className="trustStripInner">
-
-    <div className="trustItem">
-      <div className="trustIcon">
-        {/* Verified badge */}
-        <svg className="trustSvg" viewBox="0 0 24 24">
-         
-        </svg>
-      </div>
     
-      
-    </div>
-
    <div className="trustItem">
   <div className="trustIcon">
     <img
