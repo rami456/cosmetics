@@ -34,6 +34,22 @@ const styles = `
   top:0;
   z-index:999;
 }
+.ss-icon{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  stroke-width:1.8;
+  fill:none;
+}
+
+.ss-search-icon{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  stroke-width:1.8;
+  fill:none;
+  flex-shrink:0;
+}
 
 /* Top info strip */
 .ss-topstrip{
@@ -2838,14 +2854,19 @@ const applyBrandFilter = (brand) => {
   <div className="ss-mainbar">
 
     {/* LEFT — SEARCH */}
-    <div className="ss-search">
-      🔍
-      <input
-        placeholder="SEARCH"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-    </div>
+   <div className="ss-search">
+  <svg className="ss-search-icon" viewBox="0 0 24 24">
+    <circle cx="11" cy="11" r="7" />
+    <line x1="16.65" y1="16.65" x2="21" y2="21" />
+  </svg>
+
+  <input
+    placeholder="SEARCH"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+</div>
+
 
     {/* CENTER — LOGO */}
     <Link to="/" className="ss-logo">
@@ -2856,22 +2877,25 @@ const applyBrandFilter = (brand) => {
     <div className="ss-icons">
 
       <button
-        className="ss-icon-btn"
-        onClick={() => {
-          if (user) setAccountOpen(true);
-          else {
-            setAuthOpen(true);
-            setMode("signin");
-          }
-        }}
-      >
-        👤 ACCOUNT
-      </button>
+         className="ss-icon-btn" onClick={() => {
+  if (user) setAccountOpen(true);
+  else { setAuthOpen(true); setMode("signin"); }
+}}>
+  <svg className="ss-icon" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+  </svg>
+  ACCOUNT
+</button>
 
   
-       <Link className="ss-icon-btn" to="/wishlist">
-  ♥ WISHLIST
+      <Link className="ss-icon-btn" to="/wishlist">
+  <svg className="ss-icon" viewBox="0 0 24 24">
+    <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
+  </svg>
+  WISHLIST
 </Link>
+
 
 
       <button
