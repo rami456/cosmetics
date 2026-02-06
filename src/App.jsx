@@ -3229,37 +3229,59 @@ const applyBrandFilter = (brand) => {
    <div className="ss-icons">
   {/* ✅ Desktop actions */}
   <div className="ss-icons-desktop">
-    <button
-      className="ss-icon-btn"
-      onClick={() => {
-        if (user) setAccountOpen(true);
-        else { setAuthOpen(true); setMode("signin"); }
-      }}
-      type="button"
-    >
-      <svg className="ss-icon" viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-      </svg>
-      ACCOUNT
-    </button>
 
-    <Link className="ss-icon-btn" to="/wishlist">
-      <svg className="ss-icon" viewBox="0 0 24 24">
-        <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
-      </svg>
-      WISHLIST
-    </Link>
+  {/* ACCOUNT */}
+  <button
+    className="ss-icon-btn"
+    onClick={() => {
+      if (user) setAccountOpen(true);
+      else { setAuthOpen(true); setMode("signin"); }
+    }}
+    type="button"
+  >
+    <svg className="ss-icon" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+    </svg>
+    ACCOUNT
+  </button>
 
-    <button className="ss-icon-btn" onClick={() => setCartOpen(true)} type="button">
-      <svg className="ss-icon" viewBox="0 0 24 24">
-        <circle cx="9" cy="21" r="1"/>
-        <circle cx="20" cy="21" r="1"/>
-        <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
-      </svg>
-      CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
-    </button>
-  </div>
+  {/* WISHLIST */}
+  <Link className="ss-icon-btn" to="/wishlist">
+    <svg className="ss-icon" viewBox="0 0 24 24">
+      <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
+    </svg>
+    WISHLIST
+  </Link>
+
+  {/* FILTERS */}
+  <button
+    className="ss-icon-btn"
+    onClick={() => setFiltersOpen(true)}
+    type="button"
+  >
+    <svg className="ss-icon" viewBox="0 0 24 24">
+      <path d="M3 5h18M6 12h12M10 19h4"/>
+    </svg>
+    FILTERS
+  </button>
+
+  {/* CART */}
+  <button
+    className="ss-icon-btn"
+    onClick={() => setCartOpen(true)}
+    type="button"
+  >
+    <svg className="ss-icon" viewBox="0 0 24 24">
+      <circle cx="9" cy="21" r="1"/>
+      <circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+    </svg>
+    CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
+  </button>
+
+</div>
+
 
   {/* ✅ Mobile: burger only */}
   <button
@@ -3310,6 +3332,19 @@ const applyBrandFilter = (brand) => {
         <span className="menuArrow">→</span>
       </Link>
     </li>
+<li>
+  <button
+    className="menuItem"
+    type="button"
+    onClick={() => {
+      setSidebarOpen(false);
+      setFiltersOpen(true);
+    }}
+  >
+    <span className="menuText">Filters</span>
+    <span className="menuArrow">→</span>
+  </button>
+</li>
 
     <li>
       <button
