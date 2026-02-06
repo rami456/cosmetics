@@ -1840,6 +1840,41 @@ section{
   color:#000 !important;
   text-decoration:none;
 }
+/* ✅ HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
+.ss-header *{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important; /* iOS Safari can force link color */
+}
+
+/* links specifically */
+.ss-header a:link,
+.ss-header a:visited,
+.ss-header a:hover,
+.ss-header a:active{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  text-decoration:none !important;
+}
+
+/* buttons text */
+.ss-header button{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+
+/* SVG icons were blue? force them too */
+.ss-header svg{
+  stroke:#000 !important;
+  fill:none !important;
+}
+
+/* if any icon uses fill instead of stroke */
+.ss-header svg path,
+.ss-header svg circle,
+.ss-header svg line{
+  stroke:#000 !important;
+  fill:none !important;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
