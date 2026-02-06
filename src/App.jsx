@@ -1657,6 +1657,118 @@ section{
   /* Your header might be taller on phone; adjust sticky offset if needed */
   .ss-mobile-searchbar{ top:0; }        /* safest with your sticky header */
 }
+/* ============================= */
+/* ✅ PHONE HEADER: LEFT ICONS + CENTER LOGO */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Make header a 3-column grid on phones */
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;   /* left / logo / right */
+    align-items:center;
+    row-gap:0;
+  }
+
+  /* Put burger + search on the left */
+  .ss-search{
+    grid-column:1 / 2;
+    justify-self:start;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:none;
+  }
+
+  /* Ensure the mobile search icon shows */
+  .ss-search-desktop{ display:none !important; }
+  .ss-search-mobile-btn{ display:flex !important; }
+
+  /* Burger on the left too */
+  .ss-burger-btn{
+    display:flex !important;
+  }
+
+  /* Center the logo */
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:center;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  /* Hide desktop icon row on phone */
+  .ss-icons-desktop{
+    display:none !important;
+  }
+
+  /* Keep the right column empty (so logo stays centered) */
+  .ss-icons{
+    grid-column:3 / 4;
+    justify-self:end;
+    gap:0;
+  }
+}
+/* ============================= */
+/* ✅ PHONE: LEFT ICONS + CENTER LOGO */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Header becomes 3 columns: left / center / right */
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+  }
+
+  /* Left group = burger + magnifier */
+  .ss-search{
+    grid-column:1 / 2;
+    justify-self:start;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:none;
+  }
+
+  /* Hide desktop search input on phone */
+  .ss-search-desktop{
+    display:none !important;
+  }
+
+  /* Show mobile search icon + burger */
+  .ss-search-mobile-btn{
+    display:flex !important;
+  }
+  .ss-burger-btn{
+    display:flex !important;
+  }
+
+  /* Center logo */
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:center;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  /* Right side: keep empty so logo stays truly centered */
+  .ss-icons{
+    grid-column:3 / 4;
+    justify-self:end;
+  }
+
+  /* Hide desktop actions on phone (ACCOUNT/WISHLIST/CART row) */
+  .ss-icons-desktop{
+    display:none !important;
+  }
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -3297,18 +3409,23 @@ const applyBrandFilter = (brand) => {
   </div>
 
   {/* Mobile icon */}
-  <button
-    className="ss-search-mobile-btn"
-    type="button"
-    aria-label="Open search"
-    onClick={() => setMobileSearchOpen((v) => !v)}
-  >
-    <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+ 
+<div className="ss-search">
+  <button className="ss-burger-btn" type="button" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+    <span className="hamburger" />
+  </button>
+
+  <button className="ss-search-mobile-btn" type="button" onClick={() => setMobileSearchOpen(v=>!v)} aria-label="Open search">
+    <svg className="ss-search-icon" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="7" />
       <line x1="16.65" y1="16.65" x2="21" y2="21" />
     </svg>
   </button>
+
+  {/* desktop search stays in ss-search-desktop */}
+  <div className="ss-search-desktop"> ... </div>
 </div>
+
 
 
 
