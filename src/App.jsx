@@ -1585,6 +1585,78 @@ section{
   .ss-icons-desktop{ display:none; }  /* hide ACCOUNT/WISHLIST/CART */
   .ss-burger-btn{ display:flex; }     /* show burger */
 }
+/* ============================= */
+/* ✅ Mobile Search Drop-down     */
+/* ============================= */
+
+.ss-search-desktop{ display:flex; align-items:center; gap:10px; width:100%; }
+.ss-search-mobile-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+
+.ss-mobile-searchbar{
+  position:sticky;
+  top:64px;               /* sticks under your header */
+  z-index:998;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 220ms ease;
+}
+
+.ss-mobile-searchbar.open{
+  max-height:90px;
+}
+
+.ss-mobile-search-inner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:10px 12px 12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.ss-mobile-search-input{
+  flex:1;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:0 12px;
+  outline:none;
+  font-weight:800;
+  background:#fff;
+}
+
+.ss-mobile-search-close{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+  font-weight:900;
+}
+
+/* ✅ Switch behavior on phones */
+@media (max-width:620px){
+  .ss-search-desktop{ display:none; }   /* hide desktop input */
+  .ss-search-mobile-btn{ display:flex; }/* show magnifier only */
+
+  /* Your header might be taller on phone; adjust sticky offset if needed */
+  .ss-mobile-searchbar{ top:0; }        /* safest with your sticky header */
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -2777,6 +2849,7 @@ const [minPrice, setMinPrice] = useState("");
 const [maxPrice, setMaxPrice] = useState("");
 const [onlyWished, setOnlyWished] = useState(false);
 const [accountOpen, setAccountOpen] = useState(false);
+const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 const [accountForm, setAccountForm] = useState({
   displayName: "",
   currentPassword: "",
@@ -2923,6 +2996,7 @@ useEffect(() => {
         setIntroOpen(false);
         setFiltersOpen(false);
         setAccountOpen(false);
+        setMobileSearchOpen(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -3206,18 +3280,36 @@ const applyBrandFilter = (brand) => {
   <div className="ss-mainbar">
 
     {/* LEFT — SEARCH */}
-   <div className="ss-search">
-  <svg className="ss-search-icon" viewBox="0 0 24 24">
-    <circle cx="11" cy="11" r="7" />
-    <line x1="16.65" y1="16.65" x2="21" y2="21" />
-  </svg>
+   {/* LEFT — SEARCH (desktop input, mobile icon) */}
+<div className="ss-search">
+  {/* Desktop input */}
+  <div className="ss-search-desktop">
+    <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <line x1="16.65" y1="16.65" x2="21" y2="21" />
+    </svg>
 
-  <input
-    placeholder="SEARCH"
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
+    <input
+      placeholder="SEARCH"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+  </div>
+
+  {/* Mobile icon */}
+  <button
+    className="ss-search-mobile-btn"
+    type="button"
+    aria-label="Open search"
+    onClick={() => setMobileSearchOpen((v) => !v)}
+  >
+    <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <line x1="16.65" y1="16.65" x2="21" y2="21" />
+    </svg>
+  </button>
 </div>
+
 
 
     {/* CENTER — LOGO */}
@@ -3297,6 +3389,27 @@ const applyBrandFilter = (brand) => {
 
   </div>
 </header>
+{/* ✅ Mobile dropdown search bar */}
+<div className={`ss-mobile-searchbar ${mobileSearchOpen ? "open" : ""}`}>
+  <div className="ss-mobile-search-inner">
+    <input
+      autoFocus={mobileSearchOpen}
+      className="ss-mobile-search-input"
+      placeholder="Search products…"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <button
+      className="ss-mobile-search-close"
+      type="button"
+      onClick={() => setMobileSearchOpen(false)}
+      aria-label="Close search"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
 {/* ✅ Mobile Sidebar Overlay */}
 <div
   className={`overlay ${sidebarOpen ? "show" : ""}`}
