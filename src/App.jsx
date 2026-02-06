@@ -1200,12 +1200,14 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 @media (max-width: 620px){
   .grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap:10px;
+    grid-template-columns: 1fr;   /* one product per row */
+    gap:12px;
   }
-  .cardBody{ padding:10px 12px; }
-  .cardTitle{ font-size:13px; }
-  .price{ font-size:12px; }
+
+  .cardBody{ padding:14px; }
+  .cardTitle{ font-size:15px; }
+  .price{ font-size:14px; }
+  .imgWrap{ aspect-ratio: 1/1; }
 }
 @media (max-width: 520px){
   .row2{ grid-template-columns: 1fr; }
