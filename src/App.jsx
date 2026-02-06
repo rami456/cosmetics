@@ -1378,6 +1378,109 @@ button{ -webkit-tap-highlight-color: transparent; }
   color:#000;
   text-decoration:none;
 }
+/* ============================= */
+/* ✅ MOBILE FIX PACK (AURÉA)    */
+/* ============================= */
+
+@media (max-width: 900px){
+  /* Page padding smaller */
+  .main{ padding:14px 12px 0; gap:12px; }
+
+  /* Cards grid tighter */
+  .grid{ gap:12px; }
+}
+
+@media (max-width: 620px){
+  /* ---------- Header ---------- */
+  .ss-topstrip{ display:none; } /* optional: removes the tiny top bar on phone */
+
+  .ss-mainbar{
+    height:auto;
+    padding:12px 12px;
+    grid-template-columns: 1fr auto;     /* search + logo on first row */
+    grid-template-rows: auto auto;       /* icons on second row */
+    row-gap:10px;
+  }
+
+  .ss-search{
+    grid-column:1 / 2;
+    max-width:none;
+  }
+
+  .ss-search input{
+    height:40px;
+    font-size:13px;
+  }
+
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:end;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  .ss-icons{
+    grid-column:1 / -1;
+    justify-self:stretch;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* ACCOUNT / WISHLIST / FILTERS / CART */
+    gap:8px;
+    font-size:0; /* hide the words */
+  }
+
+  .ss-icon-btn{
+    justify-content:center;
+    gap:0;
+    padding:10px 0;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,0.85);
+  }
+
+  .ss-icon-btn svg{ width:18px; height:18px; }
+  .ss-cart-count{ font-size:12px; margin-left:6px; } /* still show (3) etc */
+
+  /* ---------- Hero/sections ---------- */
+  .h1{ font-size:24px; }
+  .sub{ font-size:13px; }
+
+  /* ---------- Product page ---------- */
+  .productWrap{ padding:14px; }
+  .productBody{ gap:12px; padding:12px; }
+  .pImgWrap{ border-radius:16px; }
+  .thumbBtn{ width:62px; height:62px; }
+
+  /* ---------- Modals ---------- */
+  .modalCard{
+    width:100%;
+    border-radius:18px;
+  }
+
+  /* ---------- Cart Drawer ---------- */
+  .cartDrawer{
+    width:100vw;             /* full width on phone */
+    border-left:none;
+  }
+
+  .cartDrawerHeader{ padding:14px; }
+  .cartDrawerBody{ padding:12px 14px 14px; }
+
+  /* ---------- Trust strip ---------- */
+  .trustStripInner{
+    padding:12px 12px;
+    gap:10px;
+  }
+  .trustItem{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* Ultra small phones */
+@media (max-width: 420px){
+  .ss-icons{ grid-template-columns: 1fr 1fr; } /* 2x2 icons */
+  .ss-logo{ font-size:20px; }
+}
 
 section{
   margin-bottom: 0 !important;
