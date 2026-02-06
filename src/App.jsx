@@ -1769,6 +1769,22 @@ section{
     display:none !important;
   }
 }
+@media (max-width: 620px){
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+  }
+
+  .ss-icons{ justify-self:end; }
+
+  .ss-icons-desktop{ display:none !important; }
+  .ss-burger-btn{ display:flex !important; }
+  .ss-search-mobile-btn{ display:flex !important; }
+  .ss-search-desktop{ display:none !important; }
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -2918,7 +2934,7 @@ setSort
                         navigate(`/product/${p.id}`);
                         alert("Select size on the product page.");
                         return;
-                      }
+                      };
                       addToCart(p, { qty: 1, size: "" });
                     }}
                     type="button"
@@ -3386,123 +3402,110 @@ const applyBrandFilter = (brand) => {
 
         {/* Top Bar */}
    <header className="ss-header">
-
-  
-  {/* Main header row */}
   <div className="ss-mainbar">
 
-    {/* LEFT — SEARCH */}
-   {/* LEFT — SEARCH (desktop input, mobile icon) */}
-<div className="ss-search">
-  {/* Desktop input */}
-  <div className="ss-search-desktop">
-    <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="11" cy="11" r="7" />
-      <line x1="16.65" y1="16.65" x2="21" y2="21" />
-    </svg>
+    {/* LEFT: burger + mobile search icon + desktop search input */}
+    <div className="ss-search">
 
-    <input
-      placeholder="SEARCH"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-    />
-  </div>
+      {/* Burger (mobile only) */}
+      <button
+        className="ss-burger-btn"
+        type="button"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open menu"
+      >
+        <span className="hamburger" />
+      </button>
 
-  {/* Mobile icon */}
- 
-<div className="ss-search">
-  <button className="ss-burger-btn" type="button" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
-    <span className="hamburger" />
-  </button>
+      {/* Mobile search icon (mobile only) */}
+      <button
+        className="ss-search-mobile-btn"
+        type="button"
+        onClick={() => setMobileSearchOpen((v) => !v)}
+        aria-label="Open search"
+      >
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
+      </button>
 
-  <button className="ss-search-mobile-btn" type="button" onClick={() => setMobileSearchOpen(v=>!v)} aria-label="Open search">
-    <svg className="ss-search-icon" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="7" />
-      <line x1="16.65" y1="16.65" x2="21" y2="21" />
-    </svg>
-  </button>
+      {/* Desktop search (desktop only) */}
+      <div className="ss-search-desktop">
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
 
-  {/* desktop search stays in ss-search-desktop */}
-  <div className="ss-search-desktop"> ... </div>
-</div>
+        <input
+          placeholder="SEARCH"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+    </div>
 
-
-
-
-    {/* CENTER — LOGO */}
+    {/* CENTER: logo */}
     <Link to="/" className="ss-logo">
       auréa
     </Link>
 
-    {/* RIGHT — ACCOUNT / WISHLIST / CART */}
-   <div className="ss-icons">
-  {/* ✅ Desktop actions */}
-  <div className="ss-icons-desktop">
+    {/* RIGHT: desktop actions only */}
+    <div className="ss-icons">
+      <div className="ss-icons-desktop">
 
-  {/* ACCOUNT */}
-  <button
-    className="ss-icon-btn"
-    onClick={() => {
-      if (user) setAccountOpen(true);
-      else { setAuthOpen(true); setMode("signin"); }
-    }}
-    type="button"
-  >
-    <svg className="ss-icon" viewBox="0 0 24 24">
-      <circle cx="12" cy="8" r="4"/>
-      <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-    </svg>
-    ACCOUNT
-  </button>
+        {/* ACCOUNT */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => {
+            if (user) setAccountOpen(true);
+            else { setAuthOpen(true); setMode("signin"); }
+          }}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+          ACCOUNT
+        </button>
 
-  {/* WISHLIST */}
-  <Link className="ss-icon-btn" to="/wishlist">
-    <svg className="ss-icon" viewBox="0 0 24 24">
-      <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
-    </svg>
-    WISHLIST
-  </Link>
+        {/* WISHLIST */}
+        <Link className="ss-icon-btn" to="/wishlist">
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z" />
+          </svg>
+          WISHLIST
+        </Link>
 
-  {/* FILTERS */}
-  <button
-    className="ss-icon-btn"
-    onClick={() => setFiltersOpen(true)}
-    type="button"
-  >
-    <svg className="ss-icon" viewBox="0 0 24 24">
-      <path d="M3 5h18M6 12h12M10 19h4"/>
-    </svg>
-    FILTERS
-  </button>
+        {/* FILTERS */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => setFiltersOpen(true)}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <path d="M3 5h18M6 12h12M10 19h4" />
+          </svg>
+          FILTERS
+        </button>
 
-  {/* CART */}
-  <button
-    className="ss-icon-btn"
-    onClick={() => setCartOpen(true)}
-    type="button"
-  >
-    <svg className="ss-icon" viewBox="0 0 24 24">
-      <circle cx="9" cy="21" r="1"/>
-      <circle cx="20" cy="21" r="1"/>
-      <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
-    </svg>
-    CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
-  </button>
+        {/* CART */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => setCartOpen(true)}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
+          </svg>
+          CART <span className="ss-cart-count">({cartItems.reduce((s, x) => s + x.qty, 0)})</span>
+        </button>
 
-</div>
-
-
-  {/* ✅ Mobile: burger only */}
-  <button
-    className="ss-burger-btn"
-    type="button"
-    onClick={() => setSidebarOpen(true)}
-    aria-label="Open menu"
-  >
-    <span className="hamburger" />
-  </button>
-</div>
-
+      </div>
+    </div>
 
   </div>
 </header>
