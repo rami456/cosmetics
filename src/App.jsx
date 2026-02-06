@@ -1830,6 +1830,16 @@ section{
   .ss-search-mobile-btn{ display:flex !important; }
   .ss-search-desktop{ display:none !important; }
 }
+/* Force header text to be black */
+.ss-header,
+.ss-header a,
+.ss-header a:visited,
+.ss-header a:hover,
+.ss-header a:active,
+.ss-header button{
+  color:#000 !important;
+  text-decoration:none;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
