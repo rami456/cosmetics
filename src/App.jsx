@@ -1487,6 +1487,85 @@ button{ -webkit-tap-highlight-color: transparent; }
 section{
   margin-bottom: 0 !important;
 }
+/* ============================= */
+/* PREMIUM MOBILE PRODUCT STYLE  */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Bigger product image */
+  .imgWrap{
+    aspect-ratio: 1 / 1;
+    background:#f4f4f6;
+  }
+
+  .img{
+    padding:6px;           /* less padding = bigger visual */
+  }
+
+  /* Card layout cleaner */
+  .card{
+    border-radius:18px;
+    box-shadow:0 8px 28px rgba(0,0,0,0.08);
+  }
+
+  .cardBody{
+    padding:14px;
+    gap:8px;
+  }
+
+  /* Title more premium */
+  .cardTitle{
+    font-size:15px;
+    font-weight:900;
+    line-height:1.3;
+  }
+
+  /* Price stronger */
+  .price{
+    font-size:15px;
+    font-weight:900;
+  }
+
+  /* Button full width and nicer */
+  .btnPrimary{
+    height:44px;
+    font-size:14px;
+    border-radius:10px;
+  }
+
+  .btnCheckout{
+    height:42px;
+    font-size:13px;
+    border-radius:10px;
+  }
+
+  /* Wishlist heart nicer on phone */
+  .wishBtn{
+    width:38px;
+    height:38px;
+  }
+}
+@media (max-width:620px){
+
+  /* Product cards image */
+  .img{
+    object-fit:cover;     /* fills space nicely on mobile */
+    padding:4px;
+  }
+
+  /* Product page image */
+  .pImg{
+    object-fit:cover;
+    padding:6px;
+  }
+
+  /* Optional: make banner look better on phone */
+  .brandSlideImg{
+    object-fit:cover;
+    height:220px;
+  }
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
