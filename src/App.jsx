@@ -1929,6 +1929,35 @@ section{
   margin:0;
   padding:0;
 }
+/* Force all burger menu items to be identical */
+.sidebar .menuItem{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+
+  height:52px !important;
+  padding:0 16px !important;
+
+  font:inherit !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+}
+
+/* Make links behave like buttons */
+.sidebar a.menuItem,
+.sidebar button.menuItem{
+  text-decoration:none !important;
+  color:var(--text) !important;
+  background:none !important;
+  border:none !important;
+}
+
+/* Remove extra spacing from inner elements */
+.sidebar .menuItem *{
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1 !important;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
