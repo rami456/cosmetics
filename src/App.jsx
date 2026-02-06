@@ -1875,6 +1875,36 @@ section{
   stroke:#000 !important;
   fill:none !important;
 }
+/* ✅ FIX: Sidebar (burger menu) link colors (blue/purple) */
+.sidebar a,
+.sidebar a:visited,
+.sidebar a:hover,
+.sidebar a:active {
+  color: var(--text) !important;
+  text-decoration: none !important;
+}
+
+/* Make the whole menu item always use your text color */
+.sidebar .menuItem {
+  color: var(--text) !important;
+}
+
+/* When it's the active one (Sign out etc), keep white text */
+.sidebar .menuItem.active,
+.sidebar .menuItem.active * {
+  color: #fff !important;
+}
+
+/* Prevent purple/blue from child spans inside links */
+.sidebar .menuItem * {
+  color: inherit !important;
+}
+
+/* Optional: remove weird mobile focus ring color */
+.sidebar .menuItem:focus,
+.sidebar .menuItem:focus-visible {
+  outline: none;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
