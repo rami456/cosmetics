@@ -1958,6 +1958,19 @@ section{
   padding:0 !important;
   line-height:1 !important;
 }
+/* Make cart drawer appear above header */
+.cartDrawer{
+  z-index:1100 !important;
+}
+
+.cartDrawerOverlay{
+  z-index:1090 !important;
+}
+
+/* Header lower than cart */
+.ss-header{
+  z-index:1000;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
