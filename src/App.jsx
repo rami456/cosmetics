@@ -1580,6 +1580,35 @@ section{
   align-items:center;
   justify-content:center;
 }
+  /* Optional polish */
+.ss-burger-btn{
+  transition:transform 120ms ease;
+}
+
+.ss-burger-btn:active{
+  transform:scale(0.92);
+}
+
+/* Burger animation */
+.ss-burger-btn.active .hamburger{
+  background:transparent;
+}
+
+.ss-burger-btn.active .hamburger::before{
+  top:0;
+  transform:rotate(45deg);
+}
+
+.ss-burger-btn.active .hamburger::after{
+  top:0;
+  transform:rotate(-45deg);
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after{
+  transition:transform 180ms ease, top 180ms ease, background 180ms ease;
+}
 
 @media (max-width:620px){
   .ss-icons-desktop{ display:none; }  /* hide ACCOUNT/WISHLIST/CART */
@@ -3409,14 +3438,13 @@ const applyBrandFilter = (brand) => {
 
       {/* Burger (mobile only) */}
       <button
-        className="ss-burger-btn"
-        type="button"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open menu"
-      >
-        <span className="hamburger" />
-      </button>
-
+  className={`ss-burger-btn ${sidebarOpen ? "active" : ""}`}
+  type="button"
+  onClick={() => setSidebarOpen((v) => !v)}
+  aria-label="Open menu"
+>
+  <span className="hamburger" />
+</button>
       {/* Mobile search icon (mobile only) */}
       <button
         className="ss-search-mobile-btn"
