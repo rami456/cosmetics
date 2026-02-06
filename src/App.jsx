@@ -58,15 +58,7 @@ const styles = `
 .ss-header button{
   color:#000;
 }
-.ss-icon-btn{
-  font-weight:600;
-  letter-spacing:0.04em;
-}
-.ss-header .ss-logo{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight:700;
-  letter-spacing:0.08em;
-}
+
 
 /* Top info strip */
 .ss-topstrip{
@@ -162,6 +154,11 @@ const styles = `
   font:inherit;
   color:#000;
   text-decoration:none; /* ✅ important for Link */
+}
+/* cleaner header text */
+.ss-icon-btn{
+  font-weight:600;
+  letter-spacing:0.04em;
 }
 
 
@@ -1389,14 +1386,16 @@ button{ -webkit-tap-highlight-color: transparent; }
 /* You have TWO .ss-logo blocks; keep the "luxury" one.
    This forces the logo in the header to stay black + Playfair. */
 .ss-header .ss-logo{
-  font-family:'Playfair Display', serif;
-  font-size:30px;
-  font-weight:800;
-  letter-spacing:0.18em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:0.08em;
   text-transform:lowercase;
   color:#000;
   text-decoration:none;
 }
+
+
 /* ============================= */
 /* ✅ MOBILE FIX PACK (AURÉA)    */
 /* ============================= */
