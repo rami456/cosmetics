@@ -297,13 +297,11 @@ const styles = `
     display: flex;
   }
 
- .ss-burger {
-  display: block;     /* ✅ show on PC too */
-  font-size: 24px;
-  color: #ffffff;
-  cursor: pointer;
-  margin-left: 6px;
+.ss-burger { display: none; }
+@media (max-width: 900px) {
+  .ss-burger { display: block; }
 }
+
 }
 :root{
   --panel:#ffffff;
@@ -1191,10 +1189,10 @@ button{ -webkit-tap-highlight-color: transparent; }
 /* Responsive */
 @media (max-width: 1100px){
   .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .main{ grid-template-columns: 1fr 340px; }
+  .main{ grid-template-columns: 1fr; }
 }
 @media (max-width: 900px){
-.grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .main{ grid-template-columns: 1fr; }
   .cart{ position:relative; top:auto; }
   .pill{ display:none; }
@@ -1205,6 +1203,17 @@ button{ -webkit-tap-highlight-color: transparent; }
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap:10px;
   }
+  .cardBody{ padding:10px 12px; }
+  .cardTitle{ font-size:13px; }
+  .price{ font-size:12px; }
+}
+@media (max-width: 520px){
+  .row2{ grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
 
   .cardBody{
     padding:10px 12px;
@@ -1225,6 +1234,151 @@ button{ -webkit-tap-highlight-color: transparent; }
   margin-top: 0 !important;
   padding-top: 12px !important;
 }
+  /* ============================= */
+/* ✅ FIX: Cart Drawer Styling   */
+/* ============================= */
+
+.cartDrawerOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 200ms ease;
+  z-index:95;
+}
+.cartDrawerOverlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.cartDrawer{
+  position:fixed;
+  top:0;
+  right:0;
+  height:100vh;
+  width:min(420px, 92vw);
+  background:var(--panel);
+  border-left:1px solid var(--line);
+  box-shadow:var(--shadow);
+  transform:translateX(105%);
+  transition:transform 220ms ease;
+  z-index:96;
+  display:flex;
+  flex-direction:column;
+}
+.cartDrawer.open{
+  transform:translateX(0);
+}
+
+.cartDrawerHeader{
+  padding:16px 16px 12px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.cartDrawerTitle{
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.cartDrawerSub{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:800;
+}
+
+.cartDrawerBody{
+  padding:14px 16px 16px;
+  overflow:auto;
+  flex:1;
+}
+
+/* ============================= */
+/* ✅ FIX: Trust Strip Styling   */
+/* ============================= */
+
+.trustStrip{
+  width:100%;
+  border-top:1px solid var(--line);
+  background:var(--panel);
+}
+
+.trustStripInner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:16px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  flex-wrap:wrap;
+}
+
+.trustItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.75);
+}
+
+[data-theme="dark"] .trustItem{
+  background:rgba(18,18,20,0.7);
+}
+
+.trustIcon{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--soft);
+}
+
+.trustImg{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  display:block;
+}
+
+.trustText{
+  font-weight:900;
+  letter-spacing:0.02em;
+  font-size:12px;
+  color:var(--text);
+}
+.trustText span{
+  font-weight:800;
+  color:var(--muted);
+  margin-left:6px;
+}
+
+/* ============================= */
+/* ✅ FIX: Header style conflict */
+/* ============================= */
+/* You have TWO .ss-logo blocks; keep the "luxury" one.
+   This forces the logo in the header to stay black + Playfair. */
+.ss-header .ss-logo{
+  font-family:'Playfair Display', serif;
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:0.18em;
+  text-transform:lowercase;
+  color:#000;
+  text-decoration:none;
+}
+
 section{
   margin-bottom: 0 !important;
 }
@@ -1896,12 +2050,13 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
 
-  useEffect(() => {
-    const first = p?.images?.[0] || p?.img || "";
-    setActiveImage(first);
-    setQty(1);
-    setSize("");
-  }, [pid]); // eslint-disable-line react-hooks/exhaustive-deps
+ useEffect(() => {
+  const first = p?.images?.[0] || p?.img || "";
+  setActiveImage(first);
+  setQty(1);
+  setSize("");
+}, [pid, p]);
+ // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!p) {
     return (
@@ -2890,6 +3045,12 @@ const applyBrandFilter = (brand) => {
   WISHLIST
 </Link>
 
+<button className="ss-icon-btn" onClick={() => setFiltersOpen(true)} type="button">
+  <svg className="ss-icon" viewBox="0 0 24 24">
+    <path d="M3 5h18M6 12h12M10 19h4" />
+  </svg>
+  FILTERS
+</button>
 
 
      <button className="ss-icon-btn" onClick={() => setCartOpen(true)}>
