@@ -1566,6 +1566,25 @@ section{
     height:220px;
   }
 }
+.ss-icons{ justify-self:end; display:flex; align-items:center; gap:10px; }
+.ss-icons-desktop{ display:flex; align-items:center; gap:26px; }
+
+.ss-burger-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+
+@media (max-width:620px){
+  .ss-icons-desktop{ display:none; }  /* hide ACCOUNT/WISHLIST/CART */
+  .ss-burger-btn{ display:flex; }     /* show burger */
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -3207,50 +3226,127 @@ const applyBrandFilter = (brand) => {
     </Link>
 
     {/* RIGHT — ACCOUNT / WISHLIST / CART */}
-    <div className="ss-icons">
+   <div className="ss-icons">
+  {/* ✅ Desktop actions */}
+  <div className="ss-icons-desktop">
+    <button
+      className="ss-icon-btn"
+      onClick={() => {
+        if (user) setAccountOpen(true);
+        else { setAuthOpen(true); setMode("signin"); }
+      }}
+      type="button"
+    >
+      <svg className="ss-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+      </svg>
+      ACCOUNT
+    </button>
 
-      <button
-         className="ss-icon-btn" onClick={() => {
-  if (user) setAccountOpen(true);
-  else { setAuthOpen(true); setMode("signin"); }
-}}>
-  <svg className="ss-icon" viewBox="0 0 24 24">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-  </svg>
-  ACCOUNT
-</button>
+    <Link className="ss-icon-btn" to="/wishlist">
+      <svg className="ss-icon" viewBox="0 0 24 24">
+        <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
+      </svg>
+      WISHLIST
+    </Link>
 
-  
-      <Link className="ss-icon-btn" to="/wishlist">
-  <svg className="ss-icon" viewBox="0 0 24 24">
-    <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z"/>
-  </svg>
-  WISHLIST
-</Link>
+    <button className="ss-icon-btn" onClick={() => setCartOpen(true)} type="button">
+      <svg className="ss-icon" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1"/>
+        <circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+      </svg>
+      CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
+    </button>
+  </div>
 
-<button className="ss-icon-btn" onClick={() => setFiltersOpen(true)} type="button">
-  <svg className="ss-icon" viewBox="0 0 24 24">
-    <path d="M3 5h18M6 12h12M10 19h4" />
-  </svg>
-  FILTERS
-</button>
+  {/* ✅ Mobile: burger only */}
+  <button
+    className="ss-burger-btn"
+    type="button"
+    onClick={() => setSidebarOpen(true)}
+    aria-label="Open menu"
+  >
+    <span className="hamburger" />
+  </button>
+</div>
 
-
-     <button className="ss-icon-btn" onClick={() => setCartOpen(true)}>
-  <svg className="ss-icon" viewBox="0 0 24 24">
-    <circle cx="9" cy="21" r="1"/>
-    <circle cx="20" cy="21" r="1"/>
-    <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
-  </svg>
-  CART <span className="ss-cart-count">({cartItems.reduce((s,x)=>s+x.qty,0)})</span>
-</button>
-
-
-    </div>
 
   </div>
 </header>
+{/* ✅ Mobile Sidebar Overlay */}
+<div
+  className={`overlay ${sidebarOpen ? "show" : ""}`}
+  onClick={() => setSidebarOpen(false)}
+/>
+
+{/* ✅ Mobile Sidebar */}
+<aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+  <div className="sidebarHeader">
+    <div>
+      <div className="sidebarTitle">Menu</div>
+      <div className="sidebarSub">
+        {user ? `Signed in as ${user.name}` : "Not signed in"}
+      </div>
+    </div>
+
+    <button className="closeBtn" onClick={() => setSidebarOpen(false)} type="button">
+      ✕
+    </button>
+  </div>
+
+  <ul className="menuList">
+    <li>
+      <button className="menuItem" type="button" onClick={() => { setSidebarOpen(false); }}>
+        <span className="menuText">Home</span>
+        <span className="menuArrow">→</span>
+      </button>
+    </li>
+
+    <li>
+      <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
+        <span className="menuText">Wishlist</span>
+        <span className="menuArrow">→</span>
+      </Link>
+    </li>
+
+    <li>
+      <button
+        className="menuItem"
+        type="button"
+        onClick={() => {
+          setSidebarOpen(false);
+          if (user) setAccountOpen(true);
+          else { setAuthOpen(true); setMode("signin"); }
+        }}
+      >
+        <span className="menuText">Manage account</span>
+        <span className="menuArrow">→</span>
+      </button>
+    </li>
+
+    <li>
+      <button
+        className="menuItem"
+        type="button"
+        onClick={() => { setSidebarOpen(false); setCartOpen(true); }}
+      >
+        <span className="menuText">Cart</span>
+        <span className="menuArrow">→</span>
+      </button>
+    </li>
+
+    {user && user.mode === "user" && (
+      <li>
+        <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
+          <span className="menuText">Sign out</span>
+          <span className="menuArrow">→</span>
+        </button>
+      </li>
+    )}
+  </ul>
+</aside>
 
 
     
