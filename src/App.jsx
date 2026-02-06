@@ -50,6 +50,23 @@ const styles = `
   fill:none;
   flex-shrink:0;
 }
+.ss-header{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color:#000;
+}
+.ss-header a,
+.ss-header button{
+  color:#000;
+}
+.ss-icon-btn{
+  font-weight:600;
+  letter-spacing:0.04em;
+}
+.ss-header .ss-logo{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight:700;
+  letter-spacing:0.08em;
+}
 
 /* Top info strip */
 .ss-topstrip{
