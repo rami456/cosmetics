@@ -1905,6 +1905,30 @@ section{
 .sidebar .menuItem:focus-visible {
   outline: none;
 }
+/* Make all burger menu items same size */
+.menuItem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  height:52px;           /* same height for all */
+  padding:0 14px;
+
+  font:inherit;
+  line-height:1;
+}
+
+/* Ensure links behave like buttons */
+.menuItem,
+.menuItem:link,
+.menuItem:visited{
+  text-decoration:none;
+  color:var(--text);
+}
+.menuItem *{
+  margin:0;
+  padding:0;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
