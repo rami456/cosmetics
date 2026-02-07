@@ -4322,6 +4322,7 @@ const applyBrandFilter = (brand) => {
               />
             }
           />
+          <Route path="/cosmetics" element={<Home selectedCategory="cosmetics" />} />
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
         </Routes>
