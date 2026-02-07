@@ -3733,6 +3733,17 @@ const applyBrandFilter = (brand) => {
 
   </div>
 </header>
+<button
+  className={`categoryItem ${selectedCategory === "cosmetics" ? "active" : ""}`}
+  type="button"
+  onClick={() => {
+    setSelectedCategory("cosmetics");
+    setSidebarOpen(false);
+  }}
+>
+  Cosmetics
+</button>
+
 {/* Category navigation */}
 <div className="categoryBar">
   <div className="categoryInner">
