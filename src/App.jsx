@@ -3743,6 +3743,16 @@ const applyBrandFilter = (brand) => {
         <span className="menuArrow">→</span>
       </button>
     </li>
+<li>
+  <Link
+    className="menuItem"
+    to="/clothing"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <span className="menuText">Clothing</span>
+    <span className="menuArrow">→</span>
+  </Link>
+</li>
 
     <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
