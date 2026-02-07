@@ -2010,6 +2010,15 @@ section{
   letter-spacing:0.05em;
   font-weight:500;
 }
+.categoryItem{
+  font: inherit;
+  color:#000;
+  background:transparent;
+  border:none;
+  padding:10px 12px;
+  cursor:pointer;
+  text-decoration:none;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
