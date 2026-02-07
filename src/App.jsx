@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Link, useLocation} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Link} from "react-router-dom";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -3266,15 +3266,7 @@ useEffect(() => {
 
   // ✅ Intro overlay
   const [introOpen, setIntroOpen] = useState(true);
-
-const location = useLocation();
-
-useEffect(() => {
-  if (location.pathname === "/cosmetics") {
-    setSelectedCategory("cosmetics");
-  }
-}, [location.pathname]);
-
+  
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
