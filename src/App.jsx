@@ -3742,16 +3742,6 @@ const applyBrandFilter = (brand) => {
 
   </div>
 </header>
-<button
-  className={`categoryItem ${selectedCategory === "cosmetics" ? "active" : ""}`}
-  type="button"
-  onClick={() => {
-    setSelectedCategory("cosmetics");
-    setSidebarOpen(false);
-  }}
->
-  Cosmetics
-</button>
 
 {/* Category navigation */}
 <div className="categoryBar">
@@ -3761,6 +3751,7 @@ const applyBrandFilter = (brand) => {
     <Link to="/clothing" className="categoryItem">Clothing</Link>
     <Link to="/shoes" className="categoryItem">Shoes</Link>
     <Link to="/accessories" className="categoryItem">Accessories</Link>
+    <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
 
   </div>
 </div>
