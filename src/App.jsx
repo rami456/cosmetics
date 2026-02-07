@@ -3737,12 +3737,16 @@ const applyBrandFilter = (brand) => {
   </div>
 
   <ul className="menuList">
-    <li>
-      <button className="menuItem" type="button" onClick={() => { setSidebarOpen(false); }}>
-        <span className="menuText">Home</span>
-        <span className="menuArrow">→</span>
-      </button>
-    </li>
+  <li>
+  <Link
+    className="menuItem"
+    to="/"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <span className="menuText">Home</span>
+    <span className="menuArrow">→</span>
+  </Link>
+</li>
 <li>
   <Link
     className="menuItem"
