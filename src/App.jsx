@@ -3264,9 +3264,8 @@ useEffect(() => {
   // ✅ Cart modal
   const [cartOpen, setCartOpen] = useState(false);
 
-  // ✅ Intro overlay
-  const [introOpen, setIntroOpen] = useState(true);
-  
+
+
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
@@ -3321,16 +3320,8 @@ useEffect(() => {
     resetAuthForm();
   };
 
-  // ✅ Intro: show only once per browser
-  useEffect(() => {
-    const seen = localStorage.getItem("aurea_intro_seen");
-    if (seen === "1") setIntroOpen(false);
-  }, []);
 
-  const closeIntro = () => {
-    localStorage.setItem("aurea_intro_seen", "1");
-    setIntroOpen(false);
-  };
+
 
   // ✅ Firebase: keep user logged in (source of truth)
   useEffect(() => {
@@ -3355,7 +3346,6 @@ useEffect(() => {
         setSidebarOpen(false);
         setAuthOpen(false);
         setCartOpen(false);
-        setIntroOpen(false);
         setFiltersOpen(false);
         setAccountOpen(false);
         setMobileSearchOpen(false);
@@ -3368,11 +3358,11 @@ useEffect(() => {
   // lock body scroll when drawer or modal open
 useEffect(() => {
   const locked =
-    sidebarOpen || authOpen || cartOpen || introOpen || filtersOpen || accountOpen;
+    sidebarOpen || authOpen || cartOpen || filtersOpen || accountOpen;
 
   document.body.style.overflow = locked ? "hidden" : "";
   return () => (document.body.style.overflow = "");
-}, [sidebarOpen, authOpen, cartOpen, introOpen, filtersOpen, accountOpen]);
+}, [sidebarOpen, authOpen, cartOpen, filtersOpen, accountOpen]);
 
   // ✅ Filters
 const filteredProducts = useMemo(() => {
@@ -3571,68 +3561,6 @@ const applyBrandFilter = (brand) => {
     <BrowserRouter>
       <div className="app">
         <style>{styles}</style>
-
-        {/* ✅ INTRO OVERLAY */}
-        {introOpen && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 9999,
-              background: "rgba(0,0,0,0.35)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 18,
-            }}
-          >
-            <div
-              style={{
-                width: "min(980px, 96vw)",
-                borderRadius: 22,
-                overflow: "hidden",
-                boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
-                background: "#bbb",
-              }}
-            >
-              <img
-                src="/begin-experience.png"
-                alt="Auréa intro"
-                style={{ width: "100%", height: "auto", display: "block" }}
-                onError={(e) => {
-                  console.log("INTRO IMAGE FAILED:", e);
-                  alert("Intro image not found. Check: public/begin-experience.png (exact name).");
-                }}
-              />
-
-              <div
-                style={{
-                  padding: 16,
-                  background: "rgba(0,0,0,0.65)",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <button
-                  onClick={closeIntro}
-                  style={{
-                    padding: "12px 18px",
-                    borderRadius: 12,
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    background: "#0e0e10",
-                    color: "#fff",
-                    fontWeight: 900,
-                    cursor: "pointer",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Begin Experience
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Top Bar */}
    <header className="ss-header">
