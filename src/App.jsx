@@ -2019,6 +2019,18 @@ section{
   cursor:pointer;
   text-decoration:none;
 }
+/* ✅ Homepage section grid: always 3 cards max */
+.homeSectionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .homeSectionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .homeSectionGrid { grid-template-columns: 1fr; }
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -3012,6 +3024,27 @@ setSort
     { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
     { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
   ];
+// ✅ pick first 3 products for a category (with your current filters)
+const take3 = (key) => {
+  const list = products
+    .filter((p) => p.category === key)
+    .filter((p) => (key !== "clothing" ? true : (p.gender || "women") === clothingGender));
+
+  return list.slice(0, 3);
+};
+
+const openCategory = (key) => {
+  setSelectedCategory(key);
+  setSearch("");
+  setSort("featured");
+  setMinPrice("");
+  setMaxPrice("");
+  setOnlyWished(false);
+
+  navigate("/");
+  // scroll to products area
+  window.scrollTo({ top: 520, behavior: "smooth" });
+};
 
   const [slide, setSlide] = useState(0);
 
@@ -3116,6 +3149,102 @@ setSort
             Showing <b>{filteredProducts.length}</b> items
           </div>
         </div>
+{/* ✅ SkinSociety-style sections */}
+<section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
+  {[
+    { key: "cosmetics", title: "Cosmetics", cta: "Browse Cosmetics" },
+    { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
+    { key: "clothing", title: "Clothing", cta: "Browse Clothing" },
+  ].map((sec) => {
+    const items = take3(sec.key);
+    if (items.length === 0) return null; // ✅ hide categories with no products
+
+    return (
+      <div
+        key={sec.key}
+        style={{
+          border: "1px solid var(--line)",
+          borderRadius: 22,
+          background: "#fff",
+          boxShadow: "var(--shadow2)",
+          padding: 16,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 12 }}>
+          <div>
+            <h2 style={{ margin: 0, fontWeight: 900, fontSize: 18 }}>{sec.title}</h2>
+            <div style={{ marginTop: 6, color: "var(--muted)", fontWeight: 800, fontSize: 12 }}>
+              Top picks for you
+            </div>
+          </div>
+
+          <button className="btnCheckout" type="button" onClick={() => openCategory(sec.key)}>
+            {sec.cta} →
+          </button>
+        </div>
+
+        <div style={{ marginTop: 14 }} className="grid">
+          {items.map((p) => {
+            const coverImg =
+              p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+            const isWished = wishlistIds.includes(p.id);
+            const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+
+            return (
+              <article
+                key={p.id}
+                className="card"
+                onClick={() => navigate(`/product/${p.id}`)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="imgWrap">
+                  <img src={coverImg} alt={p.name} className="img" />
+
+                  <button
+                    className={`wishBtn ${isWished ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(p.id);
+                    }}
+                    type="button"
+                    aria-label="Toggle wishlist"
+                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    {isWished ? "♥" : "♡"}
+                  </button>
+                </div>
+
+                <div className="cardBody">
+                  <div className="cardTop">
+                    <h3 className="cardTitle">{p.name}</h3>
+                    <div className="price">{money(p.price)}</div>
+                  </div>
+
+                  <button
+                    className="btnPrimary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (needsSize) {
+                        navigate(`/product/${p.id}`);
+                        alert("Select size on the product page.");
+                        return;
+                      }
+                      addToCart(p, { qty: 1, size: "" });
+                    }}
+                    type="button"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    );
+  })}
+</section>
 
         <div className="grid">
           {filteredProducts.map((p) => {
@@ -4254,6 +4383,7 @@ const applyBrandFilter = (brand) => {
   path="/cosmetics"
   element={
     <HomePage
+    products={products}
       setSearch={setSearch}
       selectedCategory={"cosmetics"}          // force cosmetics
       setSelectedCategory={setSelectedCategory}
