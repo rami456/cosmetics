@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Link, useLocation} from "react-router-dom";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -3201,6 +3201,7 @@ setSort
 
 /** ✅ Main App */
 export default function App() {
+
   // ✅ State
   const [selectedCategory, setSelectedCategory] = useState("cosmetics");
   const [clothingGender, setClothingGender] = useState("women");
@@ -3266,6 +3267,13 @@ useEffect(() => {
   // ✅ Intro overlay
   const [introOpen, setIntroOpen] = useState(true);
 
+const location = useLocation();
+
+useEffect(() => {
+  if (location.pathname === "/cosmetics") {
+    setSelectedCategory("cosmetics");
+  }
+}, [location.pathname]);
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
@@ -4322,7 +4330,44 @@ const applyBrandFilter = (brand) => {
               />
             }
           />
-          <Route path="/cosmetics" element={<Home />} />
+         <Route
+  path="/cosmetics"
+  element={
+    <HomePage
+      setSearch={setSearch}
+      selectedCategory={"cosmetics"}          // force cosmetics
+      setSelectedCategory={setSelectedCategory}
+      clothingGender={clothingGender}
+      setMinPrice={setMinPrice}
+      setMaxPrice={setMaxPrice}
+      setClothingGender={setClothingGender}
+      filteredProducts={filteredProducts}
+      user={user}
+      wishlistIds={wishlistIds}
+      toggleWishlist={toggleWishlist}
+      applyBrandFilter={applyBrandFilter}
+      cartItems={cartItems}
+      addToCart={addToCart}
+      removeFromCart={removeFromCart}
+      updateQty={updateQty}
+      subtotal={subtotal}
+      promoCode={promoCode}
+      promoInput={promoInput}
+      setPromoInput={setPromoInput}
+      promoMessage={promoMessage}
+      applyPromo={applyPromo}
+      discount={discount}
+      shipping={shipping}
+      total={total}
+      checkout={checkout}
+      setAuthOpen={setAuthOpen}
+      setMode={setMode}
+      setOnlyWished={setOnlyWished}
+      setSort={setSort}
+    />
+  }
+/>
+
           <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
           <Route path="/cancel" element={<CancelPage />} />
         </Routes>
