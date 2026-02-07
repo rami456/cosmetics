@@ -2662,6 +2662,7 @@ const products = [
 
 
 const categories = [
+  { key: "all", label: "Home" },
   { key: "cosmetics", label: "Cosmetics" },
   { key: "clothing", label: "Clothing" },
 ];
@@ -3011,13 +3012,18 @@ function HomePage({
   setAuthOpen,
   setMode,
   setSearch,
-setMinPrice,
-setMaxPrice,
-setOnlyWished,
-setSort
+  setMinPrice,
+  setMaxPrice,
+  setOnlyWished,
+  setSort,
 }) {
-  const navigate = useNavigate();
-  const categoryTitle = selectedCategory === "cosmetics" ? "Cosmetics" : "Clothing";
+    }    const categoryTitle =
+  selectedCategory === "all"
+    ? "Best Sellers"
+    : selectedCategory === "cosmetics"
+    ? "Cosmetics"
+    : "Clothing";
+
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
     { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
@@ -3150,6 +3156,7 @@ const openCategory = (key) => {
           </div>
         </div>
 {/* ✅ SkinSociety-style sections */}
+{selectedCategory === "all" && (
 <section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
   {[
     { key: "cosmetics", title: "Cosmetics", cta: "Browse Cosmetics" },
@@ -3245,8 +3252,9 @@ const openCategory = (key) => {
     );
   })}
 </section>
-
-        <div className="grid">
+)}
+       {selectedCategory !== "all" && (
+         <div className="grid">
           {filteredProducts.map((p) => {
             const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
             const isWished = wishlistIds.includes(p.id);
@@ -3320,19 +3328,21 @@ const openCategory = (key) => {
             );
           })}
         </div>
+          )}    
       </section>
+      
 
       {/* Right side cart panel */}
       
     </main>
   );
-}
+
 
 /** ✅ Main App */
 export default function App() {
 
   // ✅ State
-  const [selectedCategory, setSelectedCategory] = useState("cosmetics");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [clothingGender, setClothingGender] = useState("women");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 const [filtersOpen, setFiltersOpen] = useState(false);
@@ -3498,7 +3508,8 @@ const filteredProducts = useMemo(() => {
   const q = search.toLowerCase().trim();
 
   let list = products.filter((p) => {
-    const inCategory = p.category === selectedCategory;
+    const inCategory =
+  selectedCategory === "all" || p.category === selectedCategory;
     const matchesSearch = !q || p.name.toLowerCase().includes(q);
     const matchesGender =
       selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
