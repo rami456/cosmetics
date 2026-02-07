@@ -1971,6 +1971,45 @@ section{
 .ss-header{
   z-index:1000;
 }
+/* Category bar under header */
+.categoryBar{
+  width:100%;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+
+.categoryInner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:10px 16px;
+  display:flex;
+  gap:24px;
+  align-items:center;
+  overflow-x:auto;
+}
+
+.categoryItem{
+  text-decoration:none;
+  color:#000;
+  font-weight:600;
+  font-size:14px;
+  white-space:nowrap;
+  padding:6px 2px;
+}
+
+.categoryItem:hover{
+  opacity:0.7;
+}
+/* Hide category bar on phones */
+@media (max-width: 620px){
+  .categoryBar{
+    display:none;
+  }
+}
+.categoryItem{
+  letter-spacing:0.05em;
+  font-weight:500;
+}
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
@@ -3694,6 +3733,18 @@ const applyBrandFilter = (brand) => {
 
   </div>
 </header>
+{/* Category navigation */}
+<div className="categoryBar">
+  <div className="categoryInner">
+
+    <Link to="/" className="categoryItem">Home</Link>
+    <Link to="/clothing" className="categoryItem">Clothing</Link>
+    <Link to="/shoes" className="categoryItem">Shoes</Link>
+    <Link to="/accessories" className="categoryItem">Accessories</Link>
+
+  </div>
+</div>
+
 {/* ✅ Mobile dropdown search bar */}
 <div className={`ss-mobile-searchbar ${mobileSearchOpen ? "open" : ""}`}>
   <div className="ss-mobile-search-inner">
