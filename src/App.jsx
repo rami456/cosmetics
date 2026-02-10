@@ -3687,8 +3687,6 @@ const applyBrandFilter = (brand) => {
   <div className="categoryInner">
 
     <Link to="/" className="categoryItem">Home</Link>
-    <Link to="/clothing" className="categoryItem">Clothing</Link>
-    <Link to="/shoes" className="categoryItem">Shoes</Link>
     <Link to="/accessories" className="categoryItem">Accessories</Link>
     <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
 
