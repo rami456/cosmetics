@@ -2251,82 +2251,6 @@ const products = [
   },
 },
 
-
-  // Clothing (Women)
-  {
-    id: 101,
-    name: "Women’s Satin Blouse",
-    price: 29,
-    category: "clothing",
-    gender: "women",
-    images: [
-      "https://via.placeholder.com/900x900?text=Women+Blouse+1",
-      "https://via.placeholder.com/900x900?text=Women+Blouse+2",
-      "https://via.placeholder.com/900x900?text=Women+Blouse+3",
-    ],
-    details: {
-      subtitle: "Soft satin, relaxed fit",
-      size: "S • M • L",
-      features: ["Breathable feel", "Day-to-night style", "Easy to pair"],
-      howToUse: "Pair with high-waist jeans or a skirt. Steam lightly before wear.",
-    },
-  },
-  {
-    id: 102,
-    name: "Women’s Tailored Trousers",
-    price: 39,
-    category: "clothing",
-    gender: "women",
-    images: [
-      "https://via.placeholder.com/900x900?text=Women+Trousers+1",
-      "https://via.placeholder.com/900x900?text=Women+Trousers+2",
-      "https://via.placeholder.com/900x900?text=Women+Trousers+3",
-    ],
-    details: {
-      subtitle: "High-rise, straight leg",
-      size: "XS • S • M • L",
-      features: ["Flattering cut", "Comfort stretch", "Office-ready"],
-      howToUse: "Wear with heels or sneakers. Add a blazer for a clean look.",
-    },
-  },
-
-  // Clothing (Men)
-  {
-    id: 201,
-    name: "Men’s Essential Tee",
-    price: 18,
-    category: "clothing",
-    gender: "men",
-    images: [
-      "https://via.placeholder.com/900x900?text=Men+Tee+1",
-      "https://via.placeholder.com/900x900?text=Men+Tee+2",
-      "https://via.placeholder.com/900x900?text=Men+Tee+3",
-    ],
-    details: {
-      subtitle: "Heavy cotton, classic cut",
-      size: "S • M • L • XL",
-      features: ["Soft handfeel", "Everyday staple", "Durable neckline"],
-      howToUse: "Layer under overshirts or wear solo. Cold wash to keep shape.",
-    },
-  },
-  {
-    id: 202,
-    name: "Men’s Overshirt Jacket",
-    price: 55,
-    category: "clothing",
-    gender: "men",
-    images: [
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+1",
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+2",
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+3",
-    ],
-    details: {
-      subtitle: "Midweight layering piece",
-      size: "M • L • XL",
-      features: ["Easy layering", "Clean minimal design", "All-season"],
-      howToUse: "Wear open over a tee or buttoned up. Perfect for evenings.",
-    },
-},
 // ✅ then id: 301 starts as a new object:
 {
     id: 301,
@@ -3017,12 +2941,9 @@ function HomePage({
   setOnlyWished,
   setSort,
 }) {
-    }    const categoryTitle =
-  selectedCategory === "all"
-    ? "Best Sellers"
-    : selectedCategory === "cosmetics"
-    ? "Cosmetics"
-    : "Clothing";
+    const categoryTitle =
+  selectedCategory === "all" ? "Best Sellers" : "Cosmetics";
+
 
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
@@ -3031,14 +2952,7 @@ function HomePage({
     { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
   ];
 // ✅ pick first 3 products for a category (with your current filters)
-const take3 = (key) => {
-  const list = products
-    .filter((p) => p.category === key)
-    .filter((p) => (key !== "clothing" ? true : (p.gender || "women") === clothingGender));
-
-  return list.slice(0, 3);
-};
-
+const take3 = (key) => products.filter((p) => p.category === key).slice(0, 3);
 const openCategory = (key) => {
   setSelectedCategory(key);
   setSearch("");
@@ -3129,23 +3043,7 @@ const openCategory = (key) => {
               </p>
             )}
 
-            {/* ✅ Men/Women option appears when Clothing is selected */}
-            {selectedCategory === "clothing" && (
-              <div style={{ marginTop: 12, maxWidth: 420 }}>
-                <div className="label" style={{ marginBottom: 8 }}>
-                  Clothing section
-                </div>
-                <div className="tabs" style={{ margin: 0 }}>
-                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
-                    Women
-                  </button>
-                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
-                    Men
-                  </button>
-                </div>
-              </div>
-            )}
-
+  
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
               💡 Tip: Click a product card to open the product page (sizes + quantity).
             </div>
@@ -3157,102 +3055,117 @@ const openCategory = (key) => {
         </div>
 {/* ✅ SkinSociety-style sections */}
 {selectedCategory === "all" && (
-<section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
-  {[
-    { key: "cosmetics", title: "Cosmetics", cta: "Browse Cosmetics" },
-    { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
-    { key: "clothing", title: "Clothing", cta: "Browse Clothing" },
-  ].map((sec) => {
-    const items = take3(sec.key);
-    if (items.length === 0) return null; // ✅ hide categories with no products
+  <section
+    style={{
+      gridColumn: "1 / -1",
+      display: "grid",
+      gap: 18,
+      marginBottom: 18,
+    }}
+  >
+    {[
+      { key: "cosmetics", title: "Cosmetics" },
+      { key: "fragrances", title: "Fragrances" }, // auto-hide if none
+    ].map((sec) => {
+      const items = take3(sec.key);
+      if (items.length === 0) return null;
 
-    return (
-      <div
-        key={sec.key}
-        style={{
-          border: "1px solid var(--line)",
-          borderRadius: 22,
-          background: "#fff",
-          boxShadow: "var(--shadow2)",
-          padding: 16,
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 12 }}>
-          <div>
-            <h2 style={{ margin: 0, fontWeight: 900, fontSize: 18 }}>{sec.title}</h2>
-            <div style={{ marginTop: 6, color: "var(--muted)", fontWeight: 800, fontSize: 12 }}>
-              Top picks for you
+      return (
+        <div
+          key={sec.key}
+          style={{
+            border: "1px solid var(--line)",
+            borderRadius: 22,
+            background: "#fff",
+            boxShadow: "var(--shadow2)",
+            padding: 16,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "end",
+              gap: 12,
+            }}
+          >
+            <div>
+              <h2 style={{ margin: 0, fontWeight: 900, fontSize: 18 }}>
+                {sec.title}
+              </h2>
+              <div
+                style={{
+                  marginTop: 6,
+                  color: "var(--muted)",
+                  fontWeight: 800,
+                  fontSize: 12,
+                }}
+              >
+                Top picks for you
+              </div>
             </div>
           </div>
 
-          <button className="btnCheckout" type="button" onClick={() => openCategory(sec.key)}>
-            {sec.cta} →
-          </button>
-        </div>
+          <div style={{ marginTop: 14 }} className="grid">
+            {items.map((p) => {
+              const coverImg =
+                p.img ||
+                (Array.isArray(p.images) ? p.images[0] : "") ||
+                "https://via.placeholder.com/900x900";
+              const isWished = wishlistIds.includes(p.id);
 
-        <div style={{ marginTop: 14 }} className="grid">
-          {items.map((p) => {
-            const coverImg =
-              p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
-            const isWished = wishlistIds.includes(p.id);
-            const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+              return (
+                <article
+                  key={p.id}
+                  className="card"
+                  onClick={() => navigate(`/product/${p.id}`)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="imgWrap">
+                    <img src={coverImg} alt={p.name} className="img" />
 
-            return (
-              <article
-                key={p.id}
-                className="card"
-                onClick={() => navigate(`/product/${p.id}`)}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="imgWrap">
-                  <img src={coverImg} alt={p.name} className="img" />
-
-                  <button
-                    className={`wishBtn ${isWished ? "active" : ""}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleWishlist(p.id);
-                    }}
-                    type="button"
-                    aria-label="Toggle wishlist"
-                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
-                  >
-                    {isWished ? "♥" : "♡"}
-                  </button>
-                </div>
-
-                <div className="cardBody">
-                  <div className="cardTop">
-                    <h3 className="cardTitle">{p.name}</h3>
-                    <div className="price">{money(p.price)}</div>
+                    <button
+                      className={`wishBtn ${isWished ? "active" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(p.id);
+                      }}
+                      type="button"
+                      aria-label="Toggle wishlist"
+                      title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                    >
+                      {isWished ? "♥" : "♡"}
+                    </button>
                   </div>
 
-                  <button
-                    className="btnPrimary"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (needsSize) {
-                        navigate(`/product/${p.id}`);
-                        alert("Select size on the product page.");
-                        return;
-                      }
-                      addToCart(p, { qty: 1, size: "" });
-                    }}
-                    type="button"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </article>
-            );
-          })}
+                  <div className="cardBody">
+                    <div className="cardTop">
+                      <h3 className="cardTitle">{p.name}</h3>
+                      <div className="price">{money(p.price)}</div>
+                    </div>
+
+                    <button
+                      className="btnPrimary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(p, { qty: 1, size: "" });
+                      }}
+                      type="button"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
-  })}
-</section>
+      );
+    })}
+  </section>
 )}
+
        {selectedCategory !== "all" && (
          <div className="grid">
           {filteredProducts.map((p) => {
@@ -3336,15 +3249,14 @@ const openCategory = (key) => {
       
     </main>
   );
-
+}
 
 /** ✅ Main App */
 export default function App() {
 
   // ✅ State
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [clothingGender, setClothingGender] = useState("women");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+ 
+const [selectedCategory, setSelectedCategory] = useState("all"); const [sidebarOpen, setSidebarOpen] = useState(false);
 const [filtersOpen, setFiltersOpen] = useState(false);
 const [sort, setSort] = useState("featured"); // featured | price_asc | price_desc | name_asc
 const [minPrice, setMinPrice] = useState("");
@@ -3357,6 +3269,8 @@ const [accountForm, setAccountForm] = useState({
   currentPassword: "",
   newPassword: "",
 });
+{
+   
 const saveAccount = async () => {
   try {
     const u = auth.currentUser;
@@ -3463,56 +3377,12 @@ useEffect(() => {
 
 
   // ✅ Firebase: keep user logged in (source of truth)
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      if (!u) {
-        setUser((prev) => (prev?.mode === "guest" ? prev : null));
-        return;
-      }
-      setUser({
-        name: u.displayName || u.email?.split("@")[0] || "User",
-        email: u.email || "",
-        mode: "user",
-      });
-    });
-    return () => unsub();
-  }, []);
-
-  // ESC closes drawer + modals
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") {
-        setSidebarOpen(false);
-        setAuthOpen(false);
-        setCartOpen(false);
-        setFiltersOpen(false);
-        setAccountOpen(false);
-        setMobileSearchOpen(false);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  // lock body scroll when drawer or modal open
-useEffect(() => {
-  const locked =
-    sidebarOpen || authOpen || cartOpen || filtersOpen || accountOpen;
-
-  document.body.style.overflow = locked ? "hidden" : "";
-  return () => (document.body.style.overflow = "");
-}, [sidebarOpen, authOpen, cartOpen, filtersOpen, accountOpen]);
-
-  // ✅ Filters
-const filteredProducts = useMemo(() => {
+ const filteredProducts = useMemo(() => {
   const q = search.toLowerCase().trim();
 
   let list = products.filter((p) => {
-    const inCategory =
-  selectedCategory === "all" || p.category === selectedCategory;
+    const inCategory = selectedCategory === "all" || p.category === selectedCategory;
     const matchesSearch = !q || p.name.toLowerCase().includes(q);
-    const matchesGender =
-      selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
 
     const wishedOk = !onlyWished || wishlistIds.includes(p.id);
 
@@ -3520,7 +3390,7 @@ const filteredProducts = useMemo(() => {
     const minOk = minPrice === "" ? true : price >= Number(minPrice);
     const maxOk = maxPrice === "" ? true : price <= Number(maxPrice);
 
-    return inCategory && matchesGender && matchesSearch && wishedOk && minOk && maxOk;
+    return inCategory && matchesSearch && wishedOk && minOk && maxOk;
   });
 
   if (sort === "price_asc") list.sort((a, b) => Number(a.price) - Number(b.price));
@@ -3528,7 +3398,8 @@ const filteredProducts = useMemo(() => {
   if (sort === "name_asc") list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
   return list;
-}, [selectedCategory, clothingGender, search, sort, minPrice, maxPrice, onlyWished, wishlistIds]);
+}, [selectedCategory, search, sort, minPrice, maxPrice, onlyWished, wishlistIds]);
+
 
 
   // ✅ Cart helpers (merge by product id + size)
@@ -4487,3 +4358,4 @@ Then set Whish redirect to:
   successUrl = http://your-site/success
   cancelUrl  = http://your-site/cancel
 */
+}
