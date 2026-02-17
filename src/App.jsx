@@ -2986,6 +2986,7 @@ function CancelPage() {
 
 /** ✅ Home page */
 function HomePage({
+
   selectedCategory,
   setSelectedCategory,
   clothingGender,
@@ -3017,7 +3018,9 @@ function HomePage({
   setOnlyWished,
   setSort,
 }) {
-    }    const categoryTitle =
+  const navigate = useNavigate();
+ 
+       const categoryTitle =
   selectedCategory === "all"
     ? "Best Sellers"
     : selectedCategory === "cosmetics"
@@ -3070,7 +3073,7 @@ const openCategory = (key) => {
     // optional: scroll to products section
     window.scrollTo({ top: 520, behavior: "smooth" });
   };
-
+}
   return (
     <main className="main">
             {/* ✅ CLICKABLE BRAND BANNERS */}
@@ -3092,7 +3095,7 @@ const openCategory = (key) => {
             <button
               key={i}
               type="button"
-              classsName={`brandDot ${i === slide ? "active" : ""}`}
+              className={`brandDot ${i === slide ? "active" : ""}`}
               onClick={() => setSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
             />
