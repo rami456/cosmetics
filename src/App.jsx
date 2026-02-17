@@ -2986,7 +2986,7 @@ function CancelPage() {
 
 /** ✅ Home page */
 function HomePage({
-
+  products,
   selectedCategory,
   setSelectedCategory,
   clothingGender,
@@ -3073,7 +3073,7 @@ const openCategory = (key) => {
     // optional: scroll to products section
     window.scrollTo({ top: 520, behavior: "smooth" });
   };
-}
+
   return (
     <main className="main">
             {/* ✅ CLICKABLE BRAND BANNERS */}
@@ -3338,7 +3338,7 @@ const openCategory = (key) => {
     </main>
   );
 
-
+}
 /** ✅ Main App */
 export default function App() {
 
@@ -4337,6 +4337,7 @@ const applyBrandFilter = (brand) => {
             path="/"
             element={
               <HomePage
+              products={products}
                setSearch={setSearch}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
