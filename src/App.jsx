@@ -2658,15 +2658,6 @@ const products = [
     },
   },
 ];
-
-
-
-const categories = [
-  { key: "all", label: "Home" },
-  { key: "cosmetics", label: "Cosmetics" },
-  { key: "clothing", label: "Clothing" },
-];
-
 const PROMOS = {
   AUREA10: { type: "percent", value: 10, label: "10% off" },
   AUREA15: { type: "percent", value: 15, label: "15% off" },
@@ -3025,7 +3016,7 @@ function HomePage({
     ? "Best Sellers"
     : selectedCategory === "cosmetics"
     ? "Cosmetics"
-    : "Clothing";
+    : "Collection";
 
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
@@ -3132,23 +3123,6 @@ const openCategory = (key) => {
               </p>
             )}
 
-            {/* ✅ Men/Women option appears when Clothing is selected */}
-            {selectedCategory === "clothing" && (
-              <div style={{ marginTop: 12, maxWidth: 420 }}>
-                <div className="label" style={{ marginBottom: 8 }}>
-                  Clothing section
-                </div>
-                <div className="tabs" style={{ margin: 0 }}>
-                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
-                    Women
-                  </button>
-                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
-                    Men
-                  </button>
-                </div>
-              </div>
-            )}
-
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
               💡 Tip: Click a product card to open the product page (sizes + quantity).
             </div>
@@ -3164,7 +3138,6 @@ const openCategory = (key) => {
   {[
     { key: "cosmetics", title: "Cosmetics", cta: "" },
     { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
-    { key: "clothing", title: "Clothing", cta: "" },
   ].map((sec) => {
     const items = take3(sec.key);
     if (items.length === 0) return null; // ✅ hide categories with no products
@@ -3817,8 +3790,6 @@ const applyBrandFilter = (brand) => {
   <div className="categoryInner">
 
     <Link to="/" className="categoryItem">Home</Link>
-    <Link to="/clothing" className="categoryItem">Clothing</Link>
-    <Link to="/shoes" className="categoryItem">Shoes</Link>
     <Link to="/accessories" className="categoryItem">Accessories</Link>
     <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
 
@@ -3879,17 +3850,6 @@ const applyBrandFilter = (brand) => {
   </Link>
 </li>
 <li>
-  <Link
-    className="menuItem"
-    to="/clothing"
-    onClick={() => setSidebarOpen(false)}
-  >
-    <span className="menuText">Clothing</span>
-    <span className="menuArrow">→</span>
-  </Link>
-</li>
-
-    <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
         <span className="menuArrow">→</span>
