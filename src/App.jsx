@@ -4428,7 +4428,23 @@ const applyBrandFilter = (brand) => {
 </section>
 
 
-        <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
+        <footer className="footer">
+          <span>© 2026 auréa · Authentic products · Secure checkout · Easy returns</span>
+          <a
+            className="socialLink"
+            href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit our Instagram page"
+            title="Instagram"
+          >
+            <svg className="socialIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1.2" />
+            </svg>
+          </a>
+        </footer>
       </div>
     </BrowserRouter>
   );
