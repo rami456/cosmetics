@@ -963,26 +963,6 @@ button{ -webkit-tap-highlight-color: transparent; }
 .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
 
 .footer{
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  border-top: 1px solid #eee;
-}
-
-.socialLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  transition: 0.3s ease;
-}
-
-.socialLink:hover {
-  transform: scale(1.1);
-  opacity: 0.7;
-}
   margin-left:0;
   padding:18px;
   text-align:center;
@@ -4486,32 +4466,10 @@ const applyBrandFilter = (brand) => {
 
   </div>
 </section>
-import { FaInstagram } from "react-icons/fa";
+
 
         <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
       </div>
-      <footer className="footer">
-  <div className="footer-content">
-
-    {/* Your other footer sections */}
-
-    <div style={{ marginTop: "20px" }}>
-      <a
-        href="https://instagram.com/YOUR_USERNAME"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          color: "#000",
-          fontSize: "22px",
-          textDecoration: "none"
-        }}
-      >
-        <FaInstagram />
-      </a>
-    </div>
-
-  </div>
-</footer>
     </BrowserRouter>
   );
 }
