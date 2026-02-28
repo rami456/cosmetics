@@ -2658,15 +2658,6 @@ const products = [
     },
   },
 ];
-
-
-
-const categories = [
-  { key: "all", label: "Home" },
-  { key: "cosmetics", label: "Cosmetics" },
-  { key: "clothing", label: "Clothing" },
-];
-
 const PROMOS = {
   AUREA10: { type: "percent", value: 10, label: "10% off" },
   AUREA15: { type: "percent", value: 15, label: "15% off" },
@@ -2700,13 +2691,15 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
 
+ // Intentional: reset local selection state when route product changes.
+ /* eslint-disable react-hooks/set-state-in-effect */
  useEffect(() => {
   const first = p?.images?.[0] || p?.img || "";
   setActiveImage(first);
   setQty(1);
   setSize("");
 }, [pid, p]);
- // eslint-disable-line react-hooks/exhaustive-deps
+ /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!p) {
     return (
@@ -2988,35 +2981,12 @@ function CancelPage() {
 function HomePage({
   products,
   selectedCategory,
-  setSelectedCategory,
-  clothingGender,
-  setClothingGender,
   filteredProducts,
   user,
   wishlistIds,
   toggleWishlist,
-  cartItems,
   addToCart,
-  removeFromCart,
-  updateQty,
-  subtotal,
-  promoCode,
-  promoInput,
-  setPromoInput,
-  promoMessage,
-  applyPromo,
   applyBrandFilter,
-  discount,
-  shipping,
-  total,
-  checkout,
-  setAuthOpen,
-  setMode,
-  setSearch,
-  setMinPrice,
-  setMaxPrice,
-  setOnlyWished,
-  setSort,
 }) {
   const navigate = useNavigate();
  
@@ -3025,7 +2995,7 @@ function HomePage({
     ? "Best Sellers"
     : selectedCategory === "cosmetics"
     ? "Cosmetics"
-    : "Clothing";
+    : "Collection";
 
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
@@ -3035,24 +3005,9 @@ function HomePage({
   ];
 // ✅ pick first 3 products for a category (with your current filters)
 const take3 = (key) => {
-  const list = products
-    .filter((p) => p.category === key)
-    .filter((p) => (key !== "clothing" ? true : (p.gender || "women") === clothingGender));
+  const list = products.filter((p) => p.category === key);
 
   return list.slice(0, 3);
-};
-
-const openCategory = (key) => {
-  setSelectedCategory(key);
-  setSearch("");
-  setSort("featured");
-  setMinPrice("");
-  setMaxPrice("");
-  setOnlyWished(false);
-
-  navigate("/");
-  // scroll to products area
-  window.scrollTo({ top: 520, behavior: "smooth" });
 };
 
   const [slide, setSlide] = useState(0);
@@ -3060,19 +3015,7 @@ const openCategory = (key) => {
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 3500);
     return () => clearInterval(t);
-  }, []);
-
-  const goBrand = (brandSearch) => {
-    setSelectedCategory("cosmetics");
-    setSearch(brandSearch);      // ✅ filters products
-    setSort("featured");
-    setMinPrice("");
-    setMaxPrice("");
-    setOnlyWished(false);
-
-    // optional: scroll to products section
-    window.scrollTo({ top: 520, behavior: "smooth" });
-  };
+  }, [slides.length]);
 
   return (
     <main className="main">
@@ -3132,23 +3075,6 @@ const openCategory = (key) => {
               </p>
             )}
 
-            {/* ✅ Men/Women option appears when Clothing is selected */}
-            {selectedCategory === "clothing" && (
-              <div style={{ marginTop: 12, maxWidth: 420 }}>
-                <div className="label" style={{ marginBottom: 8 }}>
-                  Clothing section
-                </div>
-                <div className="tabs" style={{ margin: 0 }}>
-                  <button className={`tab ${clothingGender === "women" ? "active" : ""}`} onClick={() => setClothingGender("women")} type="button">
-                    Women
-                  </button>
-                  <button className={`tab ${clothingGender === "men" ? "active" : ""}`} onClick={() => setClothingGender("men")} type="button">
-                    Men
-                  </button>
-                </div>
-              </div>
-            )}
-
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
               💡 Tip: Click a product card to open the product page (sizes + quantity).
             </div>
@@ -3164,7 +3090,6 @@ const openCategory = (key) => {
   {[
     { key: "cosmetics", title: "Cosmetics", cta: "" },
     { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
-    { key: "clothing", title: "Clothing", cta: "" },
   ].map((sec) => {
     const items = take3(sec.key);
     if (items.length === 0) return null; // ✅ hide categories with no products
@@ -3638,7 +3563,7 @@ const applyBrandFilter = (brand) => {
       } else {
         alert(data?.error || "Checkout failed. Check your backend.");
       }
-    } catch (e) {
+    } catch {
       alert("Checkout error. Make sure your backend is running on port 4242.");
     }
   };
@@ -3817,8 +3742,6 @@ const applyBrandFilter = (brand) => {
   <div className="categoryInner">
 
     <Link to="/" className="categoryItem">Home</Link>
-    <Link to="/clothing" className="categoryItem">Clothing</Link>
-    <Link to="/shoes" className="categoryItem">Shoes</Link>
     <Link to="/accessories" className="categoryItem">Accessories</Link>
     <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
 
@@ -3879,17 +3802,6 @@ const applyBrandFilter = (brand) => {
   </Link>
 </li>
 <li>
-  <Link
-    className="menuItem"
-    to="/clothing"
-    onClick={() => setSidebarOpen(false)}
-  >
-    <span className="menuText">Clothing</span>
-    <span className="menuArrow">→</span>
-  </Link>
-</li>
-
-    <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
         <span className="menuArrow">→</span>
@@ -4467,8 +4379,35 @@ const applyBrandFilter = (brand) => {
   </div>
 </section>
 
+<footer className="footer">
+  <span>© 2026 auréa · Authentic products · Secure checkout · Easy returns</span>
 
-        <footer className="footer">© 2026 auréa · Authentic products · Secure checkout · Easy returns</footer>
+  <a
+    className="socialLink"
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Visit our Instagram page"
+    title="Instagram"
+  >
+    <svg
+      className="socialIcon"
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  </a>
+</footer>
+
       </div>
     </BrowserRouter>
   );
@@ -4489,5 +4428,4 @@ Then set Whish redirect to:
   successUrl = http://your-site/success
   cancelUrl  = http://your-site/cancel
 */
-
 
