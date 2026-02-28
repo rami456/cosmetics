@@ -963,6 +963,26 @@ button{ -webkit-tap-highlight-color: transparent; }
 .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
 
 .footer{
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-top: 1px solid #eee;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  transition: 0.3s ease;
+}
+
+.socialLink:hover {
+  transform: scale(1.1);
+  opacity: 0.7;
+}
   margin-left:0;
   padding:18px;
   text-align:center;
