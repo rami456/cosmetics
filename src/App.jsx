@@ -3112,7 +3112,7 @@ const take3 = (key) => {
       </p>
     </div>
 
-  {/* RIGHT MOVING PRODUCTS */}
+    {/* RIGHT MOVING PRODUCTS */}
 <div
   style={{
     position: "relative",
@@ -3149,11 +3149,10 @@ const take3 = (key) => {
         borderRadius: 14,
         fontWeight: 800,
       }}
-    >
-      {products[heroIndex]?.name}
+      >
+         {products[heroIndex]?.name}
     </div>
   )}
-</div>
     </div>
   </div>
 </section>
