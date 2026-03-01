@@ -34,7 +34,47 @@ const styles = `
 /* ============================= */
 /*   AURÉA LUXURY HEADER LAYOUT  */
 /* ============================= */
+/* ============================= */
+/* ✅ HERO MOBILE FIX            */
+/* ============================= */
 
+@media (max-width: 900px){
+
+  /* Hero container */
+  .heroSection{
+    padding: 40px 20px !important;
+    min-height: auto !important;
+  }
+
+  /* Make layout vertical */
+  .heroGrid{
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* Text smaller */
+  .heroTitle{
+    font-size: 38px !important;
+  }
+
+  /* Image box smaller */
+  .heroImageWrap{
+    height: 380px !important;
+  }
+
+}
+
+@media (max-width: 520px){
+
+  .heroTitle{
+    font-size: 30px !important;
+  }
+
+  .heroImageWrap{
+    height: 300px !important;
+  }
+
+}
 .ss-header{
   width:100%;
   background:#fff;
@@ -3066,6 +3106,7 @@ const take3 = (key) => {
       </section>
 {/* REAL HERO */}
 <section
+  className="heroSection"
   style={{
     gridColumn: "1 / -1",
     minHeight: "70vh",
@@ -3078,6 +3119,7 @@ const take3 = (key) => {
   }}
 >
   <div
+    className="heroGrid"
     style={{
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
@@ -3093,13 +3135,15 @@ const take3 = (key) => {
       </span>
 
       <h2
-        style={{
-          fontSize: "64px",
-          fontWeight: 800,
-          marginTop: 20,
-          lineHeight: 1.1,
-        }}
-      >
+  className="heroTitle"
+  style={{
+    fontSize: "64px",
+    fontWeight: 800,
+    marginTop: 20,
+    lineHeight: 1.1,
+  }}
+>
+      
         Your beauty starts <br />
         <span style={{ color: "#d4af37", fontStyle: "italic" }}>
           here
@@ -3113,6 +3157,7 @@ const take3 = (key) => {
 
     {/* RIGHT MOVING PRODUCTS */}
 <div
+  className="heroImageWrap"
   style={{
     position: "relative",
     width: "100%",
@@ -3121,6 +3166,7 @@ const take3 = (key) => {
     overflow: "hidden",
     boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
   }}
+
 >
   {products.length > 0 && (
     <img
