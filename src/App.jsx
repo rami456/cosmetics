@@ -3123,7 +3123,7 @@ const take3 = (key) => {
       objectFit: "cover",
     }}
   />
-</div>
+
 
       <div
         style={{
