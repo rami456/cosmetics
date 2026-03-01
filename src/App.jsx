@@ -2170,551 +2170,247 @@ section{
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
-
-/** ✅ Products */
- /** ✅ Products (ALL updated to have 3 images each — JPG) */
 const products = [
-  // Cosmetics
+  // ================= FACE =================
   {
     id: 9,
-    name: "MAxFactor X 101",
+    name: "Max Factor X 101",
     price: 10,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-101.jpg",
-      "/products/maxfactor-101-2.jpg",
-    ],
-    details: {
-      subtitle: "Foundation — Shade 101 (light tone)",
-      size: "30 ml",
-      features: ["Buildable coverage (light → medium)", "Smooth, natural-looking finish", "Best for everyday wear"],
-      howToUse: "(App)ly 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-101.jpg", "/products/maxfactor-101-2.jpg"],
+    details: { subtitle: "Foundation — Shade 101 (light tone)" }
   },
   {
     id: 10,
-    name: "MaxFactor X 55 BEIGE",
+    name: "Max Factor X 55 Beige",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor55beige.jpg",
-    ],
-    details: {
-      subtitle: "Foundation — Shade 55s Beige (medium tone)",
-      size: "30 ml",
-      features: ["Medium coverage for an even tone", "Comfortable wear with a soft finish", "Great for daily looks"],
-      howToUse: "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor55beige.jpg"],
+    details: { subtitle: "Foundation — Shade 55 Beige" }
   },
   {
     id: 11,
-    name: "MaxFactor SPF 20",
+    name: "Max Factor SPF 20",
     price: 11,
     category: "cosmetics",
-    images: [
-      "/products/maxfactorspf20.jpg",
-    ],
-    details: {
-      subtitle: "Foundation with SPF 20 — Everyday base",
-      size: "30 ml",
-      features: ["Evens skin tone with medium coverage", "SPF 20 (bonus protection)", "Pairs well with setting powder"],
-      howToUse: "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactorspf20.jpg"],
+    details: { subtitle: "Foundation with SPF 20" }
   },
-{
-  id: 401,
-  name: "Rimmel Lip Art Graphic Lipstick",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/rimmel-lip-art-graphic.jpg",
-    "/products/rimmel-lip-art-graphic-2.jpg",
-    "/products/rimmel-lip-art-graphic-3.jpg",
-  ],
-  details: {
-    subtitle: "Liquid lipstick + lip liner in one",
-    features: [
-      "2-in-1 lip liner and lipstick",
-      "High precision application",
-      "Long-lasting matte finish",
-    ],
+  {
+    id: 402,
+    name: "Max Factor Pan Stik Foundation",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-pan-stik-foundation.jpg"]
   },
-},
-{
-  id: 402,
-  name: "Max Factor Pan Stik Foundation",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-pan-stik-foundation.jpg",
-    "/products/maxfactor-pan-stik-foundation-2.jpg",
-    "/products/maxfactor-pan-stik-foundation-3.jpg",
-  ],
-  details: {
-    subtitle: "Full coverage stick foundation",
-    features: [
-      "Creamy blendable formula",
-      "Covers imperfections instantly",
-      "Perfect for all skin types",
-    ],
+  {
+    id: 407,
+    name: "Bourjois Always Fabulous Stick Foundation",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/bourjois-always-fabulous-stick-foundation.jpg"]
   },
-},
-{
-  id: 403,
-  name: "Max Factor Lipfinity Lip Colour 020 Angelic",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-lipfinity-020-angelic.jpg",
-    "/products/maxfactor-lipfinity-020-angelic-2.jpg",
-  ],
-  details: {
-    subtitle: "24H long-lasting liquid lipstick",
-    features: [
-      "Up to 24 hours wear",
-      "Smudge and transfer resistant",
-      "Includes moisturizing top coat",
-    ],
+  {
+    id: 409,
+    name: "Radiance Reveal Concealer",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/radiance-reveal-concealer.jpg"]
   },
-},
-{
-  id: 404,
-  name: "Max Factor Lipfinity Lipstick",
-  price: 5,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-lipfinity-gold.jpg",
-    "/products/maxfactor-lipfinity-gold-2.jpg",
-    "/products/maxfactor-lipfinity-gold-3.jpg",
-  ],
-  details: {
-    subtitle: "Long-lasting moisturizing lipstick",
-    features: [
-      "Smooth creamy texture",
-      "High shine finish",
-      "Comfortable all-day wear",
-    ],
+  {
+    id: 410,
+    name: "Rimmel Lasting Finish Powder 25H",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-finish-powder.jpg"]
   },
-},
-{
-  id: 405,
-  name: "Bourjois Little Round Pot Eyeshadow",
-  price: 10,
-  category: "cosmetics",
-  images: [
-    "/products/bourjois-little-round-pot-eyeshadow.jpg",
-    "/products/bourjois-little-round-pot-eyeshadow-2.jpg",
-   
-  ],
-  details: {
-    subtitle: "Silky baked eyeshadow",
-    features: [
-      "Ultra soft texture",
-      "Long-lasting color",
-      "Easy to blend",
-    ],
-  },
-},
-{
-  id: 407,
-  name: "Bourjois Always Fabulous Stick Foundation",
-  price: 8,
-  category: "cosmetics",
-  images: [
-    "/products/bourjois-always-fabulous-stick-foundation.jpg",
-  ],
-  details: {
-    subtitle: "Long-lasting stick foundation",
-    features: [
-      "Full coverage",
-      "Natural matte finish",
-      "Easy on-the-go application",
-    ],
-  },
-},
-{
-  id: 408,
-  name: "Max Factor Eyeshadow Palette Nude",
-  price: 7,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-eyeshadow-palette-nude.jpg",
-  ],
-  details: {
-    subtitle: "Neutral everyday eye palette",
-    features: [
-      "Blendable shades",
-      "Includes applicator",
-      "Perfect for day and night looks",
-    ],
-  },
-},
-{
-  id: 409,
-  name: "Radiance Reveal Concealer",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/radiance-reveal-concealer.jpg",
-  
-  ],
-  details: {
-    subtitle: "Hydrating liquid concealer",
-    features: [
-      "Brightens under eyes",
-      "Hydrates for 24H",
-      "Natural radiant finish",
-    ],
-  },
-},
-{
-  id: 410,
-  name: "Rimmel Lasting Finish Powder 25H",
-  price: 4,
-  category: "cosmetics",
-  images: [
-    "/products/rimmel-lasting-finish-powder.jpg",
-    "/products/rimmel-lasting-finish-powder-2.jpg",
-  ],
-  details: {
-    subtitle: "Long-wear powder foundation",
-    features: [
-      "Up to 25H wear",
-      "Controls shine",
-      "Smooth flawless finish",
-    ],
-  },
-},
-// ✅ then id: 301 starts as a new object:
-{
+  {
     id: 301,
     name: "Max Factor Colour Adapt Foundation 80 Bronze",
     price: 11,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-adapt-80-bronze.jpg",
-    ],
-    details: {
-      subtitle: "Skin tone adapting liquid foundation",
-      size: "30 ml",
-      features: [
-        "Adapts to your natural skin tone",
-        "Light to medium coverage",
-        "Smooth, natural finish",
-      ],
-      howToUse:
-        "Apply 1–2 pumps to clean skin and blend evenly using a sponge or brush.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-colour-adapt-80-bronze.jpg"]
   },
-
   {
     id: 302,
-    name: "Bourjois Paris Blush 74 Rose Ambré",
+    name: "Bourjois Blush 74 Rose Ambré",
     price: 16,
     category: "cosmetics",
-    images: [
-      "/products/bourjois-blush-74-rose-ambre.jpg",
-      "/products/bourjois-blush-74-rose-ambre-2.jpg",
-      "/products/bourjois-blush-74-rose-ambre-3.jpg",
-    ],
-    details: {
-      subtitle: "Soft compact blush with brush",
-      size: "2.5 g",
-      features: [
-        "Natural rosy glow",
-        "Silky smooth texture",
-        "Buildable color payoff",
-      ],
-      howToUse:
-        "Smile and sweep lightly over the apples of your cheeks, blending upward.",
-    },
+    subCategory: "face",
+    images: ["/products/bourjois-blush-74-rose-ambre.jpg"]
   },
-
   {
     id: 303,
-    name: "Bourjois Paris Bronzing Powder 10 Châtaigne Dorée",
+    name: "Bourjois Bronzing Powder 10",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/bourjois-bronzer-10-chataigne-doree.jpg",
-      "/products/bourjois-bronzer-10-chataigne-doree-2.jpg",
-      "/products/bourjois-bronzer-10-chataigne-doree-3.jpg",
-    ],
-    details: {
-      subtitle: "Sun-kissed bronzing powder",
-      size: "10 g",
-      features: [
-        "Warm golden bronze shade",
-        "Lightweight blendable powder",
-        "Natural sun-kissed finish",
-      ],
-      howToUse:
-        "Apply to cheekbones, temples, and jawline using a fluffy brush.",
-    },
+    subCategory: "face",
+    images: ["/products/bourjois-bronzer-10-chataigne-doree.jpg"]
   },
-{
-  id: 308,
-  name: "Max Factor Kohl Pencil Blue",
-  price: 4,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-kohl-pencil.jpg",
-    "/products/maxfactor-kohl-pencil-2.jpg",
-    "/products/maxfactor-kohl-pencil-3.jpg",
-  ],
-  details: {
-    subtitle: "Smooth eyeliner pencil — Blue shade",
-    size: "1.2 g",
-    features: [
-      "Soft, easy-glide formula",
-      "Intense blue color payoff",
-      "Perfect for everyday and evening looks",
-    ],
-    howToUse:
-      "Apply along the upper or lower lash line. Smudge gently for a softer look.",
-  },
-},
-
   {
     id: 304,
-    name: "Max Factor Miracle Glow Duo Pro Illuminator",
+    name: "Max Factor Miracle Glow Duo Illuminator",
     price: 7,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-miracle-glow-duo.jpg",
-      "/products/maxfactor-miracle-glow-duo-2.jpg",
-    ],
-    details: {
-      subtitle: "Dual-tone highlighter compact",
-      size: "6 g",
-      features: [
-        "Soft radiant glow",
-        "Two complementary shades",
-        "Enhances natural features",
-      ],
-      howToUse:
-        "Apply to cheekbones, nose bridge, and cupid’s bow for a luminous finish.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-miracle-glow-duo.jpg"]
   },
-
-  {
-    id: 305,
-    name: "Miss Sporty Designer All In One Eye Palette Metal",
-    price: 5,
-    category: "cosmetics",
-    images: [
-      "/products/miss-sporty-designer-eye-palette-metal.jpg",
-      "/products/miss-sporty-designer-eye-palette-metal-2.jpg",
-      "/products/miss-sporty-designer-eye-palette-metal-3.jpg",
-    ],
-    details: {
-      subtitle: "Metallic all-in-one eyeshadow palette",
-      size: "8 g",
-      features: [
-        "Multiple metallic shades",
-        "Smooth blendable texture",
-        "Day to night looks",
-      ],
-      howToUse:
-        "Apply light shades on lid and darker tones in crease for depth.",
-    },
-  },
-
   {
     id: 306,
-    name: "Miss Sporty Designer Duo Sculpting Blush & Highlight",
+    name: "Miss Sporty Sculpting Blush & Highlight",
     price: 2.5,
     category: "cosmetics",
-    images: [
-      "/products/100peachy.jpg",
-      "/products/100peachy2.jpg",
-    ],
-    details: {
-      subtitle: "Blush and highlighter duo compact",
-      size: "6 g",
-      features: [
-        "Blush + highlight in one",
-        "Natural sculpted look",
-        "Soft luminous finish",
-      ],
-      howToUse:
-        "Apply blush to cheeks and highlight to high points of the face.",
-    },
+    subCategory: "face",
+    images: ["/products/100peachy.jpg"]
   },
-
   {
     id: 307,
-    name: "Rimmel London Lasting Radiance Concealer & Eye Illuminator",
+    name: "Rimmel Lasting Radiance Concealer",
     price: 6,
     category: "cosmetics",
-    images: [
-      "/products/rimmel-lasting-radiance-concealer.jpg",
-      "/products/rimmel-lasting-radiance-concealer-2.jpg",
-      "/products/rimmel-lasting-radiance-concealer-3.jpg",
-    ],
-    details: {
-      subtitle: "Concealer with illuminating effect",
-      size: "7 ml",
-      features: [
-        "Brightens under eyes",
-        "Covers dark circles and blemishes",
-        "Natural radiant finish",
-      ],
-      howToUse:
-        "Apply under eyes and on imperfections, then blend with finger or sponge.",
-    },
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-radiance-concealer.jpg"]
   },
- {
-    id: 501,
-    name: "Max Factor Colour Elixir Lipstick 010 Starlight Coral",
-    price: 9,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-elixir-010-starlight-coral.jpg",
-      "/products/maxfactor-colour-elixir-010-starlight-coral-2.jpg",
-      "/products/maxfactor-colour-elixir-010-starlight-coral-3.jpg",
-    ],
-    details: {
-      subtitle: "Moisturising colour lipstick",
-      features: ["Creamy comfort", "Rich colour payoff", "Smooth finish"],
-      howToUse: "Apply directly to lips. Layer for more intensity.",
-    },
-  },
-
-  {
-    id: 502,
-    name: "Max Factor Colour Elixir Lipstick 015 Nude Glory",
-    price: 9,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-elixir-015-nude-glory.jpg",
-      "/products/maxfactor-colour-elixir-015-nude-glory-2.jpg",
-      "/products/maxfactor-colour-elixir-015-nude-glory-3.jpg",
-    ],
-    details: {
-      subtitle: "Moisturising nude lipstick",
-      features: ["Everyday nude shade", "Hydrating feel", "Soft shine"],
-      howToUse: "Apply from the center outward. Reapply as needed.",
-    },
-  },
-
   {
     id: 503,
     name: "Max Factor Mastertouch Concealer",
     price: 8.5,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-mastertouch-concealer.jpg",
-      "/products/maxfactor-mastertouch-concealer-2.jpg",
-      "/products/maxfactor-mastertouch-concealer-3.jpg",
-    ],
-    details: {
-      subtitle: "Concealer with precision applicator",
-      features: ["Targets dark circles", "Buildable coverage", "Natural finish"],
-      howToUse: "Apply under eyes or on blemishes, then blend gently.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-mastertouch-concealer.jpg"]
   },
-
   {
     id: 504,
-    name: "Rimmel London Stay Matte Liquid",
+    name: "Rimmel Stay Matte Liquid",
     price: 5,
     category: "cosmetics",
-    images: [
-      "/products/rimmel-stay-matte-liquid.jpg",
-      "/products/rimmel-stay-matte-liquid-2.jpg",
-      "/products/rimmel-stay-matte-liquid-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid foundation with matte finish",
-      features: ["Shine control", "Lightweight feel", "Smooth matte look"],
-      howToUse: "Blend evenly with sponge or brush. Set if needed.",
-    },
+    subCategory: "face",
+    images: ["/products/rimmel-stay-matte-liquid.jpg"]
   },
-
-  {
-    id: 505,
-    name: "Max Factor Masterpiece Liquid Eyeliner 002 Charcoal Black",
-    price: 16,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg",
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-2.jpg",
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid eyeliner — Charcoal Black",
-      features: ["Precise tip", "Bold definition", "Smooth application"],
-      howToUse: "Trace along lash line. Build thickness for a wing.",
-    },
-  },
-
-  {
-    id: 506,
-    name: "Bourjois Liner Reveal Liquid Eyeliner 01 Shiny Black",
-    price: 14,
-    category: "cosmetics",
-    images: [
-      "/products/bourjois-liner-reveal-01-shiny-black.jpg",
-      "/products/bourjois-liner-reveal-01-shiny-black-2.jpg",
-      "/products/bourjois-liner-reveal-01-shiny-black-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid eyeliner — Shiny Black",
-      features: ["Glossy black finish", "Easy glide", "Sharp lines"],
-      howToUse: "Apply close to lash line. Let dry before blinking fully.",
-    },
-  },
-
-  {
-    id: 507,
-    name: "Max Factor Masterpiece High Precision Liquid Eyeliner",
-    price: 8,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-masterpiece-high-precision-eyeliner.jpg",
-      "/products/maxfactor-masterpiece-high-precision-eyeliner-2.jpg",
-      "/products/maxfactor-masterpiece-high-precision-eyeliner-3.jpg",
-    ],
-    details: {
-      subtitle: "High precision liquid eyeliner",
-      features: ["Ultra-precise applicator", "Intense definition", "Quick-dry"],
-      howToUse: "Draw thin line for day, thicken for drama. Allow to set.",
-    },
-  },
-
   {
     id: 508,
-    name: "L'Oréal Paris True Match Nude Plumping Tinted Serum 2-3 Light",
+    name: "L'Oréal True Match Nude Serum",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/loreal-true-match-nude-serum-2-3-light.jpg",
-      "/products/loreal-true-match-nude-serum-2-3-light-2.jpg",
-      "/products/loreal-true-match-nude-serum-2-3-light-3.jpg",
-    ],
-    details: {
-      subtitle: "Plumping tinted serum — Shade 2-3 Light",
-      features: ["Lightweight serum feel", "Natural glow", "Evens skin tone"],
-      howToUse: "Shake well. Apply a few drops and blend with fingers or sponge.",
-    },
+    subCategory: "face",
+    images: ["/products/loreal-true-match-nude-serum-2-3-light.jpg"]
   },
-
   {
     id: 509,
-    name: "L'Oréal Paris True Match Super-Blendable Foundation",
+    name: "L'Oréal True Match Foundation",
     price: 10,
     category: "cosmetics",
-    images: [
-      "/products/loreal-true-match-super-blendable-foundation.jpg",
-      "/products/loreal-true-match-super-blendable-foundation-2.jpg",
-    ],
-    details: {
-      subtitle: "Super-blendable foundation",
-      features: ["Smooth blend", "Natural-looking coverage", "Everyday wear"],
-      howToUse: "Apply from center outward and blend. Build coverage as needed.",
-    },
+    subCategory: "face",
+    images: ["/products/loreal-true-match-super-blendable-foundation.jpg"]
   },
+
+  // ================= EYES =================
+  {
+    id: 405,
+    name: "Bourjois Little Round Pot Eyeshadow",
+    price: 10,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-little-round-pot-eyeshadow.jpg"]
+  },
+  {
+    id: 408,
+    name: "Max Factor Eyeshadow Palette Nude",
+    price: 7,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-eyeshadow-palette-nude.jpg"]
+  },
+  {
+    id: 308,
+    name: "Max Factor Kohl Pencil Blue",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-kohl-pencil.jpg"]
+  },
+  {
+    id: 305,
+    name: "Miss Sporty Eye Palette Metal",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/miss-sporty-designer-eye-palette-metal.jpg"]
+  },
+  {
+    id: 505,
+    name: "Max Factor Masterpiece Liquid Eyeliner",
+    price: 16,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg"]
+  },
+  {
+    id: 506,
+    name: "Bourjois Liner Reveal Liquid Eyeliner",
+    price: 14,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-liner-reveal-01-shiny-black.jpg"]
+  },
+  {
+    id: 507,
+    name: "Max Factor High Precision Liquid Eyeliner",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-high-precision-eyeliner.jpg"]
+  },
+
+  // ================= LIPS =================
+  {
+    id: 401,
+    name: "Rimmel Lip Art Graphic Lipstick",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/rimmel-lip-art-graphic.jpg"]
+  },
+  {
+    id: 403,
+    name: "Max Factor Lipfinity 020 Angelic",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-020-angelic.jpg"]
+  },
+  {
+    id: 404,
+    name: "Max Factor Lipfinity Lipstick",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-gold.jpg"]
+  },
+  {
+    id: 501,
+    name: "Max Factor Colour Elixir 010 Starlight Coral",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-010-starlight-coral.jpg"]
+  },
+  {
+    id: 502,
+    name: "Max Factor Colour Elixir 015 Nude Glory",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-015-nude-glory.jpg"]
+  }
 ];
 const PROMOS = {
   AUREA10: { type: "percent", value: 10, label: "10% off" },
@@ -3433,6 +3129,7 @@ const take3 = (key) => {
 export default function App() {
 
   // ✅ State
+  const [cosmeticFilter, setCosmeticFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [clothingGender, setClothingGender] = useState("women");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -3601,27 +3298,19 @@ const filteredProducts = useMemo(() => {
 
   let list = products.filter((p) => {
     const inCategory =
-  selectedCategory === "all" || p.category === selectedCategory;
-    const matchesSearch = !q || p.name.toLowerCase().includes(q);
-    const matchesGender =
-      selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+      selectedCategory === "all" || p.category === selectedCategory;
 
-    const wishedOk = !onlyWished || wishlistIds.includes(p.id);
+    const inSubCategory =
+      !cosmeticFilter || p.subCategory === cosmeticFilter;
 
-    const price = Number(p.price || 0);
-    const minOk = minPrice === "" ? true : price >= Number(minPrice);
-    const maxOk = maxPrice === "" ? true : price <= Number(maxPrice);
+    const matchesSearch =
+      !q || p.name.toLowerCase().includes(q);
 
-    return inCategory && matchesGender && matchesSearch && wishedOk && minOk && maxOk;
+    return inCategory && inSubCategory && matchesSearch;
   });
 
-  if (sort === "price_asc") list.sort((a, b) => Number(a.price) - Number(b.price));
-  if (sort === "price_desc") list.sort((a, b) => Number(b.price) - Number(a.price));
-  if (sort === "name_asc") list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
-
   return list;
-}, [selectedCategory, clothingGender, search, sort, minPrice, maxPrice, onlyWished, wishlistIds]);
-
+}, [selectedCategory, cosmeticFilter, search]);
 
   // ✅ Cart helpers (merge by product id + size)
   const addToCart = (product, opts = { qty: 1, size: "" }) => {
@@ -3982,28 +3671,40 @@ const applyBrandFilter = (brand) => {
   <div className={`submenu ${cosmeticsOpen ? "open" : ""}`}>
     
     <Link
-      to="/cosmetics"
-      className="submenuItem"
-      onClick={() => setSidebarOpen(false)}
-    >
-      Face
-    </Link>
+  to="/cosmetics"
+  className="submenuItem"
+  onClick={() => {
+    setCosmeticFilter("face");
+    setSelectedCategory("cosmetics");
+    setSidebarOpen(false);
+  }}
+>
+  Face
+</Link>
 
-    <Link
-      to="/cosmetics"
-      className="submenuItem"
-      onClick={() => setSidebarOpen(false)}
-    >
-      Eyes
-    </Link>
+<Link
+  to="/cosmetics"
+  className="submenuItem"
+  onClick={() => {
+    setCosmeticFilter("eyes");
+    setSelectedCategory("cosmetics");
+    setSidebarOpen(false);
+  }}
+>
+  Eyes
+</Link>
 
-    <Link
-      to="/cosmetics"
-      className="submenuItem"
-      onClick={() => setSidebarOpen(false)}
-    >
-      Lips
-    </Link>
+<Link
+  to="/cosmetics"
+  className="submenuItem"
+  onClick={() => {
+    setCosmeticFilter("lips");
+    setSelectedCategory("cosmetics");
+    setSidebarOpen(false);
+  }}
+>
+  Lips
+</Link>
 
   </div>
 </li>
