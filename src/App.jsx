@@ -3131,7 +3131,8 @@ const take3 = (key) => {
       style={{
         width: "100%",
         height: "100%",
-        objectFit: "cover",
+        objectFit: "contain",
+        background: "#fff",
         transition: "opacity 0.6s ease",
       }}
     />
