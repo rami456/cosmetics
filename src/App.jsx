@@ -20,7 +20,17 @@ import {
 
 /** ✅ CSS (one file) */
 const styles = `
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
 
+.ar-home {
+  font-family: 'Cairo', sans-serif;
+}
+.gold-accent {
+  color: #d4af37;
+}
+.bg-gold {
+  background-color: #d4af37;
+}
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 /* ============================= */
 /*   AURÉA LUXURY HEADER LAYOUT  */
@@ -3045,7 +3055,90 @@ const take3 = (key) => {
           ))}
         </div>
       </section>
+{/* REAL HERO */}
+<section
+  style={{
+    gridColumn: "1 / -1",
+    minHeight: "70vh",
+    display: "flex",
+    alignItems: "center",
+    background: "#f4e9e2",
+    padding: "60px 40px",
+    borderRadius: 22,
+    marginBottom: 40,
+  }}
+>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 50,
+      alignItems: "center",
+      width: "100%",
+    }}
+  >
+    {/* LEFT TEXT */}
+    <div>
+      <span style={{ fontSize: 12, letterSpacing: "0.3em", color: "#777" }}>
+        Summer Collection 2026
+      </span>
 
+      <h2
+        style={{
+          fontSize: "64px",
+          fontWeight: 800,
+          marginTop: 20,
+          lineHeight: 1.1,
+        }}
+      >
+        Your beauty starts <br />
+        <span style={{ color: "#d4af37", fontStyle: "italic" }}>
+          here
+        </span>
+      </h2>
+
+      <p style={{ marginTop: 24, color: "#555", maxWidth: 420 }}>
+        Discover authentic cosmetics at auréa.
+      </p>
+    </div>
+
+    {/* RIGHT MOVING SLIDER */}
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: 520,
+        borderRadius: 22,
+        overflow: "hidden",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+      }}
+    >
+      <img
+        src={slides[slide].src}
+        alt={slides[slide].label}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 20,
+          left: 20,
+          background: "rgba(255,255,255,0.9)",
+          padding: "12px 18px",
+          borderRadius: 14,
+          fontWeight: 800,
+        }}
+      >
+        {slides[slide].label}
+      </div>
+    </div>
+  </div>
+</section>
       {/* HERO */}
       <section
         style={{
