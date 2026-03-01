@@ -2080,7 +2080,12 @@ section{
 @media (max-width: 620px) {
   .homeSectionGrid { grid-template-columns: 1fr; }
 }
-
+/* Hide footer Instagram on phone */
+@media (max-width: 620px){
+  .footer .socialLink{
+    display: none !important;
+  }
+}
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
@@ -4001,7 +4006,18 @@ const applyBrandFilter = (brand) => {
         <span className="menuArrow">→</span>
       </button>
     </li>
-
+<li>
+  <a
+    className="menuItem"
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <span className="menuText">Instagram</span>
+    <span className="menuArrow">→</span>
+  </a>
+</li>
     {user && user.mode === "user" && (
       <li>
         <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
