@@ -153,7 +153,6 @@ const styles = `
   font-weight:800;
   font-size:13px;
 }
-
 .ss-icon-btn{
   display:flex;
   align-items:center;
@@ -770,55 +769,125 @@ button{ -webkit-tap-highlight-color: transparent; }
 .sortHint{ font-size:13px; color:var(--muted); }
 
 /* Products */
-.grid{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap:16px;
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px 48px;
 }
-.card{
-  border-radius:var(--radius);
-  border:1px solid var(--line);
-  background:#fff;
-  overflow:hidden;
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
-  transition:transform 140ms ease, box-shadow 220ms ease;
-  position:relative;
-  cursor:pointer;
-}
-.card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
-.imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; position:relative; }
-.img{
-  width:100%;
-  height:100%;
-  object-fit:contain;         /* ✅ no crop */
-  display:block;
-  background:#f2f2f3;         /* ✅ nice backdrop for transparent/empty space */
-  padding:10px;               /* ✅ gives breathing room */
-  box-sizing:border-box;
-}
-.cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
-.cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-.cardTitle{ margin:0; font-size:14px; font-weight:900; }
-.price{ font-weight:900; font-size:14px; }
 
-.wishBtn{
-  position:absolute;
-  top:10px; right:10px;
-  width:40px; height:40px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,0.92);
-  cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 10px 24px rgba(0,0,0,0.08);
+@media (max-width: 900px) {
+  .productsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-.wishBtn.active{
-  background:#0e0e10;
-  color:#fff;
-  border-color:rgba(0,0,0,0.2);
-}
-.wishBtn:hover{ transform:translateY(-1px); }
 
+@media (max-width: 600px) {
+  .productsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+/* PRODUCT CARD EDITORIAL STYLE */
+
+.card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.imgWrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: #f3f3f3;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card:hover .img {
+  transform: scale(1.1);
+}
+
+/* Floating Add Button */
+.btnPrimary {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.card:hover .btnPrimary {
+  transform: translateY(0);
+}
+
+.cardBody {
+  margin-top: 18px;
+}
+
+.cardTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-style: italic;
+}
+
+.price {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #999;
+}
+
+/* Wishlist Button - Editorial Style */
+
+.wishBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.9);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.wishBtn:hover {
+  background: #000;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.wishBtn.active {
+  background: #000;
+  color: #fff;
+}
 .btnPrimary{
   width:100%;
   padding:11px 12px;
@@ -2814,7 +2883,7 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
             <div className="emptyText">Tap the heart on a product to save it here.</div>
           </div>
         ) : (
-          <div className="grid" style={{ marginTop: 14 }}>
+          <div className="productsgrid" style={{ marginTop: 14 }}>
             {wished.map((p) => {
               const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
               const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
@@ -3168,53 +3237,45 @@ const take3 = (key) => {
             const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
 
             return (
-              <article
-                key={p.id}
-                className="card"
-                onClick={() => navigate(`/product/${p.id}`)}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="imgWrap">
-                  <img src={coverImg} alt={p.name} className="img" />
+             <article
+  key={p.id}
+  className="card"
+  onClick={() => navigate(`/product/${p.id}`)}
+>
+  <div className="imgWrap">
+    <img src={coverImg} alt={p.name} className="img" />
 
-                  <button
-                    className={`wishBtn ${isWished ? "active" : ""}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleWishlist(p.id);
-                    }}
-                    type="button"
-                    aria-label="Toggle wishlist"
-                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
-                  >
-                    {isWished ? "♥" : "♡"}
-                  </button>
-                </div>
+    {/* ❤️ Wishlist Button */}
+    <button
+      className={`wishBtn ${isWished ? "active" : ""}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleWishlist(p.id);
+      }}
+      type="button"
+    >
+      {isWished ? "♥" : "♡"}
+    </button>
 
-                <div className="cardBody">
-                  <div className="cardTop">
-                    <h3 className="cardTitle">{p.name}</h3>
-                    <div className="price">{money(p.price)}</div>
-                  </div>
+    {/* Add to Bag Button */}
+    <button
+      className="btnPrimary"
+      onClick={(e) => {
+        e.stopPropagation();
+        addToCart(p, { qty: 1, size: "" });
+      }}
+    >
+      Add to Bag — {money(p.price)}
+    </button>
+  </div>
 
-                  <button
-                    className="btnPrimary"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (needsSize) {
-                        navigate(`/product/${p.id}`);
-                        alert("Select size on the product page.");
-                        return;
-                      }
-                      addToCart(p, { qty: 1, size: "" });
-                    }}
-                    type="button"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </article>
+  <div className="cardBody">
+    <h3 className="cardTitle">{p.name}</h3>
+    <p className="price">
+      {p.category?.toUpperCase()}
+    </p>
+  </div>
+</article>
             );
           })}
         </div>
@@ -3224,7 +3285,7 @@ const take3 = (key) => {
 </section>
 )}
        {selectedCategory !== "all" && (
-         <div className="grid">
+         <div className="productsgrid">
           {filteredProducts.map((p) => {
             const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
             const isWished = wishlistIds.includes(p.id);
