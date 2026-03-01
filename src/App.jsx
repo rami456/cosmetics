@@ -3080,7 +3080,7 @@ const take3 = (key) => {
     {/* LEFT TEXT */}
     <div>
       <span style={{ fontSize: 12, letterSpacing: "0.3em", color: "#777" }}>
-        Summer Collection 2026
+        Collection 2026
       </span>
 
       <h2
@@ -3103,25 +3103,27 @@ const take3 = (key) => {
     </div>
 
     {/* RIGHT MOVING SLIDER */}
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: 520,
-        borderRadius: 22,
-        overflow: "hidden",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
-      }}
-    >
-      <img
-        src={slides[slide].src}
-        alt={slides[slide].label}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
+   {/* RIGHT STATIC IMAGE */}
+<div
+  style={{
+    position: "relative",
+    width: "100%",
+    height: 520,
+    borderRadius: 22,
+    overflow: "hidden",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+  }}
+>
+  <img
+    src={products[0]?.images?.[0]} // uses your first real product
+    alt="auréa collection"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+    }}
+  />
+</div>
 
       <div
         style={{
