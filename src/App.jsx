@@ -3006,7 +3006,17 @@ function HomePage({
     : selectedCategory === "cosmetics"
     ? "Cosmetics"
     : "Collection";
+const [heroIndex, setHeroIndex] = useState(0);
 
+useEffect(() => {
+  if (!products.length) return;
+
+  const interval = setInterval(() => {
+    setHeroIndex((prev) => (prev + 1) % products.length);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [products]);
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
     { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
@@ -3102,8 +3112,7 @@ const take3 = (key) => {
       </p>
     </div>
 
-    {/* RIGHT MOVING SLIDER */}
-   {/* RIGHT STATIC IMAGE */}
+  {/* RIGHT MOVING PRODUCTS */}
 <div
   style={{
     position: "relative",
@@ -3114,30 +3123,37 @@ const take3 = (key) => {
     boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
   }}
 >
-  <img
-    src={products[0]?.images?.[0]} // uses your first real product
-    alt="auréa collection"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-    }}
-  />
+  {products.length > 0 && (
+    <img
+      key={heroIndex}
+      src={products[heroIndex]?.images?.[0]}
+      alt={products[heroIndex]?.name}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        transition: "opacity 0.6s ease",
+      }}
+    />
+  )}
 
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: 20,
-          left: 20,
-          background: "rgba(255,255,255,0.9)",
-          padding: "12px 18px",
-          borderRadius: 14,
-          fontWeight: 800,
-        }}
-      >
-        {slides[slide].label}
-      </div>
+  {/* Product Name Overlay */}
+  {products.length > 0 && (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 20,
+        left: 20,
+        background: "rgba(255,255,255,0.9)",
+        padding: "12px 18px",
+        borderRadius: 14,
+        fontWeight: 800,
+      }}
+    >
+      {products[heroIndex]?.name}
+    </div>
+  )}
+</div>
     </div>
   </div>
 </section>
