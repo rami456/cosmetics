@@ -1987,7 +1987,16 @@ section{
   border-bottom:1px solid var(--line);
   background:#fff;
 }
+.product-card {
+  border: none; /* أزل الحدود السوداء القوية */
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.product-card:hover {
+  transform: translateY(-5px); /* حركة صعود ناعمة */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05); /* ظل ناعم جداً */
+}
 .categoryInner{
   max-width:1400px;
   margin:0 auto;
