@@ -3671,40 +3671,28 @@ const applyBrandFilter = (brand) => {
   <div className={`submenu ${cosmeticsOpen ? "open" : ""}`}>
     
     <Link
-  to="/cosmetics"
-  className="submenuItem"
-  onClick={() => {
-    setCosmeticFilter("face");
-    setSelectedCategory("cosmetics");
-    setSidebarOpen(false);
-  }}
->
-  Face
-</Link>
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Face
+    </Link>
 
-<Link
-  to="/cosmetics"
-  className="submenuItem"
-  onClick={() => {
-    setCosmeticFilter("eyes");
-    setSelectedCategory("cosmetics");
-    setSidebarOpen(false);
-  }}
->
-  Eyes
-</Link>
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Eyes
+    </Link>
 
-<Link
-  to="/cosmetics"
-  className="submenuItem"
-  onClick={() => {
-    setCosmeticFilter("lips");
-    setSelectedCategory("cosmetics");
-    setSidebarOpen(false);
-  }}
->
-  Lips
-</Link>
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Lips
+    </Link>
 
   </div>
 </li>
