@@ -3933,6 +3933,18 @@ const applyBrandFilter = (brand) => {
   </Link>
 </li>
 <li>
+  <Link
+    className="menuItem"
+    to="/cosmetics"
+    onClick={() => {
+      setSidebarOpen(false);
+    }}
+  >
+    <span className="menuText">Cosmetics</span>
+    <span className="menuArrow">→</span>
+  </Link>
+</li>
+<li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
         <span className="menuArrow">→</span>
@@ -4469,19 +4481,14 @@ const applyBrandFilter = (brand) => {
               />
             }
           />
-         <Route
+       <Route
   path="/cosmetics"
   element={
     <HomePage
-    products={products}
-      setSearch={setSearch}
-      selectedCategory={"cosmetics"}          // force cosmetics
-      setSelectedCategory={setSelectedCategory}
+      products={products}
+      selectedCategory="cosmetics"
       clothingGender={clothingGender}
-      setMinPrice={setMinPrice}
-      setMaxPrice={setMaxPrice}
-      setClothingGender={setClothingGender}
-      filteredProducts={filteredProducts}
+      filteredProducts={products.filter(p => p.category === "cosmetics")}
       user={user}
       wishlistIds={wishlistIds}
       toggleWishlist={toggleWishlist}
@@ -4502,8 +4509,6 @@ const applyBrandFilter = (brand) => {
       checkout={checkout}
       setAuthOpen={setAuthOpen}
       setMode={setMode}
-      setOnlyWished={setOnlyWished}
-      setSort={setSort}
     />
   }
 />
