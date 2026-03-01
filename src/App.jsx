@@ -2110,6 +2110,40 @@ section{
   box-shadow:var(--shadow2);
 }
 
+/* ============================= */
+/* Cosmetics Dropdown            */
+/* ============================= */
+
+.menuArrow.rotate{
+  transform: rotate(180deg);
+  transition: transform 180ms ease;
+}
+
+.submenu{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+  display: flex;
+  flex-direction: column;
+  padding-left: 14px;
+}
+
+.submenu.open{
+  max-height: 200px;
+}
+
+.submenuItem{
+  padding: 12px 14px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: 10px;
+  transition: background 120ms ease;
+}
+
+.submenuItem:hover{
+  background: rgba(0,0,0,0.05);
+}
 .socialBtn.disabled{
   opacity:0.35;
   cursor:default;
@@ -3408,6 +3442,7 @@ const [minPrice, setMinPrice] = useState("");
 const [maxPrice, setMaxPrice] = useState("");
 const [onlyWished, setOnlyWished] = useState(false);
 const [accountOpen, setAccountOpen] = useState(false);
+const [cosmeticsOpen, setCosmeticsOpen] = useState(false);
 const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 const [accountForm, setAccountForm] = useState({
   displayName: "",
@@ -3933,16 +3968,44 @@ const applyBrandFilter = (brand) => {
   </Link>
 </li>
 <li>
-  <Link
+  <button
     className="menuItem"
-    to="/cosmetics"
-    onClick={() => {
-      setSidebarOpen(false);
-    }}
+    type="button"
+    onClick={() => setCosmeticsOpen((v) => !v)}
   >
     <span className="menuText">Cosmetics</span>
-    <span className="menuArrow">→</span>
-  </Link>
+    <span className={`menuArrow ${cosmeticsOpen ? "rotate" : ""}`}>
+      ▾
+    </span>
+  </button>
+
+  <div className={`submenu ${cosmeticsOpen ? "open" : ""}`}>
+    
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Face
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Eyes
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Lips
+    </Link>
+
+  </div>
 </li>
 <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
