@@ -1625,11 +1625,14 @@ section{
     padding:6px;
   }
 
-  /* Optional: make banner look better on phone */
+ @media (max-width:620px){
+
   .brandSlideImg{
-    object-fit:cover;
+    object-fit:contain;   /* ✅ no crop */
     height:220px;
+    background:#f4f4f6;   /* soft backdrop */
   }
+
 }
 .ss-icons{ justify-self:end; display:flex; align-items:center; gap:10px; }
 .ss-icons-desktop{ display:flex; align-items:center; gap:26px; }
