@@ -2068,6 +2068,50 @@ section{
   cursor:pointer;
   text-decoration:none;
 }
+  /* ============================= */
+/* Sidebar Social Footer         */
+/* ============================= */
+
+.sidebarSocial{
+  margin-top:auto;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+.socialBtn{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+
+.socialBtn svg{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  fill:none;
+  stroke-width:1.8;
+}
+
+.socialBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow2);
+}
+
+.socialBtn.disabled{
+  opacity:0.35;
+  cursor:default;
+  pointer-events:none;
+}
 /* ✅ Homepage section grid: always 3 cards max */
 .homeSectionGrid {
   display: grid;
@@ -4005,18 +4049,7 @@ const applyBrandFilter = (brand) => {
         <span className="menuText">Cart</span>
         <span className="menuArrow">→</span>
       </button>
-    </li>
-<li>
-  <a
-    className="menuItem"
-    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
-    target="_blank"
-    rel="noopener noreferrer"
-    onClick={() => setSidebarOpen(false)}
-  >
-    <span className="menuText">Instagram</span>
-    <span className="menuArrow">→</span>
-  </a>
+    
 </li>
     {user && user.mode === "user" && (
       <li>
@@ -4027,6 +4060,40 @@ const applyBrandFilter = (brand) => {
       </li>
     )}
   </ul>
+  {/* SOCIAL FOOTER (SkinSociety style) */}
+<div className="sidebarSocial">
+
+  {/* Instagram (clickable) */}
+  <a
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="socialBtn"
+    onClick={() => setSidebarOpen(false)}
+    aria-label="Instagram"
+  >
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+
+  {/* Facebook (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2.5l.5-3H14V9z"/>
+    </svg>
+  </div>
+
+  {/* WhatsApp (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 12a8 8 0 1 1-2.3-5.7L20 4v6z"/>
+    </svg>
+  </div>
+
+</div>
 </aside>
 
 
