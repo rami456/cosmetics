@@ -2238,6 +2238,13 @@ section{
     display: none !important;
   }
 }
+
+@media (max-width: 620px){
+  .ss-search{
+    transform: translateY(-2px);
+  }
+}
+
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
