@@ -17,15 +17,64 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-
 /** ✅ CSS (one file) */
 const styles = `
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
 
+.ar-home {
+  font-family: 'Cairo', sans-serif;
+}
+.gold-accent {
+  color: #d4af37;
+}
+.bg-gold {
+  background-color: #d4af37;
+}
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 /* ============================= */
 /*   AURÉA LUXURY HEADER LAYOUT  */
 /* ============================= */
+/* ============================= */
+/* ✅ HERO MOBILE FIX            */
+/* ============================= */
 
+@media (max-width: 900px){
+
+  /* Hero container */
+  .heroSection{
+    padding: 40px 20px !important;
+    min-height: auto !important;
+  }
+
+  /* Make layout vertical */
+  .heroGrid{
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* Text smaller */
+  .heroTitle{
+    font-size: 38px !important;
+  }
+
+  /* Image box smaller */
+  .heroImageWrap{
+    height: 380px !important;
+  }
+
+}
+
+@media (max-width: 520px){
+
+  .heroTitle{
+    font-size: 30px !important;
+  }
+
+  .heroImageWrap{
+    height: 300px !important;
+  }
+
+}
 .ss-header{
   width:100%;
   background:#fff;
@@ -1576,11 +1625,14 @@ section{
     padding:6px;
   }
 
-  /* Optional: make banner look better on phone */
+ @media (max-width:620px){
+
   .brandSlideImg{
-    object-fit:cover;
+    object-fit:contain;   /* ✅ no crop */
     height:220px;
+    background:#f4f4f6;   /* soft backdrop */
   }
+
 }
 .ss-icons{ justify-self:end; display:flex; align-items:center; gap:10px; }
 .ss-icons-desktop{ display:flex; align-items:center; gap:26px; }
@@ -2019,6 +2071,84 @@ section{
   cursor:pointer;
   text-decoration:none;
 }
+  /* ============================= */
+/* Sidebar Social Footer         */
+/* ============================= */
+
+.sidebarSocial{
+  margin-top:auto;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+.socialBtn{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+
+.socialBtn svg{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  fill:none;
+  stroke-width:1.8;
+}
+
+.socialBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow2);
+}
+
+/* ============================= */
+/* Cosmetics Dropdown            */
+/* ============================= */
+
+.menuArrow.rotate{
+  transform: rotate(180deg);
+  transition: transform 180ms ease;
+}
+
+.submenu{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+  display: flex;
+  flex-direction: column;
+  padding-left: 14px;
+}
+
+.submenu.open{
+  max-height: 200px;
+}
+
+.submenuItem{
+  padding: 12px 14px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: 10px;
+  transition: background 120ms ease;
+}
+
+.submenuItem:hover{
+  background: rgba(0,0,0,0.05);
+}
+.socialBtn.disabled{
+  opacity:0.35;
+  cursor:default;
+  pointer-events:none;
+}
 /* ✅ Homepage section grid: always 3 cards max */
 .homeSectionGrid {
   display: grid;
@@ -2031,632 +2161,256 @@ section{
 @media (max-width: 620px) {
   .homeSectionGrid { grid-template-columns: 1fr; }
 }
-
+/* Hide footer Instagram on phone */
+@media (max-width: 620px){
+  .footer .socialLink{
+    display: none !important;
+  }
+}
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
-
-/** ✅ Products */
- /** ✅ Products (ALL updated to have 3 images each — JPG) */
 const products = [
-  // Cosmetics
+  // ================= FACE =================
   {
     id: 9,
-    name: "MAxFactor X 101",
+    name: "Max Factor X 101",
     price: 10,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-101.jpg",
-      "/products/maxfactor-101-2.jpg",
-    ],
-    details: {
-      subtitle: "Foundation — Shade 101 (light tone)",
-      size: "30 ml",
-      features: ["Buildable coverage (light → medium)", "Smooth, natural-looking finish", "Best for everyday wear"],
-      howToUse: "(App)ly 1–2 pumps to clean, moisturized skin. Blend from center outward using a sponge or brush.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-101.jpg", "/products/maxfactor-101-2.jpg"],
+    details: { subtitle: "Foundation — Shade 101 (light tone)" }
   },
   {
     id: 10,
-    name: "MaxFactor X 55 BEIGE",
+    name: "Max Factor X 55 Beige",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor55beige.jpg",
-    ],
-    details: {
-      subtitle: "Foundation — Shade 55s Beige (medium tone)",
-      size: "30 ml",
-      features: ["Medium coverage for an even tone", "Comfortable wear with a soft finish", "Great for daily looks"],
-      howToUse: "Dot small amounts on cheeks/forehead/chin, then blend evenly. Add a second layer where needed.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor55beige.jpg"],
+    details: { subtitle: "Foundation — Shade 55 Beige" }
   },
   {
     id: 11,
-    name: "MaxFactor SPF 20",
+    name: "Max Factor SPF 20",
     price: 11,
     category: "cosmetics",
-    images: [
-      "/products/maxfactorspf20.jpg",
-    ],
-    details: {
-      subtitle: "Foundation with SPF 20 — Everyday base",
-      size: "30 ml",
-      features: ["Evens skin tone with medium coverage", "SPF 20 (bonus protection)", "Pairs well with setting powder"],
-      howToUse: "Apply after skincare. Blend well along jawline/neck. For longer wear, set lightly with powder.",
-    },
-  },
-{
-  id: 401,
-  name: "Rimmel Lip Art Graphic Lipstick",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/rimmel-lip-art-graphic.jpg",
-    "/products/rimmel-lip-art-graphic-2.jpg",
-    "/products/rimmel-lip-art-graphic-3.jpg",
-  ],
-  details: {
-    subtitle: "Liquid lipstick + lip liner in one",
-    features: [
-      "2-in-1 lip liner and lipstick",
-      "High precision application",
-      "Long-lasting matte finish",
-    ],
-  },
-},
-{
-  id: 402,
-  name: "Max Factor Pan Stik Foundation",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-pan-stik-foundation.jpg",
-    "/products/maxfactor-pan-stik-foundation-2.jpg",
-    "/products/maxfactor-pan-stik-foundation-3.jpg",
-  ],
-  details: {
-    subtitle: "Full coverage stick foundation",
-    features: [
-      "Creamy blendable formula",
-      "Covers imperfections instantly",
-      "Perfect for all skin types",
-    ],
-  },
-},
-{
-  id: 403,
-  name: "Max Factor Lipfinity Lip Colour 020 Angelic",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-lipfinity-020-angelic.jpg",
-    "/products/maxfactor-lipfinity-020-angelic-2.jpg",
-  ],
-  details: {
-    subtitle: "24H long-lasting liquid lipstick",
-    features: [
-      "Up to 24 hours wear",
-      "Smudge and transfer resistant",
-      "Includes moisturizing top coat",
-    ],
-  },
-},
-{
-  id: 404,
-  name: "Max Factor Lipfinity Lipstick",
-  price: 5,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-lipfinity-gold.jpg",
-    "/products/maxfactor-lipfinity-gold-2.jpg",
-    "/products/maxfactor-lipfinity-gold-3.jpg",
-  ],
-  details: {
-    subtitle: "Long-lasting moisturizing lipstick",
-    features: [
-      "Smooth creamy texture",
-      "High shine finish",
-      "Comfortable all-day wear",
-    ],
-  },
-},
-{
-  id: 405,
-  name: "Bourjois Little Round Pot Eyeshadow",
-  price: 10,
-  category: "cosmetics",
-  images: [
-    "/products/bourjois-little-round-pot-eyeshadow.jpg",
-    "/products/bourjois-little-round-pot-eyeshadow-2.jpg",
-   
-  ],
-  details: {
-    subtitle: "Silky baked eyeshadow",
-    features: [
-      "Ultra soft texture",
-      "Long-lasting color",
-      "Easy to blend",
-    ],
-  },
-},
-{
-  id: 407,
-  name: "Bourjois Always Fabulous Stick Foundation",
-  price: 8,
-  category: "cosmetics",
-  images: [
-    "/products/bourjois-always-fabulous-stick-foundation.jpg",
-  ],
-  details: {
-    subtitle: "Long-lasting stick foundation",
-    features: [
-      "Full coverage",
-      "Natural matte finish",
-      "Easy on-the-go application",
-    ],
-  },
-},
-{
-  id: 408,
-  name: "Max Factor Eyeshadow Palette Nude",
-  price: 7,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-eyeshadow-palette-nude.jpg",
-  ],
-  details: {
-    subtitle: "Neutral everyday eye palette",
-    features: [
-      "Blendable shades",
-      "Includes applicator",
-      "Perfect for day and night looks",
-    ],
-  },
-},
-{
-  id: 409,
-  name: "Radiance Reveal Concealer",
-  price: 9,
-  category: "cosmetics",
-  images: [
-    "/products/radiance-reveal-concealer.jpg",
-  
-  ],
-  details: {
-    subtitle: "Hydrating liquid concealer",
-    features: [
-      "Brightens under eyes",
-      "Hydrates for 24H",
-      "Natural radiant finish",
-    ],
-  },
-},
-{
-  id: 410,
-  name: "Rimmel Lasting Finish Powder 25H",
-  price: 4,
-  category: "cosmetics",
-  images: [
-    "/products/rimmel-lasting-finish-powder.jpg",
-    "/products/rimmel-lasting-finish-powder-2.jpg",
-  ],
-  details: {
-    subtitle: "Long-wear powder foundation",
-    features: [
-      "Up to 25H wear",
-      "Controls shine",
-      "Smooth flawless finish",
-    ],
-  },
-},
-
-
-  // Clothing (Women)
-  {
-    id: 101,
-    name: "Women’s Satin Blouse",
-    price: 29,
-    category: "clothing",
-    gender: "women",
-    images: [
-      "https://via.placeholder.com/900x900?text=Women+Blouse+1",
-      "https://via.placeholder.com/900x900?text=Women+Blouse+2",
-      "https://via.placeholder.com/900x900?text=Women+Blouse+3",
-    ],
-    details: {
-      subtitle: "Soft satin, relaxed fit",
-      size: "S • M • L",
-      features: ["Breathable feel", "Day-to-night style", "Easy to pair"],
-      howToUse: "Pair with high-waist jeans or a skirt. Steam lightly before wear.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactorspf20.jpg"],
+    details: { subtitle: "Foundation with SPF 20" }
   },
   {
-    id: 102,
-    name: "Women’s Tailored Trousers",
-    price: 39,
-    category: "clothing",
-    gender: "women",
-    images: [
-      "https://via.placeholder.com/900x900?text=Women+Trousers+1",
-      "https://via.placeholder.com/900x900?text=Women+Trousers+2",
-      "https://via.placeholder.com/900x900?text=Women+Trousers+3",
-    ],
-    details: {
-      subtitle: "High-rise, straight leg",
-      size: "XS • S • M • L",
-      features: ["Flattering cut", "Comfort stretch", "Office-ready"],
-      howToUse: "Wear with heels or sneakers. Add a blazer for a clean look.",
-    },
-  },
-
-  // Clothing (Men)
-  {
-    id: 201,
-    name: "Men’s Essential Tee",
-    price: 18,
-    category: "clothing",
-    gender: "men",
-    images: [
-      "https://via.placeholder.com/900x900?text=Men+Tee+1",
-      "https://via.placeholder.com/900x900?text=Men+Tee+2",
-      "https://via.placeholder.com/900x900?text=Men+Tee+3",
-    ],
-    details: {
-      subtitle: "Heavy cotton, classic cut",
-      size: "S • M • L • XL",
-      features: ["Soft handfeel", "Everyday staple", "Durable neckline"],
-      howToUse: "Layer under overshirts or wear solo. Cold wash to keep shape.",
-    },
+    id: 402,
+    name: "Max Factor Pan Stik Foundation",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-pan-stik-foundation.jpg"]
   },
   {
-    id: 202,
-    name: "Men’s Overshirt Jacket",
-    price: 55,
-    category: "clothing",
-    gender: "men",
-    images: [
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+1",
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+2",
-      "https://via.placeholder.com/900x900?text=Men+Overshirt+3",
-    ],
-    details: {
-      subtitle: "Midweight layering piece",
-      size: "M • L • XL",
-      features: ["Easy layering", "Clean minimal design", "All-season"],
-      howToUse: "Wear open over a tee or buttoned up. Perfect for evenings.",
-    },
-},
-// ✅ then id: 301 starts as a new object:
-{
+    id: 407,
+    name: "Bourjois Always Fabulous Stick Foundation",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/bourjois-always-fabulous-stick-foundation.jpg"]
+  },
+  {
+    id: 409,
+    name: "Radiance Reveal Concealer",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/radiance-reveal-concealer.jpg"]
+  },
+  {
+    id: 410,
+    name: "Rimmel Lasting Finish Powder 25H",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-finish-powder.jpg"]
+  },
+  {
     id: 301,
     name: "Max Factor Colour Adapt Foundation 80 Bronze",
     price: 11,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-adapt-80-bronze.jpg",
-    ],
-    details: {
-      subtitle: "Skin tone adapting liquid foundation",
-      size: "30 ml",
-      features: [
-        "Adapts to your natural skin tone",
-        "Light to medium coverage",
-        "Smooth, natural finish",
-      ],
-      howToUse:
-        "Apply 1–2 pumps to clean skin and blend evenly using a sponge or brush.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-colour-adapt-80-bronze.jpg"]
   },
-
   {
     id: 302,
-    name: "Bourjois Paris Blush 74 Rose Ambré",
+    name: "Bourjois Blush 74 Rose Ambré",
     price: 16,
     category: "cosmetics",
-    images: [
-      "/products/bourjois-blush-74-rose-ambre.jpg",
-      "/products/bourjois-blush-74-rose-ambre-2.jpg",
-      "/products/bourjois-blush-74-rose-ambre-3.jpg",
-    ],
-    details: {
-      subtitle: "Soft compact blush with brush",
-      size: "2.5 g",
-      features: [
-        "Natural rosy glow",
-        "Silky smooth texture",
-        "Buildable color payoff",
-      ],
-      howToUse:
-        "Smile and sweep lightly over the apples of your cheeks, blending upward.",
-    },
+    subCategory: "face",
+    images: ["/products/bourjois-blush-74-rose-ambre.jpg"]
   },
-
   {
     id: 303,
-    name: "Bourjois Paris Bronzing Powder 10 Châtaigne Dorée",
+    name: "Bourjois Bronzing Powder 10",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/bourjois-bronzer-10-chataigne-doree.jpg",
-      "/products/bourjois-bronzer-10-chataigne-doree-2.jpg",
-      "/products/bourjois-bronzer-10-chataigne-doree-3.jpg",
-    ],
-    details: {
-      subtitle: "Sun-kissed bronzing powder",
-      size: "10 g",
-      features: [
-        "Warm golden bronze shade",
-        "Lightweight blendable powder",
-        "Natural sun-kissed finish",
-      ],
-      howToUse:
-        "Apply to cheekbones, temples, and jawline using a fluffy brush.",
-    },
+    subCategory: "face",
+    images: ["/products/bourjois-bronzer-10-chataigne-doree.jpg"]
   },
-{
-  id: 308,
-  name: "Max Factor Kohl Pencil Blue",
-  price: 4,
-  category: "cosmetics",
-  images: [
-    "/products/maxfactor-kohl-pencil.jpg",
-    "/products/maxfactor-kohl-pencil-2.jpg",
-    "/products/maxfactor-kohl-pencil-3.jpg",
-  ],
-  details: {
-    subtitle: "Smooth eyeliner pencil — Blue shade",
-    size: "1.2 g",
-    features: [
-      "Soft, easy-glide formula",
-      "Intense blue color payoff",
-      "Perfect for everyday and evening looks",
-    ],
-    howToUse:
-      "Apply along the upper or lower lash line. Smudge gently for a softer look.",
-  },
-},
-
   {
     id: 304,
-    name: "Max Factor Miracle Glow Duo Pro Illuminator",
+    name: "Max Factor Miracle Glow Duo Illuminator",
     price: 7,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-miracle-glow-duo.jpg",
-      "/products/maxfactor-miracle-glow-duo-2.jpg",
-    ],
-    details: {
-      subtitle: "Dual-tone highlighter compact",
-      size: "6 g",
-      features: [
-        "Soft radiant glow",
-        "Two complementary shades",
-        "Enhances natural features",
-      ],
-      howToUse:
-        "Apply to cheekbones, nose bridge, and cupid’s bow for a luminous finish.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-miracle-glow-duo.jpg"]
   },
-
-  {
-    id: 305,
-    name: "Miss Sporty Designer All In One Eye Palette Metal",
-    price: 5,
-    category: "cosmetics",
-    images: [
-      "/products/miss-sporty-designer-eye-palette-metal.jpg",
-      "/products/miss-sporty-designer-eye-palette-metal-2.jpg",
-      "/products/miss-sporty-designer-eye-palette-metal-3.jpg",
-    ],
-    details: {
-      subtitle: "Metallic all-in-one eyeshadow palette",
-      size: "8 g",
-      features: [
-        "Multiple metallic shades",
-        "Smooth blendable texture",
-        "Day to night looks",
-      ],
-      howToUse:
-        "Apply light shades on lid and darker tones in crease for depth.",
-    },
-  },
-
   {
     id: 306,
-    name: "Miss Sporty Designer Duo Sculpting Blush & Highlight",
+    name: "Miss Sporty Sculpting Blush & Highlight",
     price: 2.5,
     category: "cosmetics",
-    images: [
-      "/products/100peachy.jpg",
-      "/products/100peachy2.jpg",
-    ],
-    details: {
-      subtitle: "Blush and highlighter duo compact",
-      size: "6 g",
-      features: [
-        "Blush + highlight in one",
-        "Natural sculpted look",
-        "Soft luminous finish",
-      ],
-      howToUse:
-        "Apply blush to cheeks and highlight to high points of the face.",
-    },
+    subCategory: "face",
+    images: ["/products/100peachy.jpg"]
   },
-
   {
     id: 307,
-    name: "Rimmel London Lasting Radiance Concealer & Eye Illuminator",
+    name: "Rimmel Lasting Radiance Concealer",
     price: 6,
     category: "cosmetics",
-    images: [
-      "/products/rimmel-lasting-radiance-concealer.jpg",
-      "/products/rimmel-lasting-radiance-concealer-2.jpg",
-      "/products/rimmel-lasting-radiance-concealer-3.jpg",
-    ],
-    details: {
-      subtitle: "Concealer with illuminating effect",
-      size: "7 ml",
-      features: [
-        "Brightens under eyes",
-        "Covers dark circles and blemishes",
-        "Natural radiant finish",
-      ],
-      howToUse:
-        "Apply under eyes and on imperfections, then blend with finger or sponge.",
-    },
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-radiance-concealer.jpg"]
   },
- {
-    id: 501,
-    name: "Max Factor Colour Elixir Lipstick 010 Starlight Coral",
-    price: 9,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-elixir-010-starlight-coral.jpg",
-      "/products/maxfactor-colour-elixir-010-starlight-coral-2.jpg",
-      "/products/maxfactor-colour-elixir-010-starlight-coral-3.jpg",
-    ],
-    details: {
-      subtitle: "Moisturising colour lipstick",
-      features: ["Creamy comfort", "Rich colour payoff", "Smooth finish"],
-      howToUse: "Apply directly to lips. Layer for more intensity.",
-    },
-  },
-
-  {
-    id: 502,
-    name: "Max Factor Colour Elixir Lipstick 015 Nude Glory",
-    price: 9,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-colour-elixir-015-nude-glory.jpg",
-      "/products/maxfactor-colour-elixir-015-nude-glory-2.jpg",
-      "/products/maxfactor-colour-elixir-015-nude-glory-3.jpg",
-    ],
-    details: {
-      subtitle: "Moisturising nude lipstick",
-      features: ["Everyday nude shade", "Hydrating feel", "Soft shine"],
-      howToUse: "Apply from the center outward. Reapply as needed.",
-    },
-  },
-
   {
     id: 503,
     name: "Max Factor Mastertouch Concealer",
     price: 8.5,
     category: "cosmetics",
-    images: [
-      "/products/maxfactor-mastertouch-concealer.jpg",
-      "/products/maxfactor-mastertouch-concealer-2.jpg",
-      "/products/maxfactor-mastertouch-concealer-3.jpg",
-    ],
-    details: {
-      subtitle: "Concealer with precision applicator",
-      features: ["Targets dark circles", "Buildable coverage", "Natural finish"],
-      howToUse: "Apply under eyes or on blemishes, then blend gently.",
-    },
+    subCategory: "face",
+    images: ["/products/maxfactor-mastertouch-concealer.jpg"]
   },
-
   {
     id: 504,
-    name: "Rimmel London Stay Matte Liquid",
+    name: "Rimmel Stay Matte Liquid",
     price: 5,
     category: "cosmetics",
-    images: [
-      "/products/rimmel-stay-matte-liquid.jpg",
-      "/products/rimmel-stay-matte-liquid-2.jpg",
-      "/products/rimmel-stay-matte-liquid-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid foundation with matte finish",
-      features: ["Shine control", "Lightweight feel", "Smooth matte look"],
-      howToUse: "Blend evenly with sponge or brush. Set if needed.",
-    },
+    subCategory: "face",
+    images: ["/products/rimmel-stay-matte-liquid.jpg"]
   },
-
-  {
-    id: 505,
-    name: "Max Factor Masterpiece Liquid Eyeliner 002 Charcoal Black",
-    price: 16,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg",
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-2.jpg",
-      "/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid eyeliner — Charcoal Black",
-      features: ["Precise tip", "Bold definition", "Smooth application"],
-      howToUse: "Trace along lash line. Build thickness for a wing.",
-    },
-  },
-
-  {
-    id: 506,
-    name: "Bourjois Liner Reveal Liquid Eyeliner 01 Shiny Black",
-    price: 14,
-    category: "cosmetics",
-    images: [
-      "/products/bourjois-liner-reveal-01-shiny-black.jpg",
-      "/products/bourjois-liner-reveal-01-shiny-black-2.jpg",
-      "/products/bourjois-liner-reveal-01-shiny-black-3.jpg",
-    ],
-    details: {
-      subtitle: "Liquid eyeliner — Shiny Black",
-      features: ["Glossy black finish", "Easy glide", "Sharp lines"],
-      howToUse: "Apply close to lash line. Let dry before blinking fully.",
-    },
-  },
-
-  {
-    id: 507,
-    name: "Max Factor Masterpiece High Precision Liquid Eyeliner",
-    price: 8,
-    category: "cosmetics",
-    images: [
-      "/products/maxfactor-masterpiece-high-precision-eyeliner.jpg",
-      "/products/maxfactor-masterpiece-high-precision-eyeliner-2.jpg",
-      "/products/maxfactor-masterpiece-high-precision-eyeliner-3.jpg",
-    ],
-    details: {
-      subtitle: "High precision liquid eyeliner",
-      features: ["Ultra-precise applicator", "Intense definition", "Quick-dry"],
-      howToUse: "Draw thin line for day, thicken for drama. Allow to set.",
-    },
-  },
-
   {
     id: 508,
-    name: "L'Oréal Paris True Match Nude Plumping Tinted Serum 2-3 Light",
+    name: "L'Oréal True Match Nude Serum",
     price: 12,
     category: "cosmetics",
-    images: [
-      "/products/loreal-true-match-nude-serum-2-3-light.jpg",
-      "/products/loreal-true-match-nude-serum-2-3-light-2.jpg",
-      "/products/loreal-true-match-nude-serum-2-3-light-3.jpg",
-    ],
-    details: {
-      subtitle: "Plumping tinted serum — Shade 2-3 Light",
-      features: ["Lightweight serum feel", "Natural glow", "Evens skin tone"],
-      howToUse: "Shake well. Apply a few drops and blend with fingers or sponge.",
-    },
+    subCategory: "face",
+    images: ["/products/loreal-true-match-nude-serum-2-3-light.jpg"]
   },
-
   {
     id: 509,
-    name: "L'Oréal Paris True Match Super-Blendable Foundation",
+    name: "L'Oréal True Match Foundation",
     price: 10,
     category: "cosmetics",
-    images: [
-      "/products/loreal-true-match-super-blendable-foundation.jpg",
-      "/products/loreal-true-match-super-blendable-foundation-2.jpg",
-    ],
-    details: {
-      subtitle: "Super-blendable foundation",
-      features: ["Smooth blend", "Natural-looking coverage", "Everyday wear"],
-      howToUse: "Apply from center outward and blend. Build coverage as needed.",
-    },
+    subCategory: "face",
+    images: ["/products/loreal-true-match-super-blendable-foundation.jpg"]
   },
+
+  // ================= EYES =================
+  {
+    id: 405,
+    name: "Bourjois Little Round Pot Eyeshadow",
+    price: 10,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-little-round-pot-eyeshadow.jpg"]
+  },
+  {
+    id: 408,
+    name: "Max Factor Eyeshadow Palette Nude",
+    price: 7,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-eyeshadow-palette-nude.jpg"]
+  },
+  {
+    id: 308,
+    name: "Max Factor Kohl Pencil Blue",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-kohl-pencil.jpg"]
+  },
+  {
+    id: 305,
+    name: "Miss Sporty Eye Palette Metal",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/miss-sporty-designer-eye-palette-metal.jpg"]
+  },
+  {
+    id: 505,
+    name: "Max Factor Masterpiece Liquid Eyeliner",
+    price: 16,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg"]
+  },
+  {
+    id: 506,
+    name: "Bourjois Liner Reveal Liquid Eyeliner",
+    price: 14,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-liner-reveal-01-shiny-black.jpg"]
+  },
+  {
+    id: 507,
+    name: "Max Factor High Precision Liquid Eyeliner",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-high-precision-eyeliner.jpg"]
+  },
+
+  // ================= LIPS =================
+  {
+    id: 401,
+    name: "Rimmel Lip Art Graphic Lipstick",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/rimmel-lip-art-graphic.jpg"]
+  },
+  {
+    id: 403,
+    name: "Max Factor Lipfinity 020 Angelic",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-020-angelic.jpg"]
+  },
+  {
+    id: 404,
+    name: "Max Factor Lipfinity Lipstick",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-gold.jpg"]
+  },
+  {
+    id: 501,
+    name: "Max Factor Colour Elixir 010 Starlight Coral",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-010-starlight-coral.jpg"]
+  },
+  {
+    id: 502,
+    name: "Max Factor Colour Elixir 015 Nude Glory",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-015-nude-glory.jpg"]
+  }
 ];
 const PROMOS = {
   AUREA10: { type: "percent", value: 10, label: "10% off" },
@@ -2679,6 +2433,45 @@ function parseSizes(sizeStr) {
     .split(/•|·|,|\|/g)
     .map((x) => x.trim())
     .filter(Boolean);
+}
+
+const COSMETIC_SUBCATEGORY_LABELS = {
+  face: "Face",
+  eyes: "Eyes",
+  lips: "Lips",
+};
+
+function getCosmeticAreaLabel(subCategory) {
+  return COSMETIC_SUBCATEGORY_LABELS[subCategory] || "Cosmetics";
+}
+
+function getCosmeticUseText(product) {
+  if (product?.details?.useFor) return product.details.useFor;
+
+  const source = `${product?.name || ""} ${product?.details?.subtitle || ""}`.toLowerCase();
+
+  if (source.includes("foundation")) return "to even skin tone and create a smooth makeup base.";
+  if (source.includes("concealer")) return "to cover dark circles, spots, and brighten targeted areas.";
+  if (source.includes("powder")) return "to set makeup and reduce shine for longer wear.";
+  if (source.includes("blush")) return "to add healthy color and warmth to the cheeks.";
+  if (source.includes("bronz")) return "to warm up and softly contour the complexion.";
+  if (source.includes("illuminator") || source.includes("highlight")) {
+    return "to add glow on the high points of the face.";
+  }
+  if (source.includes("serum")) return "to give lightweight coverage with a fresh skin-like finish.";
+  if (source.includes("eyeshadow") || source.includes("palette")) {
+    return "to add color and depth to eyelids and eye looks.";
+  }
+  if (source.includes("eyeliner") || source.includes("kohl")) {
+    return "to define the lash line and shape the eyes.";
+  }
+  if (source.includes("lip")) return "to add color, definition, and finish to the lips.";
+
+  if (product?.subCategory === "face") return "to perfect the complexion and create an even skin finish.";
+  if (product?.subCategory === "eyes") return "to define and enhance the eye area.";
+  if (product?.subCategory === "lips") return "to color and define the lips.";
+
+  return "to complete your beauty routine.";
 }
 
 /** ✅ Product page */
@@ -2720,6 +2513,8 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
 
   const sizeOptions = p.category === "clothing" ? parseSizes(p?.details?.size) : [];
   const needsSize = p.category === "clothing" && sizeOptions.length > 0;
+  const cosmeticArea = p.category === "cosmetics" ? getCosmeticAreaLabel(p.subCategory) : "";
+  const cosmeticUse = p.category === "cosmetics" ? getCosmeticUseText(p) : "";
 
   const add = () => {
     if (needsSize && !size) {
@@ -2777,6 +2572,17 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
               <p style={{ marginTop: 14, marginBottom: 0, color: "var(--muted)" }}>
                 <b style={{ color: "var(--text)" }}>{p.details.subtitle}</b>
               </p>
+            )}
+
+            {p.category === "cosmetics" && (
+              <>
+                <p style={{ marginTop: 10, marginBottom: 0, color: "var(--muted)" }}>
+                  <b style={{ color: "var(--text)" }}>Area:</b> {cosmeticArea}
+                </p>
+                <p style={{ marginTop: 8, marginBottom: 0, color: "var(--muted)" }}>
+                  <b style={{ color: "var(--text)" }}>Used for:</b> {cosmeticUse}
+                </p>
+              </>
             )}
 
             {needsSize && (
@@ -2982,6 +2788,8 @@ function HomePage({
   products,
   selectedCategory,
   filteredProducts,
+  cosmeticFilter,
+  setCosmeticFilter,
   user,
   wishlistIds,
   toggleWishlist,
@@ -2996,7 +2804,17 @@ function HomePage({
     : selectedCategory === "cosmetics"
     ? "Cosmetics"
     : "Collection";
+const [heroIndex, setHeroIndex] = useState(0);
 
+useEffect(() => {
+  if (!products.length) return;
+
+  const interval = setInterval(() => {
+    setHeroIndex((prev) => (prev + 1) % products.length);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [products]);
   const slides = [
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
     { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
@@ -3045,7 +2863,104 @@ const take3 = (key) => {
           ))}
         </div>
       </section>
+{/* REAL HERO */}
+<section
+  className="heroSection"
+  style={{
+    gridColumn: "1 / -1",
+    minHeight: "70vh",
+    display: "flex",
+    alignItems: "center",
+    background: "#f4e9e2",
+    padding: "60px 40px",
+    borderRadius: 22,
+    marginBottom: 40,
+  }}
+>
+  <div
+    className="heroGrid"
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 50,
+      alignItems: "center",
+      width: "100%",
+    }}
+  >
+    {/* LEFT TEXT */}
+    <div>
+      <span style={{ fontSize: 12, letterSpacing: "0.3em", color: "#777" }}>
+        Collection 2026
+      </span>
 
+      <h2
+  className="heroTitle"
+  style={{
+    fontSize: "64px",
+    fontWeight: 800,
+    marginTop: 20,
+    lineHeight: 1.1,
+  }}
+>
+      
+        Your beauty starts <br />
+        <span style={{ color: "#d4af37", fontStyle: "italic" }}>
+          here
+        </span>
+      </h2>
+
+      <p style={{ marginTop: 24, color: "#555", maxWidth: 420 }}>
+        Discover authentic cosmetics at auréa.
+      </p>
+    </div>
+
+    {/* RIGHT MOVING PRODUCTS */}
+<div
+  className="heroImageWrap"
+  style={{
+    position: "relative",
+    width: "100%",
+    height: 520,
+    borderRadius: 22,
+    overflow: "hidden",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+  }}
+
+>
+  {products.length > 0 && (
+    <img
+      key={heroIndex}
+      src={products[heroIndex]?.images?.[0]}
+      alt={products[heroIndex]?.name}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        background: "#f4f4f6",
+        transition: "opacity 0.6s ease",
+      }}
+    />
+  )}
+
+  {/* Product Name Overlay */}
+  {products.length > 0 && (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 20,
+        left: 20,
+        background: "rgba(255,255,255,0.9)",
+        padding: "12px 18px",
+        borderRadius: 14,
+        fontWeight: 800,
+      }}
+      >
+         {products[heroIndex]?.name}
+    </div>
+  )}
+    </div>
+  </div>
+</section>
       {/* HERO */}
       <section
         style={{
@@ -3078,6 +2993,44 @@ const take3 = (key) => {
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
               💡 Tip: Click a product card to open the product page (sizes + quantity).
             </div>
+
+            {selectedCategory === "cosmetics" && (
+              <div style={{ marginTop: 14, maxWidth: 520 }}>
+                <div className="label" style={{ marginBottom: 8 }}>
+                  Divide products by area
+                </div>
+                <div className="tabs" style={{ margin: 0 }}>
+                  <button
+                    className={`tab ${!cosmeticFilter ? "active" : ""}`}
+                    onClick={() => setCosmeticFilter(null)}
+                    type="button"
+                  >
+                    All
+                  </button>
+                  <button
+                    className={`tab ${cosmeticFilter === "face" ? "active" : ""}`}
+                    onClick={() => setCosmeticFilter("face")}
+                    type="button"
+                  >
+                    Face
+                  </button>
+                  <button
+                    className={`tab ${cosmeticFilter === "eyes" ? "active" : ""}`}
+                    onClick={() => setCosmeticFilter("eyes")}
+                    type="button"
+                  >
+                    Eyes
+                  </button>
+                  <button
+                    className={`tab ${cosmeticFilter === "lips" ? "active" : ""}`}
+                    onClick={() => setCosmeticFilter("lips")}
+                    type="button"
+                  >
+                    Lips
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="sortHint">
@@ -3154,6 +3107,17 @@ const take3 = (key) => {
                     <div className="price">{money(p.price)}</div>
                   </div>
 
+                  {p.category === "cosmetics" && (
+                    <div style={{ marginTop: 8, fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>
+                      <div>
+                        <b style={{ color: "var(--text)" }}>Area:</b> {getCosmeticAreaLabel(p.subCategory)}
+                      </div>
+                      <div style={{ marginTop: 4 }}>
+                        <b style={{ color: "var(--text)" }}>Used for:</b> {getCosmeticUseText(p)}
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     className="btnPrimary"
                     onClick={(e) => {
@@ -3223,6 +3187,17 @@ const take3 = (key) => {
                     ⭐ 4.8 · 120+ reviews
                   </div>
 
+                  {p.category === "cosmetics" && (
+                    <div style={{ marginTop: 8, fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>
+                      <div>
+                        <b style={{ color: "var(--text)" }}>Area:</b> {getCosmeticAreaLabel(p.subCategory)}
+                      </div>
+                      <div style={{ marginTop: 4 }}>
+                        <b style={{ color: "var(--text)" }}>Used for:</b> {getCosmeticUseText(p)}
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     className="btnPrimary"
                     onClick={(e) => {
@@ -3268,6 +3243,7 @@ const take3 = (key) => {
 export default function App() {
 
   // ✅ State
+  const [cosmeticFilter, setCosmeticFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [clothingGender, setClothingGender] = useState("women");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -3277,6 +3253,7 @@ const [minPrice, setMinPrice] = useState("");
 const [maxPrice, setMaxPrice] = useState("");
 const [onlyWished, setOnlyWished] = useState(false);
 const [accountOpen, setAccountOpen] = useState(false);
+const [cosmeticsOpen, setCosmeticsOpen] = useState(false);
 const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 const [accountForm, setAccountForm] = useState({
   displayName: "",
@@ -3435,27 +3412,19 @@ const filteredProducts = useMemo(() => {
 
   let list = products.filter((p) => {
     const inCategory =
-  selectedCategory === "all" || p.category === selectedCategory;
-    const matchesSearch = !q || p.name.toLowerCase().includes(q);
-    const matchesGender =
-      selectedCategory !== "clothing" ? true : (p.gender || "women") === clothingGender;
+      selectedCategory === "all" || p.category === selectedCategory;
 
-    const wishedOk = !onlyWished || wishlistIds.includes(p.id);
+    const inSubCategory =
+      !cosmeticFilter || p.category !== "cosmetics" || p.subCategory === cosmeticFilter;
 
-    const price = Number(p.price || 0);
-    const minOk = minPrice === "" ? true : price >= Number(minPrice);
-    const maxOk = maxPrice === "" ? true : price <= Number(maxPrice);
+    const matchesSearch =
+      !q || p.name.toLowerCase().includes(q);
 
-    return inCategory && matchesGender && matchesSearch && wishedOk && minOk && maxOk;
+    return inCategory && inSubCategory && matchesSearch;
   });
 
-  if (sort === "price_asc") list.sort((a, b) => Number(a.price) - Number(b.price));
-  if (sort === "price_desc") list.sort((a, b) => Number(b.price) - Number(a.price));
-  if (sort === "name_asc") list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
-
   return list;
-}, [selectedCategory, clothingGender, search, sort, minPrice, maxPrice, onlyWished, wishlistIds]);
-
+}, [selectedCategory, cosmeticFilter, search]);
 
   // ✅ Cart helpers (merge by product id + size)
   const addToCart = (product, opts = { qty: 1, size: "" }) => {
@@ -3802,6 +3771,46 @@ const applyBrandFilter = (brand) => {
   </Link>
 </li>
 <li>
+  <button
+    className="menuItem"
+    type="button"
+    onClick={() => setCosmeticsOpen((v) => !v)}
+  >
+    <span className="menuText">Cosmetics</span>
+    <span className={`menuArrow ${cosmeticsOpen ? "rotate" : ""}`}>
+      ▾
+    </span>
+  </button>
+
+  <div className={`submenu ${cosmeticsOpen ? "open" : ""}`}>
+    
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Face
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Eyes
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Lips
+    </Link>
+
+  </div>
+</li>
+<li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
         <span className="menuArrow">→</span>
@@ -3845,8 +3854,8 @@ const applyBrandFilter = (brand) => {
         <span className="menuText">Cart</span>
         <span className="menuArrow">→</span>
       </button>
-    </li>
-
+    
+</li>
     {user && user.mode === "user" && (
       <li>
         <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
@@ -3856,6 +3865,40 @@ const applyBrandFilter = (brand) => {
       </li>
     )}
   </ul>
+  {/* SOCIAL FOOTER (SkinSociety style) */}
+<div className="sidebarSocial">
+
+  {/* Instagram (clickable) */}
+  <a
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="socialBtn"
+    onClick={() => setSidebarOpen(false)}
+    aria-label="Instagram"
+  >
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+
+  {/* Facebook (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2.5l.5-3H14V9z"/>
+    </svg>
+  </div>
+
+  {/* WhatsApp (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 12a8 8 0 1 1-2.3-5.7L20 4v6z"/>
+    </svg>
+  </div>
+
+</div>
 </aside>
 
 
@@ -4252,6 +4295,8 @@ const applyBrandFilter = (brand) => {
               products={products}
                setSearch={setSearch}
                 selectedCategory={selectedCategory}
+                cosmeticFilter={cosmeticFilter}
+                setCosmeticFilter={setCosmeticFilter}
                 setSelectedCategory={setSelectedCategory}
                 clothingGender={clothingGender}
                  
@@ -4304,19 +4349,21 @@ const applyBrandFilter = (brand) => {
               />
             }
           />
-         <Route
+       <Route
   path="/cosmetics"
   element={
     <HomePage
-    products={products}
-      setSearch={setSearch}
-      selectedCategory={"cosmetics"}          // force cosmetics
-      setSelectedCategory={setSelectedCategory}
+      products={products}
+      selectedCategory="cosmetics"
+      cosmeticFilter={cosmeticFilter}
+      setCosmeticFilter={setCosmeticFilter}
       clothingGender={clothingGender}
-      setMinPrice={setMinPrice}
-      setMaxPrice={setMaxPrice}
-      setClothingGender={setClothingGender}
-      filteredProducts={filteredProducts}
+      filteredProducts={products.filter(
+        (p) =>
+          p.category === "cosmetics" &&
+          (!cosmeticFilter || p.subCategory === cosmeticFilter) &&
+          (!search.trim() || p.name.toLowerCase().includes(search.toLowerCase().trim()))
+      )}
       user={user}
       wishlistIds={wishlistIds}
       toggleWishlist={toggleWishlist}
@@ -4337,8 +4384,6 @@ const applyBrandFilter = (brand) => {
       checkout={checkout}
       setAuthOpen={setAuthOpen}
       setMode={setMode}
-      setOnlyWished={setOnlyWished}
-      setSort={setSort}
     />
   }
 />
