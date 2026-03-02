@@ -153,6 +153,7 @@ const styles = `
   align-items:center;
   gap:10px;
   max-width:320px;
+  justify-self:end;
 }
 
 .ss-search input{
@@ -185,7 +186,7 @@ const styles = `
 
 /* Right icons */
 .ss-icons{
-  justify-self:end;
+  justify-self:start;
   display:flex;
   align-items:center;
   gap:26px;
@@ -217,6 +218,30 @@ const styles = `
 
 .ss-cart-count{
   font-weight:900;
+}
+
+.ss-mobile-user{
+  display:none;
+}
+
+@media (max-width:620px){
+  .ss-mobile-user{
+    display:inline-flex;
+    align-items:center;
+    max-width:120px;
+    height:30px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.92);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:0.03em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+  }
 }
 
 
@@ -1625,16 +1650,17 @@ section{
     padding:6px;
   }
 
- @media (max-width:620px){
+}
 
+@media (max-width:620px){
   .brandSlideImg{
     object-fit:contain;   /* ✅ no crop */
     height:220px;
     background:#f4f4f6;   /* soft backdrop */
   }
-
 }
-.ss-icons{ justify-self:end; display:flex; align-items:center; gap:10px; }
+
+.ss-icons{ justify-self:start; display:flex; align-items:center; gap:10px; }
 .ss-icons-desktop{ display:flex; align-items:center; gap:26px; }
 
 .ss-burger-btn{
@@ -1746,7 +1772,52 @@ section{
   font-weight:900;
 }
 
-/* ✅ Switch behavior on phones */
+.mobileBackToTopBtn{
+  position:fixed;
+  right:14px;
+  bottom:16px;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#000;
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow2);
+  z-index:1006;
+  cursor:pointer;
+}
+
+.mobileCartToast{
+  position:fixed;
+  left:50%;
+  bottom:72px;
+  transform:translateX(-50%);
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(16,16,18,0.94);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.03em;
+  white-space:nowrap;
+  box-shadow:var(--shadow2);
+  z-index:1007;
+}
+
+@media (min-width:621px){
+  .mobileBackToTopBtn,
+  .mobileCartToast{
+    display:none !important;
+  }
+}
+
+/* Switch behavior on phones */
 @media (max-width:620px){
   .ss-search-desktop{ display:none; }   /* hide desktop input */
   .ss-search-mobile-btn{ display:flex; }/* show magnifier only */
@@ -3255,6 +3326,8 @@ const [onlyWished, setOnlyWished] = useState(false);
 const [accountOpen, setAccountOpen] = useState(false);
 const [cosmeticsOpen, setCosmeticsOpen] = useState(false);
 const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+const [showBackToTop, setShowBackToTop] = useState(false);
+const [mobileCartToast, setMobileCartToast] = useState(null);
 const [accountForm, setAccountForm] = useState({
   displayName: "",
   currentPassword: "",
@@ -3397,6 +3470,27 @@ useEffect(() => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  useEffect(() => {
+    const onScrollOrResize = () => {
+      const shouldShow = window.innerWidth <= 620 && window.scrollY > 520;
+      setShowBackToTop((prev) => (prev === shouldShow ? prev : shouldShow));
+    };
+
+    onScrollOrResize();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!mobileCartToast) return undefined;
+    const timer = setTimeout(() => setMobileCartToast(null), 1600);
+    return () => clearTimeout(timer);
+  }, [mobileCartToast]);
+
   // lock body scroll when drawer or modal open
 useEffect(() => {
   const locked =
@@ -3440,6 +3534,10 @@ const filteredProducts = useMemo(() => {
       }
       return [...prev, { id: product.id, name: product.name, price: Number(product.price), qty, size }];
     });
+
+    if (typeof window !== "undefined" && window.innerWidth <= 620) {
+      setMobileCartToast({ text: "Added to cart" });
+    }
   };
 const applyBrandFilter = (brand) => {
   setSelectedCategory("cosmetics");
@@ -3601,52 +3699,7 @@ const applyBrandFilter = (brand) => {
    <header className="ss-header">
   <div className="ss-mainbar">
 
-    {/* LEFT: burger + mobile search icon + desktop search input */}
-    <div className="ss-search">
-
-      {/* Burger (mobile only) */}
-      <button
-  className={`ss-burger-btn ${sidebarOpen ? "active" : ""}`}
-  type="button"
-  onClick={() => setSidebarOpen((v) => !v)}
-  aria-label="Open menu"
->
-  <span className="hamburger" />
-</button>
-      {/* Mobile search icon (mobile only) */}
-      <button
-        className="ss-search-mobile-btn"
-        type="button"
-        onClick={() => setMobileSearchOpen((v) => !v)}
-        aria-label="Open search"
-      >
-        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <line x1="16.65" y1="16.65" x2="21" y2="21" />
-        </svg>
-      </button>
-
-      {/* Desktop search (desktop only) */}
-      <div className="ss-search-desktop">
-        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <line x1="16.65" y1="16.65" x2="21" y2="21" />
-        </svg>
-
-        <input
-          placeholder="SEARCH"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-    </div>
-
-    {/* CENTER: logo */}
-    <Link to="/" className="ss-logo">
-      auréa
-    </Link>
-
-    {/* RIGHT: desktop actions only */}
+    {/* LEFT: desktop actions */}
     <div className="ss-icons">
       <div className="ss-icons-desktop">
 
@@ -3701,6 +3754,61 @@ const applyBrandFilter = (brand) => {
         </button>
 
       </div>
+
+      {user?.mode === "user" && (
+        <button
+          className="ss-mobile-user"
+          onClick={() => setAccountOpen(true)}
+          type="button"
+        >
+          {user.name}
+        </button>
+      )}
+    </div>
+
+    {/* CENTER: logo */}
+    <Link to="/" className="ss-logo">
+      auréa
+    </Link>
+
+    {/* RIGHT: burger + mobile search icon + desktop search input */}
+    <div className="ss-search">
+
+      {/* Burger (mobile only) */}
+      <button
+  className={`ss-burger-btn ${sidebarOpen ? "active" : ""}`}
+  type="button"
+  onClick={() => setSidebarOpen((v) => !v)}
+  aria-label="Open menu"
+>
+  <span className="hamburger" />
+</button>
+      {/* Mobile search icon (mobile only) */}
+      <button
+        className="ss-search-mobile-btn"
+        type="button"
+        onClick={() => setMobileSearchOpen((v) => !v)}
+        aria-label="Open search"
+      >
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
+      </button>
+
+      {/* Desktop search (desktop only) */}
+      <div className="ss-search-desktop">
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
+
+        <input
+          placeholder="SEARCH"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
     </div>
 
   </div>
@@ -3711,7 +3819,6 @@ const applyBrandFilter = (brand) => {
   <div className="categoryInner">
 
     <Link to="/" className="categoryItem">Home</Link>
-    <Link to="/accessories" className="categoryItem">Accessories</Link>
     <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
 
   </div>
@@ -3737,6 +3844,23 @@ const applyBrandFilter = (brand) => {
     </button>
   </div>
 </div>
+
+{showBackToTop && (
+  <button
+    className="mobileBackToTopBtn"
+    type="button"
+    aria-label="Back to top"
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  >
+    ↑
+  </button>
+)}
+
+{mobileCartToast && (
+  <div className="mobileCartToast" role="status" aria-live="polite">
+    {mobileCartToast.text}
+  </div>
+)}
 
 {/* ✅ Mobile Sidebar Overlay */}
 <div
