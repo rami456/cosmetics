@@ -1035,6 +1035,59 @@ button{ -webkit-tap-highlight-color: transparent; }
 .promoMsg.ok{ color:#0b6b2e; font-weight:900; }
 .promoMsg.bad{ color:#b00020; font-weight:900; }
 
+.loyaltyBox{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.loyaltyHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.loyaltyTierBadge{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:11px;
+  color:var(--text);
+  font-weight:900;
+  letter-spacing:0.04em;
+}
+.loyaltyHint{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+.loyaltyActions{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:8px;
+}
+.loyaltyMiniBtn{
+  height:42px;
+  padding:0 12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:800;
+}
+.loyaltyClearBtn{
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  text-decoration:underline;
+  font-weight:700;
+  padding:0;
+  margin-left:6px;
+}
+
 .cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
 
 .footer{
@@ -2505,6 +2558,22 @@ const PROMOS = {
 
 const SHIPPING_FEE = 7.99;
 const FREE_SHIPPING_THRESHOLD = 75;
+const LOYALTY_POINTS_STORAGE_KEY = "aurea_loyalty_points_by_user";
+const LOYALTY_PENDING_ORDER_KEY = "aurea_loyalty_pending_order";
+const POINTS_PER_USD = 5;
+const POINT_VALUE_USD = 0.05; // 20 points = $1
+
+const LOYALTY_TIERS = [
+  { name: "Rose", minPoints: 0, autoDiscountPct: 0, earnBoost: 1 },
+  { name: "Gold", minPoints: 500, autoDiscountPct: 3, earnBoost: 1.15 },
+  { name: "Diamond", minPoints: 1200, autoDiscountPct: 6, earnBoost: 1.3 },
+];
+
+function getLoyaltyTier(points) {
+  if (points >= LOYALTY_TIERS[2].minPoints) return LOYALTY_TIERS[2];
+  if (points >= LOYALTY_TIERS[1].minPoints) return LOYALTY_TIERS[1];
+  return LOYALTY_TIERS[0];
+}
 
 function money(n) {
   return `$${Number(n || 0).toFixed(2)}`;
@@ -2833,8 +2902,10 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
 }
 
 /** ✅ Success / Cancel pages */
-function SuccessPage({ clearCart }) {
+function SuccessPage({ clearCart, onOrderSuccess }) {
   useEffect(() => {
+    if (onOrderSuccess) onOrderSuccess();
+
     // In real life, clear cart only after server confirms payment (webhook).
     clearCart();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -2853,7 +2924,11 @@ function SuccessPage({ clearCart }) {
   );
 }
 
-function CancelPage() {
+function CancelPage({ onOrderCancel }) {
+  useEffect(() => {
+    if (onOrderCancel) onOrderCancel();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="pageWrap">
       <div className="pageCard">
@@ -3386,6 +3461,54 @@ useEffect(() => {
   }
 }, [user]);
 
+const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+const [pointsInput, setPointsInput] = useState("");
+const [pointsToRedeem, setPointsToRedeem] = useState(0);
+
+const loyaltyUserKey = useMemo(() => {
+  if (!user || user.mode !== "user") return "";
+  return (user.email || user.name || "").trim().toLowerCase();
+}, [user]);
+
+const readStoredLoyalty = () => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(LOYALTY_POINTS_STORAGE_KEY) || "{}");
+    return raw && typeof raw === "object" ? raw : {};
+  } catch {
+    return {};
+  }
+};
+
+const writeStoredLoyaltyPoints = (userKey, nextPoints) => {
+  if (!userKey) return 0;
+  const safePoints = Math.max(0, Math.floor(Number(nextPoints) || 0));
+  const map = readStoredLoyalty();
+  map[userKey] = safePoints;
+  localStorage.setItem(LOYALTY_POINTS_STORAGE_KEY, JSON.stringify(map));
+  return safePoints;
+};
+
+useEffect(() => {
+  if (!loyaltyUserKey) {
+    setLoyaltyPoints(0);
+    setPointsToRedeem(0);
+    setPointsInput("");
+    return;
+  }
+
+  try {
+    const raw = JSON.parse(localStorage.getItem(LOYALTY_POINTS_STORAGE_KEY) || "{}");
+    const map = raw && typeof raw === "object" ? raw : {};
+    const saved = Math.max(0, Math.floor(Number(map[loyaltyUserKey] || 0)));
+    setLoyaltyPoints(saved);
+  } catch {
+    setLoyaltyPoints(0);
+  }
+
+  setPointsToRedeem(0);
+  setPointsInput("");
+}, [loyaltyUserKey]);
+
   // ✅ Search in topbar
   const [search, setSearch] = useState("");
 
@@ -3590,6 +3713,33 @@ const applyBrandFilter = (brand) => {
     setPromoMessage({ ok: true, text: `Applied ${code} (${PROMOS[code].label})` });
   };
 
+  const applyPoints = () => {
+    const parsed = Math.floor(Number(pointsInput || 0));
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      setPointsToRedeem(0);
+      setPointsInput("");
+      return;
+    }
+    const clamped = Math.min(parsed, maxPointsRedeemable);
+    setPointsToRedeem(clamped);
+    setPointsInput(String(clamped));
+  };
+
+  const useMaxPoints = () => {
+    if (maxPointsRedeemable <= 0) {
+      setPointsToRedeem(0);
+      setPointsInput("");
+      return;
+    }
+    setPointsToRedeem(maxPointsRedeemable);
+    setPointsInput(String(maxPointsRedeemable));
+  };
+
+  const clearPointsRedemption = () => {
+    setPointsToRedeem(0);
+    setPointsInput("");
+  };
+
   // ✅ Totals (subtotal / discount / shipping / total)
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.qty, 0), [cartItems]);
 
@@ -3600,6 +3750,15 @@ const applyBrandFilter = (brand) => {
     if (promo.type === "fixed") return Math.min(subtotal, promo.value);
     return 0;
   }, [promoCode, subtotal]);
+
+  const loyaltyTier = useMemo(() => getLoyaltyTier(loyaltyPoints), [loyaltyPoints]);
+
+  const loyaltyTierDiscount = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    if (!loyaltyTier.autoDiscountPct) return 0;
+    const eligible = Math.max(0, subtotal - discount);
+    return (eligible * loyaltyTier.autoDiscountPct) / 100;
+  }, [user, loyaltyTier, subtotal, discount]);
 
   const shipping = useMemo(() => {
     if (cartItems.length === 0) return 0;
@@ -3613,12 +3772,51 @@ const applyBrandFilter = (brand) => {
     return SHIPPING_FEE;
   }, [cartItems.length, promoCode, subtotal]);
 
-  const total = useMemo(() => Math.max(0, subtotal - discount + shipping), [subtotal, discount, shipping]);
+  const maxPointsRedeemable = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    const dueBeforePoints = Math.max(0, subtotal - discount - loyaltyTierDiscount + shipping);
+    return Math.max(0, Math.min(loyaltyPoints, Math.floor(dueBeforePoints / POINT_VALUE_USD)));
+  }, [user, subtotal, discount, loyaltyTierDiscount, shipping, loyaltyPoints]);
+
+  const pointsDiscount = useMemo(() => {
+    const safePoints = Math.max(0, Math.min(pointsToRedeem, maxPointsRedeemable));
+    return safePoints * POINT_VALUE_USD;
+  }, [pointsToRedeem, maxPointsRedeemable]);
+
+  const totalDiscount = useMemo(
+    () => discount + loyaltyTierDiscount + pointsDiscount,
+    [discount, loyaltyTierDiscount, pointsDiscount]
+  );
+
+  const total = useMemo(() => Math.max(0, subtotal - totalDiscount + shipping), [subtotal, totalDiscount, shipping]);
+
+  const estimatedPointsToEarn = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    const earnBase = Math.max(0, subtotal - totalDiscount);
+    return Math.floor(earnBase * POINTS_PER_USD * loyaltyTier.earnBoost);
+  }, [user, subtotal, totalDiscount, loyaltyTier]);
+
+  useEffect(() => {
+    if (pointsToRedeem <= maxPointsRedeemable) return;
+    setPointsToRedeem(maxPointsRedeemable);
+    setPointsInput(maxPointsRedeemable ? String(maxPointsRedeemable) : "");
+  }, [pointsToRedeem, maxPointsRedeemable]);
 
   // ✅ Checkout (Whish Money) – frontend calls your backend, backend returns a secure payment URL
   const checkout = async () => {
     try {
       if (cartItems.length === 0) return;
+
+      const redeemedPoints = Math.max(0, Math.min(pointsToRedeem, maxPointsRedeemable));
+      const loyaltySnapshot = {
+        userMode: user?.mode || "guest",
+        userKey: loyaltyUserKey,
+        pointsUsed: redeemedPoints,
+        pointsEarned: estimatedPointsToEarn,
+        tierName: loyaltyTier.name,
+      };
+
+      localStorage.setItem(LOYALTY_PENDING_ORDER_KEY, JSON.stringify(loyaltySnapshot));
 
       // You must implement this endpoint on your backend:
       // POST /create-whish-checkout  -> returns { url: "https://..." }
@@ -3629,7 +3827,14 @@ const applyBrandFilter = (brand) => {
           currency: "USD",
           promoCode: promoCode || "",
           cartItems,
-          totals: { subtotal, discount, shipping, total },
+          loyalty: loyaltySnapshot,
+          totals: {
+            subtotal,
+            discount,
+            loyaltyDiscount: loyaltyTierDiscount + pointsDiscount,
+            shipping,
+            total,
+          },
           customer: user ? { name: user.name, email: user.email, mode: user.mode } : null,
           // recommended URLs for your backend to use:
           successUrl: `${window.location.origin}/success`,
@@ -3641,11 +3846,62 @@ const applyBrandFilter = (brand) => {
       if (data?.url) {
         window.location.href = data.url; // redirect to Whish secure hosted payment page
       } else {
+        localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
         alert(data?.error || "Checkout failed. Check your backend.");
       }
     } catch {
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
       alert("Checkout error. Make sure your backend is running on port 4242.");
     }
+  };
+
+  const finalizeLoyaltyFromPendingOrder = () => {
+    const empty = {
+      applied: false,
+      pointsUsed: 0,
+      pointsEarned: 0,
+      newBalance: loyaltyPoints,
+      tierName: getLoyaltyTier(loyaltyPoints).name,
+    };
+
+    try {
+      const raw = localStorage.getItem(LOYALTY_PENDING_ORDER_KEY);
+      if (!raw) return empty;
+
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+      const pending = JSON.parse(raw);
+
+      if (!pending || pending.userMode !== "user" || !pending.userKey) return empty;
+
+      const used = Math.max(0, Math.floor(Number(pending.pointsUsed) || 0));
+      const earned = Math.max(0, Math.floor(Number(pending.pointsEarned) || 0));
+
+      const map = readStoredLoyalty();
+      const current = Math.max(0, Math.floor(Number(map[pending.userKey] || 0)));
+      const next = Math.max(0, current - used + earned);
+      writeStoredLoyaltyPoints(pending.userKey, next);
+
+      if (pending.userKey === loyaltyUserKey) {
+        setLoyaltyPoints(next);
+        setPointsToRedeem(0);
+        setPointsInput("");
+      }
+
+      return {
+        applied: used > 0 || earned > 0,
+        pointsUsed: used,
+        pointsEarned: earned,
+        newBalance: next,
+        tierName: getLoyaltyTier(next).name,
+      };
+    } catch {
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+      return empty;
+    }
+  };
+
+  const clearPendingLoyaltyOrder = () => {
+    localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
   };
 
   // ✅ Firebase Email/Password sign in
@@ -4387,12 +4643,66 @@ const applyBrandFilter = (brand) => {
           {promoCode && PROMOS[promoCode] && (
             <div className="promoMsg ok">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
           )}
+
+          {user?.mode === "user" ? (
+            <div className="loyaltyBox">
+              <div className="loyaltyHead">
+                <div>
+                  <div className="label">Aurea Loyalty</div>
+                  <div className="loyaltyHint">
+                    Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> · Balance{" "}
+                    <b style={{ color: "var(--text)" }}>{loyaltyPoints} pts</b>
+                  </div>
+                </div>
+
+                <div className="loyaltyTierBadge">{loyaltyTier.name} tier</div>
+              </div>
+
+              <div className="loyaltyActions">
+                <input
+                  className="input"
+                  value={pointsInput}
+                  onChange={(e) => setPointsInput(e.target.value.replace(/[^0-9]/g, ""))}
+                  placeholder={`Points to use (max ${maxPointsRedeemable})`}
+                  inputMode="numeric"
+                />
+                <button className="searchBtn" type="button" onClick={applyPoints}>
+                  Use
+                </button>
+                <button className="loyaltyMiniBtn" type="button" onClick={useMaxPoints}>
+                  Max
+                </button>
+              </div>
+
+              <div className="loyaltyHint">
+                20 pts = $1. {loyaltyTier.autoDiscountPct > 0 ? `${loyaltyTier.autoDiscountPct}% tier discount is active.` : "Reach Gold tier for automatic discounts."}
+              </div>
+              <div className="loyaltyHint">Estimated points after this order: {estimatedPointsToEarn} pts</div>
+
+              {pointsToRedeem > 0 && (
+                <div className="promoMsg ok">
+                  Redeeming {pointsToRedeem} pts (-{money(pointsDiscount)})
+                  <button className="loyaltyClearBtn" type="button" onClick={clearPointsRedemption}>
+                    Remove
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="promoMsg">Sign in to earn points and pay with points on future orders.</div>
+          )}
         </div>
 
         {/* Summary */}
         <div className="summary">
           <div className="sumRow"><span>Subtotal</span><b>{money(subtotal)}</b></div>
-          <div className="sumRow"><span>Discount</span><b>-{money(discount)}</b></div>
+          <div className="sumRow"><span>Promo discount</span><b>-{money(discount)}</b></div>
+          {loyaltyTierDiscount > 0 && (
+            <div className="sumRow"><span>{loyaltyTier.name} tier discount</span><b>-{money(loyaltyTierDiscount)}</b></div>
+          )}
+          {pointsDiscount > 0 && (
+            <div className="sumRow"><span>Pay with points ({pointsToRedeem} pts)</span><b>-{money(pointsDiscount)}</b></div>
+          )}
           <div className="sumRow"><span>Shipping</span><b>{shipping === 0 ? "Free" : money(shipping)}</b></div>
           <div className="sumRow total"><span>Total</span><b>{money(total)}</b></div>
         </div>
@@ -4525,8 +4835,11 @@ const applyBrandFilter = (brand) => {
   }
 />
 
-          <Route path="/success" element={<SuccessPage clearCart={clearCart} />} />
-          <Route path="/cancel" element={<CancelPage />} />
+          <Route
+            path="/success"
+            element={<SuccessPage clearCart={clearCart} onOrderSuccess={finalizeLoyaltyFromPendingOrder} />}
+          />
+          <Route path="/cancel" element={<CancelPage onOrderCancel={clearPendingLoyaltyOrder} />} />
         </Routes>
 {/* ✅ TRUST STRIP (SKINSOCIETY STYLE) */}
 <section className="trustStrip">
