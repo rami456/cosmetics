@@ -17,7 +17,7 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-/** ✅ CSS (one file) */
+/** âœ… CSS (one file) */
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
 
@@ -33,10 +33,10 @@ const styles = `
 @import url('https://fonts.cdnfonts.com/css/handmade-cupcakes');
 @import url('https://fonts.cdnfonts.com/css/cupcakes');
 /* ============================= */
-/*   AURÉA LUXURY HEADER LAYOUT  */
+/*   AURÃ‰A LUXURY HEADER LAYOUT  */
 /* ============================= */
 /* ============================= */
-/* ✅ HERO MOBILE FIX            */
+/* âœ… HERO MOBILE FIX            */
 /* ============================= */
 
 @media (max-width: 900px){
@@ -204,7 +204,7 @@ const styles = `
   border:none;
   font:inherit;
   color:#000;
-  text-decoration:none; /* ✅ important for Link */
+  text-decoration:none; /* âœ… important for Link */
 }
 /* cleaner header text */
 .ss-icon-btn{
@@ -343,9 +343,9 @@ const styles = `
 }
 
 .ss-register {
-  background: #ffffff;      /* ✅ white */
+  background: #ffffff;      /* âœ… white */
   border: none;
-  color: #000000;           /* ✅ black text */
+  color: #000000;           /* âœ… black text */
   padding: 8px 18px;
   border-radius: 8px;
   font-weight: 800;
@@ -403,7 +403,7 @@ const styles = `
   --radius:18px;
 }
 
-/* ✅ Dark mode overrides */
+/* âœ… Dark mode overrides */
 [data-theme="dark"]{
   --panel:#121214;
   --soft:#0b0b0d;
@@ -440,7 +440,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   opacity:0.85;
 }
 
-/* ✅ Hamburger morph to X */
+/* âœ… Hamburger morph to X */
 .iconBtn.active .hamburger{
   background:transparent;
 }
@@ -476,7 +476,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 
 
-/* ✅ Topbar search */
+/* âœ… Topbar search */
 .topSearch{
   display:flex;
   gap:10px;
@@ -511,7 +511,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 
   .pill{ display:none; } /* keep hidden */
 }
-/* ✅ Brand banner carousel */
+/* âœ… Brand banner carousel */
 .brandCarousel{
   grid-column: 1 / -1;
   border-radius:22px;
@@ -701,7 +701,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   pointer-events:auto;
 }
 
-/* ✅ Sidebar (closed by default; opens only when hamburger is pressed) */
+/* âœ… Sidebar (closed by default; opens only when hamburger is pressed) */
 .sidebar{
   position:fixed;
   top:72px; left:0; bottom:0;
@@ -834,6 +834,123 @@ button{ -webkit-tap-highlight-color: transparent; }
 .sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
 .sortHint{ font-size:13px; color:var(--muted); }
 
+.cosmeticsTabsShell{
+  margin-top:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.95), #f8f8fa);
+  padding:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.06);
+}
+.cosmeticsTabsTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.cosmeticsTabsMeta{
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+  white-space:nowrap;
+}
+.cosmeticsMainTabs,
+.cosmeticsSubTabs{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+.cosmeticsMainTabs::-webkit-scrollbar,
+.cosmeticsSubTabs::-webkit-scrollbar{
+  display:none;
+}
+.cosmeticsMainTabs{ margin-top:12px; }
+.cosmeticsSubTabs{ margin-top:10px; }
+.cosmeticsMainTab,
+.cosmeticsSubTab{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  border-radius:999px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:transform 140ms ease, box-shadow 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+.cosmeticsMainTab{
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.02em;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.cosmeticsSubTab{
+  padding:8px 11px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+}
+.cosmeticsMainTab:hover,
+.cosmeticsSubTab:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+.cosmeticsMainTab.active,
+.cosmeticsSubTab.active{
+  background:#111115;
+  color:#fff;
+  border-color:#111115;
+  box-shadow:0 10px 22px rgba(0,0,0,0.18);
+}
+.cosmeticsTabCount{
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.06);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:900;
+}
+.cosmeticsMainTab.active .cosmeticsTabCount{
+  background:rgba(255,255,255,0.2);
+}
+
+.cosmeticsGrid{
+  animation:cosmeticsFadeIn 220ms ease;
+}
+@keyframes cosmeticsFadeIn{
+  from{ opacity:0; transform:translateY(6px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.tabEmptyState{
+  border:1px dashed var(--line);
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+
+@media (max-width: 620px){
+  .cosmeticsTabsShell{
+    margin-top:14px;
+    padding:12px;
+    border-radius:16px;
+  }
+  .cosmeticsMainTab{ padding:9px 12px; }
+  .cosmeticsSubTab{ padding:8px 10px; }
+}
+
 /* Products */
 .grid{
   display:grid;
@@ -855,10 +972,10 @@ button{ -webkit-tap-highlight-color: transparent; }
 .img{
   width:100%;
   height:100%;
-  object-fit:contain;         /* ✅ no crop */
+  object-fit:contain;         /* âœ… no crop */
   display:block;
-  background:#f2f2f3;         /* ✅ nice backdrop for transparent/empty space */
-  padding:10px;               /* ✅ gives breathing room */
+  background:#f2f2f3;         /* âœ… nice backdrop for transparent/empty space */
+  padding:10px;               /* âœ… gives breathing room */
   box-sizing:border-box;
 }
 .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
@@ -1244,7 +1361,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   border-radius:18px;
   overflow:hidden;
   background:#f2f2f3;
-  aspect-ratio: 1 / 1;        /* ✅ keeps a clean frame */
+  aspect-ratio: 1 / 1;        /* âœ… keeps a clean frame */
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1253,7 +1370,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .pImg{
   width:100%;
   height:100%;
-  object-fit:contain;         /* ✅ no crop */
+  object-fit:contain;         /* âœ… no crop */
   padding:12px;
   box-sizing:border-box;
   display:block;
@@ -1277,7 +1394,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .thumbImg{
   width:100%;
   height:100%;
-  object-fit:contain;         /* ✅ no crop */
+  object-fit:contain;         /* âœ… no crop */
   background:#f2f2f3;
   padding:6px;
   box-sizing:border-box;
@@ -1379,7 +1496,7 @@ button{ -webkit-tap-highlight-color: transparent; }
   padding-top: 12px !important;
 }
   /* ============================= */
-/* ✅ FIX: Cart Drawer Styling   */
+/* âœ… FIX: Cart Drawer Styling   */
 /* ============================= */
 
 .cartDrawerOverlay{
@@ -1444,7 +1561,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 
 /* ============================= */
-/* ✅ FIX: Trust Strip Styling   */
+/* âœ… FIX: Trust Strip Styling   */
 /* ============================= */
 
 .trustStrip{
@@ -1509,7 +1626,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 }
 
 /* ============================= */
-/* ✅ FIX: Header style conflict */
+/* âœ… FIX: Header style conflict */
 /* ============================= */
 /* You have TWO .ss-logo blocks; keep the "luxury" one.
    This forces the logo in the header to stay black + Playfair. */
@@ -1525,7 +1642,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 
 
 /* ============================= */
-/* ✅ MOBILE FIX PACK (AURÉA)    */
+/* âœ… MOBILE FIX PACK (AURÃ‰A)    */
 /* ============================= */
 
 @media (max-width: 900px){
@@ -1708,7 +1825,7 @@ section{
 
 @media (max-width:620px){
   .brandSlideImg{
-    object-fit:contain;   /* ✅ no crop */
+    object-fit:contain;   /* âœ… no crop */
     height:220px;
     background:#f4f4f6;   /* soft backdrop */
   }
@@ -1763,7 +1880,7 @@ section{
   .ss-burger-btn{ display:flex; }     /* show burger */
 }
 /* ============================= */
-/* ✅ Mobile Search Drop-down     */
+/* âœ… Mobile Search Drop-down     */
 /* ============================= */
 
 .ss-search-desktop{ display:flex; align-items:center; gap:10px; width:100%; }
@@ -1864,6 +1981,44 @@ section{
   z-index:1007;
 }
 
+.whatsappFloatBtn{
+  position:fixed;
+  left:16px;
+  bottom:16px;
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:#25d366;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 14px 30px rgba(0,0,0,0.2);
+  z-index:1008;
+  transition:transform 160ms ease, box-shadow 220ms ease;
+}
+.whatsappFloatBtn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 18px 34px rgba(0,0,0,0.24);
+}
+.whatsappFloatBtn:active{
+  transform:translateY(0) scale(0.98);
+}
+.whatsappFloatBtn svg{
+  width:23px;
+  height:23px;
+}
+
+@media (max-width:620px){
+  .whatsappFloatBtn{
+    width:48px;
+    height:48px;
+    left:12px;
+    bottom:14px;
+  }
+}
+
 @media (min-width:621px){
   .mobileBackToTopBtn,
   .mobileCartToast{
@@ -1880,7 +2035,7 @@ section{
   .ss-mobile-searchbar{ top:0; }        /* safest with your sticky header */
 }
 /* ============================= */
-/* ✅ PHONE HEADER: LEFT ICONS + CENTER LOGO */
+/* âœ… PHONE HEADER: LEFT ICONS + CENTER LOGO */
 /* ============================= */
 
 @media (max-width: 620px){
@@ -1935,7 +2090,7 @@ section{
   }
 }
 /* ============================= */
-/* ✅ PHONE: LEFT ICONS + CENTER LOGO */
+/* âœ… PHONE: LEFT ICONS + CENTER LOGO */
 /* ============================= */
 
 @media (max-width: 620px){
@@ -2017,7 +2172,7 @@ section{
   color:#000 !important;
   text-decoration:none;
 }
-/* ✅ HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
+/* âœ… HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
 .ss-header *{
   color:#000 !important;
   -webkit-text-fill-color:#000 !important; /* iOS Safari can force link color */
@@ -2052,7 +2207,7 @@ section{
   stroke:#000 !important;
   fill:none !important;
 }
-/* ✅ FIX: Sidebar (burger menu) link colors (blue/purple) */
+/* âœ… FIX: Sidebar (burger menu) link colors (blue/purple) */
 .sidebar a,
 .sidebar a:visited,
 .sidebar a:hover,
@@ -2274,7 +2429,7 @@ section{
   cursor:default;
   pointer-events:none;
 }
-/* ✅ Homepage section grid: always 3 cards max */
+/* âœ… Homepage section grid: always 3 cards max */
 .homeSectionGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2316,7 +2471,7 @@ const products = [
     category: "cosmetics",
     subCategory: "face",
     images: ["/products/maxfactor-101.jpg", "/products/maxfactor-101-2.jpg"],
-    details: { subtitle: "Foundation — Shade 101 (light tone)" }
+    details: { subtitle: "Foundation â€” Shade 101 (light tone)" }
   },
   {
     id: 10,
@@ -2325,7 +2480,7 @@ const products = [
     category: "cosmetics",
     subCategory: "face",
     images: ["/products/maxfactor55beige.jpg"],
-    details: { subtitle: "Foundation — Shade 55 Beige" }
+    details: { subtitle: "Foundation â€” Shade 55 Beige" }
   },
   {
     id: 11,
@@ -2378,7 +2533,7 @@ const products = [
   },
   {
     id: 302,
-    name: "Bourjois Blush 74 Rose Ambré",
+    name: "Bourjois Blush 74 Rose AmbrÃ©",
     price: 16,
     category: "cosmetics",
     subCategory: "face",
@@ -2434,7 +2589,7 @@ const products = [
   },
   {
     id: 508,
-    name: "L'Oréal True Match Nude Serum",
+    name: "L'OrÃ©al True Match Nude Serum",
     price: 12,
     category: "cosmetics",
     subCategory: "face",
@@ -2442,7 +2597,7 @@ const products = [
   },
   {
     id: 509,
-    name: "L'Oréal True Match Foundation",
+    name: "L'OrÃ©al True Match Foundation",
     price: 10,
     category: "cosmetics",
     subCategory: "face",
@@ -2581,9 +2736,9 @@ function money(n) {
 
 function parseSizes(sizeStr) {
   if (!sizeStr) return [];
-  // "XS • S • M • L" -> ["XS","S","M","L"]
+  // "XS â€¢ S â€¢ M â€¢ L" -> ["XS","S","M","L"]
   return sizeStr
-    .split(/•|·|,|\|/g)
+    .split(/â€¢|Â·|,|\|/g)
     .map((x) => x.trim())
     .filter(Boolean);
 }
@@ -2593,6 +2748,105 @@ const COSMETIC_SUBCATEGORY_LABELS = {
   eyes: "Eyes",
   lips: "Lips",
 };
+
+const COSMETICS_MAIN_TABS = [
+  { key: "all", label: "All" },
+  { key: "face", label: "Face" },
+  { key: "eyes", label: "Eyes" },
+  { key: "lips", label: "Lips" },
+  { key: "tools", label: "Tools" },
+  { key: "skincare", label: "Skincare" },
+  { key: "best_sellers", label: "Best Sellers" },
+  { key: "new_arrivals", label: "New Arrivals" },
+];
+
+const COSMETIC_MAIN_KEYWORDS = {
+  tools: ["brush", "sponge", "applicator", "tool", "tweezer", "curler"],
+  skincare: ["cleanser", "moistur", "cream", "serum", "spf", "mask", "toner", "skin"],
+};
+
+const COSMETIC_SUBTAB_DEFS = {
+  face: [
+    { key: "foundation", label: "Foundation", matchers: ["foundation", "base"] },
+    { key: "primer", label: "Primer", matchers: ["primer"] },
+    { key: "powder", label: "Powder", matchers: ["powder"] },
+    { key: "blush", label: "Blush", matchers: ["blush"] },
+    { key: "concealer", label: "Concealer", matchers: ["concealer"] },
+    { key: "bronzer", label: "Bronzer", matchers: ["bronzer", "bronzing"] },
+    { key: "highlighter", label: "Highlighter", matchers: ["highlight", "illuminator", "glow"] },
+  ],
+  eyes: [
+    { key: "eyeshadow", label: "Eyeshadow", matchers: ["eyeshadow", "palette"] },
+    { key: "eyeliner", label: "Eyeliner", matchers: ["eyeliner", "kohl", "liner"] },
+    { key: "mascara", label: "Mascara", matchers: ["mascara"] },
+    { key: "brow", label: "Brows", matchers: ["brow"] },
+  ],
+  lips: [
+    { key: "lipstick", label: "Lipstick", matchers: ["lipstick", "lipfinity"] },
+    { key: "liner", label: "Lip Liner", matchers: ["lip liner", "liner"] },
+    { key: "gloss", label: "Gloss", matchers: ["gloss"] },
+    { key: "balm", label: "Balm", matchers: ["balm"] },
+  ],
+  tools: [
+    { key: "brushes", label: "Brushes", matchers: ["brush"] },
+    { key: "sponges", label: "Sponges", matchers: ["sponge"] },
+    { key: "accessories", label: "Accessories", matchers: ["tool", "curler", "tweezer", "applicator"] },
+  ],
+  skincare: [
+    { key: "cleanser", label: "Cleanser", matchers: ["cleanser", "wash"] },
+    { key: "serum", label: "Serum", matchers: ["serum"] },
+    { key: "moisturizer", label: "Moisturizer", matchers: ["moistur", "cream"] },
+    { key: "treatment", label: "Treatment", matchers: ["mask", "toner", "spf"] },
+  ],
+};
+
+function getCosmeticsTextSource(product) {
+  return `${product?.name || ""} ${product?.details?.subtitle || ""}`.toLowerCase();
+}
+
+function resolveCosmeticMainTab(product) {
+  const explicit = (product?.subCategory || "").toLowerCase();
+  if (explicit === "face" || explicit === "eyes" || explicit === "lips") return explicit;
+
+  const source = getCosmeticsTextSource(product);
+
+  if (COSMETIC_MAIN_KEYWORDS.tools.some((keyword) => source.includes(keyword))) return "tools";
+  if (COSMETIC_MAIN_KEYWORDS.skincare.some((keyword) => source.includes(keyword))) return "skincare";
+  if (source.includes("eye")) return "eyes";
+  if (source.includes("lip")) return "lips";
+  return "face";
+}
+
+function resolveCosmeticSubTab(product, mainTab) {
+  const definitions = COSMETIC_SUBTAB_DEFS[mainTab];
+  if (!definitions || definitions.length === 0) return null;
+
+  const source = getCosmeticsTextSource(product);
+  const match = definitions.find((definition) =>
+    definition.matchers.some((matcher) => source.includes(matcher))
+  );
+
+  return match ? match.key : "more";
+}
+
+function filterCosmeticsByMainTab(products, mainTab) {
+  if (!Array.isArray(products) || products.length === 0) return [];
+  if (mainTab === "all") return products;
+
+  if (mainTab === "best_sellers") {
+    return [...products]
+      .sort((a, b) => Number(b.price || 0) - Number(a.price || 0) || Number(b.id || 0) - Number(a.id || 0))
+      .slice(0, 12);
+  }
+
+  if (mainTab === "new_arrivals") {
+    return [...products]
+      .sort((a, b) => Number(b.id || 0) - Number(a.id || 0))
+      .slice(0, 12);
+  }
+
+  return products.filter((product) => resolveCosmeticMainTab(product) === mainTab);
+}
 
 function getCosmeticAreaLabel(subCategory) {
   return COSMETIC_SUBCATEGORY_LABELS[subCategory] || "Cosmetics";
@@ -2627,7 +2881,7 @@ function getCosmeticUseText(product) {
   return "to complete your beauty routine.";
 }
 
-/** ✅ Product page */
+/** âœ… Product page */
 function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const { id } = useParams();
   const pid = Number(id);
@@ -2652,9 +2906,9 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
       <div className="pageWrap">
         <div className="pageCard">
           <h1 className="pageTitle">Product not found</h1>
-          <p className="pageSub">This product doesn’t exist (ID: {id}).</p>
+          <p className="pageSub">This product doesnâ€™t exist (ID: {id}).</p>
           <div style={{ marginTop: 14 }}>
-            <Link className="backLink" to="/">← Back to shop</Link>
+            <Link className="backLink" to="/">â† Back to shop</Link>
           </div>
         </div>
       </div>
@@ -2681,7 +2935,7 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
     <div className="productWrap">
       <div className="productCard">
         <div className="productTop">
-          <Link className="backLink" to="/">← Back to shop</Link>
+          <Link className="backLink" to="/">â† Back to shop</Link>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             <button
               className={`smallBtn ${isWished ? "primary" : ""}`}
@@ -2690,7 +2944,7 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
               type="button"
               title={isWished ? "Remove from wishlist" : "Add to wishlist"}
             >
-              {isWished ? "♥" : "♡"}
+              {isWished ? "â™¥" : "â™¡"}
             </button>
             <div style={{ fontWeight: 900 }}>{money(p.price)}</div>
           </div>
@@ -2718,7 +2972,7 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
 
             <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>{p.name}</h1>
             <div style={{ marginTop: 8, color: "var(--muted)", fontWeight: 800 }}>
-              ⭐ 4.8 · 120+ reviews
+              â­ 4.8 Â· 120+ reviews
             </div>
 
             {p.details?.subtitle && (
@@ -2759,7 +3013,7 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
             <div style={{ marginTop: 14 }}>
               <div className="label" style={{ marginBottom: 8 }}>Quantity</div>
               <div className="qtyBox">
-                <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">−</button>
+                <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">âˆ’</button>
                 <div className="qtyNum">{qty}</div>
                 <button className="qtyBtn" onClick={() => setQty((q) => q + 1)} type="button">+</button>
               </div>
@@ -2807,7 +3061,7 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   );
 }
 
-/** ✅ Wishlist page */
+/** âœ… Wishlist page */
 function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const navigate = useNavigate();
   const wished = products.filter((p) => wishlistIds.includes(p.id));
@@ -2820,12 +3074,12 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
             <h1 className="pageTitle">Wishlist</h1>
             <p className="pageSub">{wished.length} item(s)</p>
           </div>
-          <Link className="backLink" to="/">← Back</Link>
+          <Link className="backLink" to="/">â† Back</Link>
         </div>
 
         {wished.length === 0 ? (
           <div className="empty" style={{ marginTop: 14 }}>
-            <div className="emptyIcon">♡</div>
+            <div className="emptyIcon">â™¡</div>
             <div className="emptyTitle">No saved items</div>
             <div className="emptyText">Tap the heart on a product to save it here.</div>
           </div>
@@ -2854,7 +3108,7 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
                       type="button"
                       aria-label="Toggle wishlist"
                     >
-                      {wishlistIds.includes(p.id) ? "♥" : "♡"}
+                      {wishlistIds.includes(p.id) ? "â™¥" : "â™¡"}
                     </button>
                   </div>
 
@@ -2901,7 +3155,7 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   );
 }
 
-/** ✅ Success / Cancel pages */
+/** âœ… Success / Cancel pages */
 function SuccessPage({ clearCart, onOrderSuccess }) {
   useEffect(() => {
     if (onOrderSuccess) onOrderSuccess();
@@ -2913,7 +3167,7 @@ function SuccessPage({ clearCart, onOrderSuccess }) {
   return (
     <div className="pageWrap">
       <div className="pageCard">
-        <h1 className="pageTitle">Payment successful ✅</h1>
+        <h1 className="pageTitle">Payment successful âœ…</h1>
         <p className="pageSub">Thank you! Your order is being processed.</p>
         <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Link className="backLink" to="/">Continue shopping</Link>
@@ -2935,20 +3189,19 @@ function CancelPage({ onOrderCancel }) {
         <h1 className="pageTitle">Payment canceled</h1>
         <p className="pageSub">No worries. Your cart is still saved.</p>
         <div style={{ marginTop: 14 }}>
-          <Link className="backLink" to="/">← Back to shop</Link>
+          <Link className="backLink" to="/">â† Back to shop</Link>
         </div>
       </div>
     </div>
   );
 }
 
-/** ✅ Home page */
+/** âœ… Home page */
 function HomePage({
   products,
   selectedCategory,
   filteredProducts,
-  cosmeticFilter,
-  setCosmeticFilter,
+  search,
   user,
   wishlistIds,
   toggleWishlist,
@@ -2978,9 +3231,9 @@ useEffect(() => {
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
     { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
     { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
-    { src: "/banners/loreal.jpg", brandSearch: "l'oréal", label: "L'Oréal" },
+    { src: "/banners/loreal.jpg", brandSearch: "l'orÃ©al", label: "L'OrÃ©al" },
   ];
-// ✅ pick first 3 products for a category (with your current filters)
+// âœ… pick first 3 products for a category (with your current filters)
 const take3 = (key) => {
   const list = products.filter((p) => p.category === key);
 
@@ -2994,9 +3247,100 @@ const take3 = (key) => {
     return () => clearInterval(t);
   }, [slides.length]);
 
+  const [activeCosmeticsTab, setActiveCosmeticsTab] = useState("all");
+  const [activeCosmeticsSubTab, setActiveCosmeticsSubTab] = useState("all");
+
+  const isCosmeticsView = selectedCategory === "cosmetics";
+  const normalizedSearch = (search || "").trim().toLowerCase();
+
+  const cosmeticsSearchProducts = useMemo(() => {
+    if (!isCosmeticsView) return [];
+
+    return products.filter((product) => {
+      if (product.category !== "cosmetics") return false;
+      if (!normalizedSearch) return true;
+      return product.name.toLowerCase().includes(normalizedSearch);
+    });
+  }, [isCosmeticsView, products, normalizedSearch]);
+
+  const cosmeticsProductsByTab = useMemo(() => {
+    if (!isCosmeticsView) return {};
+
+    return COSMETICS_MAIN_TABS.reduce((acc, tab) => {
+      acc[tab.key] = filterCosmeticsByMainTab(cosmeticsSearchProducts, tab.key);
+      return acc;
+    }, {});
+  }, [isCosmeticsView, cosmeticsSearchProducts]);
+
+  const activeMainTabProducts = useMemo(() => {
+    if (!isCosmeticsView) return [];
+    return cosmeticsProductsByTab[activeCosmeticsTab] || [];
+  }, [isCosmeticsView, cosmeticsProductsByTab, activeCosmeticsTab]);
+
+  const cosmeticsSubTabDefs = useMemo(
+    () => COSMETIC_SUBTAB_DEFS[activeCosmeticsTab] || [],
+    [activeCosmeticsTab]
+  );
+
+  const cosmeticsSubTabs = useMemo(() => {
+    if (!isCosmeticsView || cosmeticsSubTabDefs.length === 0) return [];
+
+    const bucketCounts = activeMainTabProducts.reduce((acc, product) => {
+      const key = resolveCosmeticSubTab(product, activeCosmeticsTab) || "more";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {});
+
+    const tabs = [{ key: "all", label: "All", count: activeMainTabProducts.length }];
+
+    cosmeticsSubTabDefs.forEach((definition) => {
+      const count = bucketCounts[definition.key] || 0;
+      if (count > 0) {
+        tabs.push({ key: definition.key, label: definition.label, count });
+      }
+    });
+
+    if ((bucketCounts.more || 0) > 0) {
+      tabs.push({ key: "more", label: "More", count: bucketCounts.more });
+    }
+
+    return tabs;
+  }, [isCosmeticsView, cosmeticsSubTabDefs, activeMainTabProducts, activeCosmeticsTab]);
+
+  const canShowSubTabs = cosmeticsSubTabs.length > 2;
+  const availableSubTabKeys = cosmeticsSubTabs.map((tab) => tab.key);
+  const effectiveCosmeticsSubTab =
+    canShowSubTabs && availableSubTabKeys.includes(activeCosmeticsSubTab)
+      ? activeCosmeticsSubTab
+      : "all";
+
+  const cosmeticsTabCounts = useMemo(() => {
+    if (!isCosmeticsView) return {};
+    return COSMETICS_MAIN_TABS.reduce((acc, tab) => {
+      acc[tab.key] = (cosmeticsProductsByTab[tab.key] || []).length;
+      return acc;
+    }, {});
+  }, [isCosmeticsView, cosmeticsProductsByTab]);
+
+  const displayedProducts = useMemo(() => {
+    if (!isCosmeticsView) return filteredProducts;
+    if (!canShowSubTabs || effectiveCosmeticsSubTab === "all") return activeMainTabProducts;
+
+    return activeMainTabProducts.filter(
+      (product) => resolveCosmeticSubTab(product, activeCosmeticsTab) === effectiveCosmeticsSubTab
+    );
+  }, [
+    isCosmeticsView,
+    filteredProducts,
+    canShowSubTabs,
+    effectiveCosmeticsSubTab,
+    activeMainTabProducts,
+    activeCosmeticsTab,
+  ]);
+
   return (
     <main className="main">
-            {/* ✅ CLICKABLE BRAND BANNERS */}
+            {/* âœ… CLICKABLE BRAND BANNERS */}
       <section className="brandCarousel">
         <div className="brandHint">Tap banner to shop brand</div>
 
@@ -3069,7 +3413,7 @@ const take3 = (key) => {
       </h2>
 
       <p style={{ marginTop: 24, color: "#555", maxWidth: 420 }}>
-        Discover authentic cosmetics at auréa.
+        Discover authentic cosmetics at aurÃ©a.
       </p>
     </div>
 
@@ -3150,53 +3494,66 @@ const take3 = (key) => {
             )}
 
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
-              💡 Tip: Click a product card to open the product page (sizes + quantity).
+              ðŸ’¡ Tip: Click a product card to open the product page (sizes + quantity).
             </div>
 
-            {selectedCategory === "cosmetics" && (
-              <div style={{ marginTop: 14, maxWidth: 520 }}>
-                <div className="label" style={{ marginBottom: 8 }}>
-                  Divide products by area
+            {isCosmeticsView && (
+              <div className="cosmeticsTabsShell">
+                <div className="cosmeticsTabsTop">
+                  <div className="label">Shop by category</div>
+                  <div className="cosmeticsTabsMeta">{displayedProducts.length} visible</div>
                 </div>
-                <div className="tabs" style={{ margin: 0 }}>
-                  <button
-                    className={`tab ${!cosmeticFilter ? "active" : ""}`}
-                    onClick={() => setCosmeticFilter(null)}
-                    type="button"
-                  >
-                    All
-                  </button>
-                  <button
-                    className={`tab ${cosmeticFilter === "face" ? "active" : ""}`}
-                    onClick={() => setCosmeticFilter("face")}
-                    type="button"
-                  >
-                    Face
-                  </button>
-                  <button
-                    className={`tab ${cosmeticFilter === "eyes" ? "active" : ""}`}
-                    onClick={() => setCosmeticFilter("eyes")}
-                    type="button"
-                  >
-                    Eyes
-                  </button>
-                  <button
-                    className={`tab ${cosmeticFilter === "lips" ? "active" : ""}`}
-                    onClick={() => setCosmeticFilter("lips")}
-                    type="button"
-                  >
-                    Lips
-                  </button>
+
+                <div className="cosmeticsMainTabs" role="tablist" aria-label="Cosmetics categories">
+                  {COSMETICS_MAIN_TABS.map((tab) => {
+                    const isActive = tab.key === activeCosmeticsTab;
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        className={`cosmeticsMainTab ${isActive ? "active" : ""}`}
+                        onClick={() => {
+                          setActiveCosmeticsTab(tab.key);
+                          setActiveCosmeticsSubTab("all");
+                        }}
+                      >
+                        <span>{tab.label}</span>
+                        <span className="cosmeticsTabCount">{cosmeticsTabCounts[tab.key] || 0}</span>
+                      </button>
+                    );
+                  })}
                 </div>
+
+                {canShowSubTabs && (
+                  <div className="cosmeticsSubTabs" role="tablist" aria-label={`${activeCosmeticsTab} sub categories`}>
+                    {cosmeticsSubTabs.map((subTab) => {
+                      const isSubActive = subTab.key === effectiveCosmeticsSubTab;
+                      return (
+                        <button
+                          key={subTab.key}
+                          type="button"
+                          role="tab"
+                          aria-selected={isSubActive}
+                          className={`cosmeticsSubTab ${isSubActive ? "active" : ""}`}
+                          onClick={() => setActiveCosmeticsSubTab(subTab.key)}
+                        >
+                          {subTab.label} ({subTab.count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
           </div>
 
           <div className="sortHint">
-            Showing <b>{filteredProducts.length}</b> items
+            Showing <b>{displayedProducts.length}</b> items
           </div>
         </div>
-{/* ✅ SkinSociety-style sections */}
+{/* âœ… SkinSociety-style sections */}
 {selectedCategory === "all" && (
 <section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
   {[
@@ -3204,7 +3561,7 @@ const take3 = (key) => {
     { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
   ].map((sec) => {
     const items = take3(sec.key);
-    if (items.length === 0) return null; // ✅ hide categories with no products
+    if (items.length === 0) return null; // âœ… hide categories with no products
 
     return (
       <div
@@ -3256,7 +3613,7 @@ const take3 = (key) => {
                     aria-label="Toggle wishlist"
                     title={isWished ? "Remove from wishlist" : "Add to wishlist"}
                   >
-                    {isWished ? "♥" : "♡"}
+                    {isWished ? "â™¥" : "â™¡"}
                   </button>
                 </div>
 
@@ -3303,8 +3660,13 @@ const take3 = (key) => {
 </section>
 )}
        {selectedCategory !== "all" && (
-         <div className="grid">
-          {filteredProducts.map((p) => {
+         displayedProducts.length === 0 ? (
+          <div className="tabEmptyState">
+            No products are available in this tab yet. Try another category.
+          </div>
+         ) : (
+         <div className={`grid ${isCosmeticsView ? "cosmeticsGrid" : ""}`}>
+          {displayedProducts.map((p) => {
             const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
             const isWished = wishlistIds.includes(p.id);
             const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
@@ -3332,7 +3694,7 @@ const take3 = (key) => {
                     aria-label="Toggle wishlist"
                     title={isWished ? "Remove from wishlist" : "Add to wishlist"}
                   >
-                    {isWished ? "♥" : "♡"}
+                    {isWished ? "â™¥" : "â™¡"}
                   </button>
                 </div>
 
@@ -3343,7 +3705,7 @@ const take3 = (key) => {
                   </div>
 
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
-                    ⭐ 4.8 · 120+ reviews
+                    â­ 4.8 Â· 120+ reviews
                   </div>
 
                   {p.category === "cosmetics" && (
@@ -3388,6 +3750,7 @@ const take3 = (key) => {
             );
           })}
         </div>
+         )
           )}    
       </section>
       
@@ -3398,10 +3761,10 @@ const take3 = (key) => {
   );
 
 }
-/** ✅ Main App */
+/** âœ… Main App */
 export default function App() {
 
-  // ✅ State
+  // âœ… State
   const [cosmeticFilter, setCosmeticFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [clothingGender, setClothingGender] = useState("women");
@@ -3445,7 +3808,7 @@ const saveAccount = async () => {
       await updatePassword(u, accountForm.newPassword.trim());
     }
 
-    alert("Account updated ✅");
+    alert("Account updated âœ…");
     setAccountOpen(false);
     setAccountForm({ displayName: nextName, currentPassword: "", newPassword: "" });
   } catch (err) {
@@ -3509,10 +3872,10 @@ useEffect(() => {
   setPointsInput("");
 }, [loyaltyUserKey]);
 
-  // ✅ Search in topbar
+  // âœ… Search in topbar
   const [search, setSearch] = useState("");
 
-  // ✅ Cart modal
+  // âœ… Cart modal
   const [cartOpen, setCartOpen] = useState(false);
 
 
@@ -3522,13 +3885,13 @@ useEffect(() => {
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
   const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
-  // ✅ Wishlist
+  // âœ… Wishlist
   const [wishlistIds, setWishlistIds] = useState([]);
 
-  // ✅ Cart: [{id,name,price,qty,size}]
+  // âœ… Cart: [{id,name,price,qty,size}]
   const [cartItems, setCartItems] = useState([]);
 
-  // ✅ Promo
+  // âœ… Promo
   const [promoCode, setPromoCode] = useState("");
   const [promoInput, setPromoInput] = useState("");
   const [promoMessage, setPromoMessage] = useState(null);
@@ -3574,7 +3937,7 @@ useEffect(() => {
 
 
 
-  // ✅ Firebase: keep user logged in (source of truth)
+  // âœ… Firebase: keep user logged in (source of truth)
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
@@ -3636,7 +3999,7 @@ useEffect(() => {
   return () => (document.body.style.overflow = "");
 }, [sidebarOpen, authOpen, cartOpen, filtersOpen, accountOpen]);
 
-  // ✅ Filters
+  // âœ… Filters
 const filteredProducts = useMemo(() => {
   const q = search.toLowerCase().trim();
 
@@ -3656,7 +4019,7 @@ const filteredProducts = useMemo(() => {
   return list;
 }, [selectedCategory, cosmeticFilter, search]);
 
-  // ✅ Cart helpers (merge by product id + size)
+  // âœ… Cart helpers (merge by product id + size)
   const addToCart = (product, opts = { qty: 1, size: "" }) => {
     const qty = Math.max(1, Number(opts.qty || 1));
     const size = (opts.size || "").trim();
@@ -3697,7 +4060,7 @@ const applyBrandFilter = (brand) => {
 
   const clearCart = () => setCartItems([]);
 
-  // ✅ Promo logic
+  // âœ… Promo logic
   const applyPromo = () => {
     const code = (promoInput || "").trim().toUpperCase();
     if (!code) {
@@ -3740,7 +4103,7 @@ const applyBrandFilter = (brand) => {
     setPointsInput("");
   };
 
-  // ✅ Totals (subtotal / discount / shipping / total)
+  // âœ… Totals (subtotal / discount / shipping / total)
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.qty, 0), [cartItems]);
 
   const discount = useMemo(() => {
@@ -3802,7 +4165,7 @@ const applyBrandFilter = (brand) => {
     setPointsInput(maxPointsRedeemable ? String(maxPointsRedeemable) : "");
   }, [pointsToRedeem, maxPointsRedeemable]);
 
-  // ✅ Checkout (Whish Money) – frontend calls your backend, backend returns a secure payment URL
+  // âœ… Checkout (Whish Money) â€“ frontend calls your backend, backend returns a secure payment URL
   const checkout = async () => {
     try {
       if (cartItems.length === 0) return;
@@ -3904,7 +4267,7 @@ const applyBrandFilter = (brand) => {
     localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
   };
 
-  // ✅ Firebase Email/Password sign in
+  // âœ… Firebase Email/Password sign in
   const signIn = async () => {
     if (!authForm.email.trim() || !authForm.password.trim()) return;
     try {
@@ -3916,7 +4279,7 @@ const applyBrandFilter = (brand) => {
     }
   };
 
-  // ✅ Firebase Email/Password sign up
+  // âœ… Firebase Email/Password sign up
   const signUp = async () => {
     if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
     if (authForm.password !== authForm.confirmPassword) return;
@@ -3932,7 +4295,7 @@ const applyBrandFilter = (brand) => {
     }
   };
 
-  // ✅ Google popup sign in
+  // âœ… Google popup sign in
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -4037,7 +4400,7 @@ const applyBrandFilter = (brand) => {
 
     {/* CENTER: logo */}
     <Link to="/" className="ss-logo">
-      auréa
+      aurÃ©a
     </Link>
 
     {/* RIGHT: burger + mobile search icon + desktop search input */}
@@ -4093,13 +4456,13 @@ const applyBrandFilter = (brand) => {
   </div>
 </div>
 
-{/* ✅ Mobile dropdown search bar */}
+{/* âœ… Mobile dropdown search bar */}
 <div className={`ss-mobile-searchbar ${mobileSearchOpen ? "open" : ""}`}>
   <div className="ss-mobile-search-inner">
     <input
       autoFocus={mobileSearchOpen}
       className="ss-mobile-search-input"
-      placeholder="Search products…"
+      placeholder="Search productsâ€¦"
       value={search}
       onChange={(e) => setSearch(e.target.value)}
     />
@@ -4109,7 +4472,7 @@ const applyBrandFilter = (brand) => {
       onClick={() => setMobileSearchOpen(false)}
       aria-label="Close search"
     >
-      ✕
+      âœ•
     </button>
   </div>
 </div>
@@ -4121,7 +4484,7 @@ const applyBrandFilter = (brand) => {
     aria-label="Back to top"
     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
   >
-    ↑
+    â†‘
   </button>
 )}
 
@@ -4131,13 +4494,26 @@ const applyBrandFilter = (brand) => {
   </div>
 )}
 
-{/* ✅ Mobile Sidebar Overlay */}
+<a
+  className="whatsappFloatBtn"
+  href="https://wa.me/0096176186340"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat with us on WhatsApp"
+  title="Chat with us on WhatsApp"
+>
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+    <path d="M16.04 4C9.48 4 4.15 9.2 4.15 15.62c0 2.06.55 4.09 1.6 5.88L4 28l6.7-1.73a12.05 12.05 0 0 0 5.34 1.25h.01c6.56 0 11.89-5.2 11.89-11.62C27.94 9.2 22.61 4 16.04 4zm6.93 16.4c-.29.8-1.45 1.5-1.98 1.58-.53.08-1.17.12-1.88-.11-.43-.14-.97-.32-1.66-.61-2.92-1.22-4.82-4.09-4.97-4.3-.16-.2-1.2-1.56-1.2-2.98 0-1.42.75-2.11 1.01-2.4.26-.28.57-.35.76-.35.2 0 .39 0 .56.01.18 0 .42-.07.66.49.24.56.81 1.93.88 2.07.07.14.12.3.02.49-.1.18-.15.3-.3.45-.15.16-.31.35-.44.46-.15.12-.31.26-.13.51.18.25.8 1.3 1.71 2.11 1.18 1.05 2.18 1.37 2.5 1.52.31.16.5.13.68-.08.18-.2.77-.88.98-1.18.21-.3.42-.24.7-.14.29.1 1.82.84 2.13 1 .31.15.52.23.6.36.07.13.07.75-.22 1.55z" />
+  </svg>
+</a>
+
+{/* âœ… Mobile Sidebar Overlay */}
 <div
   className={`overlay ${sidebarOpen ? "show" : ""}`}
   onClick={() => setSidebarOpen(false)}
 />
 
-{/* ✅ Mobile Sidebar */}
+{/* âœ… Mobile Sidebar */}
 <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
   <div className="sidebarHeader">
     <div>
@@ -4148,7 +4524,7 @@ const applyBrandFilter = (brand) => {
     </div>
 
     <button className="closeBtn" onClick={() => setSidebarOpen(false)} type="button">
-      ✕
+      âœ•
     </button>
   </div>
 
@@ -4160,7 +4536,7 @@ const applyBrandFilter = (brand) => {
     onClick={() => setSidebarOpen(false)}
   >
     <span className="menuText">Home</span>
-    <span className="menuArrow">→</span>
+    <span className="menuArrow">â†’</span>
   </Link>
 </li>
 <li>
@@ -4171,7 +4547,7 @@ const applyBrandFilter = (brand) => {
   >
     <span className="menuText">Cosmetics</span>
     <span className={`menuArrow ${cosmeticsOpen ? "rotate" : ""}`}>
-      ▾
+      â–¾
     </span>
   </button>
 
@@ -4206,7 +4582,7 @@ const applyBrandFilter = (brand) => {
 <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
-        <span className="menuArrow">→</span>
+        <span className="menuArrow">â†’</span>
       </Link>
     </li>
 <li>
@@ -4219,7 +4595,7 @@ const applyBrandFilter = (brand) => {
     }}
   >
     <span className="menuText">Filters</span>
-    <span className="menuArrow">→</span>
+    <span className="menuArrow">â†’</span>
   </button>
 </li>
 
@@ -4234,7 +4610,7 @@ const applyBrandFilter = (brand) => {
         }}
       >
         <span className="menuText">Manage account</span>
-        <span className="menuArrow">→</span>
+        <span className="menuArrow">â†’</span>
       </button>
     </li>
 
@@ -4245,7 +4621,7 @@ const applyBrandFilter = (brand) => {
         onClick={() => { setSidebarOpen(false); setCartOpen(true); }}
       >
         <span className="menuText">Cart</span>
-        <span className="menuArrow">→</span>
+        <span className="menuArrow">â†’</span>
       </button>
     
 </li>
@@ -4253,7 +4629,7 @@ const applyBrandFilter = (brand) => {
       <li>
         <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
           <span className="menuText">Sign out</span>
-          <span className="menuArrow">→</span>
+          <span className="menuArrow">â†’</span>
         </button>
       </li>
     )}
@@ -4307,13 +4683,13 @@ const applyBrandFilter = (brand) => {
         <div className="modalTitle">My Account</div>
         <div className="help">Edit username + password.</div>
       </div>
-      <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">✕</button>
+      <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">âœ•</button>
     </div>
 
     <div className="modalBody">
       {!user || user.mode !== "user" ? (
         <div className="empty">
-          <div className="emptyIcon">🔒</div>
+          <div className="emptyIcon">ðŸ”’</div>
           <div className="emptyTitle">Sign in required</div>
           <div className="emptyText">Only signed-in users can edit account details.</div>
         </div>
@@ -4338,7 +4714,7 @@ const applyBrandFilter = (brand) => {
               type="password"
               value={accountForm.currentPassword}
               onChange={(e) => setAccountForm((p) => ({ ...p, currentPassword: e.target.value }))}
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             />
           </div>
 
@@ -4349,7 +4725,7 @@ const applyBrandFilter = (brand) => {
               type="password"
               value={accountForm.newPassword}
               onChange={(e) => setAccountForm((p) => ({ ...p, newPassword: e.target.value }))}
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             />
           </div>
 
@@ -4376,7 +4752,7 @@ const applyBrandFilter = (brand) => {
         <div className="modalTitle">Filters</div>
         <div className="help">Sort and filter products.</div>
       </div>
-      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">✕</button>
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">âœ•</button>
     </div>
 
     <div className="modalBody">
@@ -4384,9 +4760,9 @@ const applyBrandFilter = (brand) => {
         <div className="label">Sort</div>
         <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="featured">Featured</option>
-          <option value="price_asc">Price: Low → High</option>
-          <option value="price_desc">Price: High → Low</option>
-          <option value="name_asc">Name: A → Z</option>
+          <option value="price_asc">Price: Low â†’ High</option>
+          <option value="price_desc">Price: High â†’ Low</option>
+          <option value="name_asc">Name: A â†’ Z</option>
         </select>
       </div>
 
@@ -4439,7 +4815,7 @@ const applyBrandFilter = (brand) => {
                 <div className="help">Sign in, create an account, or continue as a guest.</div>
               </div>
               <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close" type="button">
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -4483,7 +4859,7 @@ const applyBrandFilter = (brand) => {
                     className="input"
                     value={authForm.password}
                     onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
-                    placeholder="••••••••"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     type="password"
                   />
                 </div>
@@ -4496,7 +4872,7 @@ const applyBrandFilter = (brand) => {
                     className="input"
                     value={authForm.confirmPassword}
                     onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
-                    placeholder="••••••••"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     type="password"
                   />
                   {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
@@ -4585,14 +4961,14 @@ const applyBrandFilter = (brand) => {
     </div>
 
     <button className="modalClose" onClick={() => setCartOpen(false)} type="button" aria-label="Close cart">
-      ✕
+      âœ•
     </button>
   </div>
 
   <div className="cartDrawerBody">
     {cartItems.length === 0 ? (
       <div className="empty">
-        <div className="emptyIcon">🛍️</div>
+        <div className="emptyIcon">ðŸ›ï¸</div>
         <div className="emptyTitle">Your cart is empty</div>
         <div className="emptyText">Add something you love.</div>
       </div>
@@ -4604,11 +4980,11 @@ const applyBrandFilter = (brand) => {
               <div style={{ minWidth: 0 }}>
                 <div className="cartName">{item.name}</div>
                 <div className="cartMeta">
-                  {money(item.price)} {item.size ? `• Size ${item.size}` : ""} • Line:{" "}
+                  {money(item.price)} {item.size ? `â€¢ Size ${item.size}` : ""} â€¢ Line:{" "}
                   <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
                 </div>
                 <div className="qtyBox">
-                  <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">−</button>
+                  <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">âˆ’</button>
                   <div className="qtyNum">{item.qty}</div>
                   <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
                 </div>
@@ -4628,7 +5004,7 @@ const applyBrandFilter = (brand) => {
               className="input"
               value={promoInput}
               onChange={(e) => setPromoInput(e.target.value)}
-              placeholder="AUREA10, SAVE5, FREESHIP…"
+              placeholder="AUREA10, SAVE5, FREESHIPâ€¦"
             />
             <button className="searchBtn" type="button" onClick={applyPromo}>
               Apply
@@ -4650,7 +5026,7 @@ const applyBrandFilter = (brand) => {
                 <div>
                   <div className="label">Aurea Loyalty</div>
                   <div className="loyaltyHint">
-                    Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> · Balance{" "}
+                    Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> Â· Balance{" "}
                     <b style={{ color: "var(--text)" }}>{loyaltyPoints} pts</b>
                   </div>
                 </div>
@@ -4725,7 +5101,7 @@ const applyBrandFilter = (brand) => {
         </button>
 
         <div className="cartNote">
-          {user ? "You’ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
+          {user ? "Youâ€™ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
         </div>
       </>
     )}
@@ -4733,7 +5109,7 @@ const applyBrandFilter = (brand) => {
 </aside>
 
 
-        {/* ✅ ROUTES */}
+        {/* âœ… ROUTES */}
         <Routes>
           <Route
             path="/"
@@ -4741,6 +5117,7 @@ const applyBrandFilter = (brand) => {
               <HomePage
               products={products}
                setSearch={setSearch}
+               search={search}
                 selectedCategory={selectedCategory}
                 cosmeticFilter={cosmeticFilter}
                 setCosmeticFilter={setCosmeticFilter}
@@ -4801,6 +5178,7 @@ const applyBrandFilter = (brand) => {
   element={
     <HomePage
       products={products}
+      search={search}
       selectedCategory="cosmetics"
       cosmeticFilter={cosmeticFilter}
       setCosmeticFilter={setCosmeticFilter}
@@ -4841,7 +5219,7 @@ const applyBrandFilter = (brand) => {
           />
           <Route path="/cancel" element={<CancelPage onOrderCancel={clearPendingLoyaltyOrder} />} />
         </Routes>
-{/* ✅ TRUST STRIP (SKINSOCIETY STYLE) */}
+{/* âœ… TRUST STRIP (SKINSOCIETY STYLE) */}
 <section className="trustStrip">
   <div className="trustStripInner">
     
@@ -4875,7 +5253,7 @@ const applyBrandFilter = (brand) => {
 </section>
 
 <footer className="footer">
-  <span>© 2026 auréa · Authentic products · Secure checkout · Easy returns</span>
+  <span>Â© 2026 aurÃ©a Â· Authentic products Â· Secure checkout Â· Easy returns</span>
 
   <a
     className="socialLink"
@@ -4909,7 +5287,7 @@ const applyBrandFilter = (brand) => {
 }
 
 /*
-✅ IMPORTANT FOR FEATURE #5 (Whish Money checkout)
+âœ… IMPORTANT FOR FEATURE #5 (Whish Money checkout)
 
 This frontend expects your BACKEND endpoint:
 
