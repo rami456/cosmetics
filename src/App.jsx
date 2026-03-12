@@ -2245,6 +2245,11 @@ section{
   }
 }
 
+.app,
+.app *:not(svg):not(path):not(circle):not(line){
+  font-family:'Playfair Display', serif !important;
+}
+
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
