@@ -30,7 +30,8 @@ const styles = `
 .bg-gold {
   background-color: #d4af37;
 }
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
+@import url('https://fonts.cdnfonts.com/css/handmade-cupcakes');
+@import url('https://fonts.cdnfonts.com/css/cupcakes');
 /* ============================= */
 /*   AURÉA LUXURY HEADER LAYOUT  */
 /* ============================= */
@@ -176,7 +177,7 @@ const styles = `
 /* Center logo */
 .ss-logo{
   justify-self:center;
-  font-family:'Playfair Display', serif;
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
   font-size:30px;
   font-weight:800;
   letter-spacing:0.18em;
@@ -429,7 +430,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 .brand{
   text-decoration:none;
   color:var(--text);
-  font-family: 'Playfair Display', serif;
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
   font-weight:800;
   letter-spacing:0.12em;
   font-size:26px;
@@ -1460,7 +1461,7 @@ button{ -webkit-tap-highlight-color: transparent; }
 /* You have TWO .ss-logo blocks; keep the "luxury" one.
    This forces the logo in the header to stay black + Playfair. */
 .ss-header .ss-logo{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
   font-size:26px;
   font-weight:700;
   letter-spacing:0.08em;
@@ -2247,7 +2248,7 @@ section{
 
 .app,
 .app *:not(svg):not(path):not(circle):not(line){
-  font-family:'Playfair Display', serif !important;
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive !important;
 }
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
