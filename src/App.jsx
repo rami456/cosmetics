@@ -2481,7 +2481,52 @@ section{
 .app *:not(svg):not(path):not(circle):not(line){
   font-family: 'Poppins', sans-serif;!important;
 }
+@media (max-width: 768px) {
 
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 24px !important;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card {
+    transform: scale(1);
+  }
+
+  .cardTitle {
+    font-size: 14px !important;
+  }
+
+  .price {
+    font-size: 14px !important;
+  }
+
+  button {
+    font-size: 14px !important;
+  }
+
+  input {
+    font-size: 14px !important;
+  }
+
+  .container, .main {
+    padding: 12px !important;
+  }
+}
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 `;
