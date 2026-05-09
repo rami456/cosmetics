@@ -1,440 +1,5362 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import "./App.css";
+﻿import { useEffect, useMemo, useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Link} from "react-router-dom";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 
-const PRODUCTS = [
+// Firebase
+import { auth } from "./firebase";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut as firebaseSignOut,
+} from "firebase/auth";
+/** OK CSS (one file) */
+const styles = `
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.gold-accent {
+  color: #d4af37;
+}
+.bg-gold {
+  background-color: #d4af37;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* ============================= */
+/*   AUREA LUXURY HEADER LAYOUT  */
+/* ============================= */
+/* ============================= */
+/* OK HERO MOBILE FIX            */
+/* ============================= */
+
+@media (max-width: 900px){
+
+  /* Hero container */
+  .heroSection{
+    padding: 40px 20px !important;
+    min-height: auto !important;
+  }
+
+  /* Make layout vertical */
+  .heroGrid{
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* Text smaller */
+  .heroTitle{
+    font-size: 38px !important;
+  }
+
+  /* Image box smaller */
+  .heroImageWrap{
+    height: 380px !important;
+  }
+
+}
+
+@media (max-width: 520px){
+
+  .heroTitle{
+    font-size: 30px !important;
+  }
+
+  .heroImageWrap{
+    height: 300px !important;
+  }
+
+}
+.ss-header{
+  width:100%;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+.ss-icon{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  stroke-width:1.8;
+  fill:none;
+}
+
+.ss-search-icon{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  stroke-width:1.8;
+  fill:none;
+  flex-shrink:0;
+}
+.ss-header{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color:#000;
+}
+.ss-header a,
+.ss-header button{
+  color:#000;
+}
+
+
+/* Top info strip */
+.ss-topstrip{
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  background:#fff;
+  font-size:12px;
+  color:#111;
+}
+
+.ss-topstrip-left,
+.ss-topstrip-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  font-weight:700;
+  letter-spacing:0.04em;
+}
+
+.ss-topstrip-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:0.9;
+}
+
+/* Main header row */
+.ss-mainbar{
+  height:64px;
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items:center;
+  padding:0 28px;
+}
+
+/* Left search */
+.ss-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:320px;
+  justify-self:end;
+}
+
+.ss-search input{
+  width:100%;
+  height:42px;
+  border:none;
+  border-bottom:1px solid #000;
+  font-size:13px;
+  font-weight:700;
+  outline:none;
+  background:transparent;
+  padding:0 6px;
+}
+
+.ss-search input::placeholder{
+  letter-spacing:0.12em;
+  font-weight:800;
+}
+
+/* Center logo */
+.ss-logo{
+  justify-self:center;
+ font-family: 'Poppins', sans-serif;
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:0.18em;
+  text-transform:lowercase;
+  color:#000;
+}
+
+/* Right icons */
+.ss-icons{
+  justify-self:start;
+  display:flex;
+  align-items:center;
+  gap:26px;
+  font-weight:800;
+  font-size:13px;
+}
+
+.ss-icon-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  font:inherit;
+  color:#000;
+  text-decoration:none; /* OK important for Link */
+}
+/* cleaner header text */
+.ss-icon-btn{
+  font-weight:600;
+  letter-spacing:0.04em;
+}
+
+
+.ss-icon-btn:hover{
+  opacity:0.7;
+}
+
+.ss-cart-count{
+  font-weight:900;
+}
+
+.ss-mobile-user{
+  display:none;
+}
+
+@media (max-width:620px){
+  .ss-mobile-user{
+    display:inline-flex;
+    align-items:center;
+    max-width:120px;
+    height:30px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.92);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:0.03em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+  }
+}
+
+
+
+.ss-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.ss-logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.ss-logo-main {
+  color: #ffffff;
+}
+
+.ss-logo-accent { 
+  color: #dcdcdc; 
+  opacity: 0.9; 
+}
+ 
+
+/* Navigation */
+.ss-nav {
+  display: flex;
+  gap: 28px;
+}
+
+.ss-nav a,
+.ss-nav button {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s ease;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.ss-nav a:hover,
+.ss-nav button:hover {
+  color: #ffffff;
+}
+
+.ss-nav a::after,
+.ss-nav button::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #facc15;
+  transition: 0.3s ease;
+}
+
+.ss-nav a:hover::after,
+.ss-nav button:hover::after {
+  width: 100%;
+}
+
+/* Actions */
+.ss-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ss-login {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+.ss-login:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.ss-register {
+  background: #ffffff;      /* OK white */
+  border: none;
+  color: #000000;           /* OK black text */
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ss-register:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255,255,255,0.18);
+}
+
+
+/* Burger menu */
+.ss-burger {
+  display: none;
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .ss-nav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #000000;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    display: none;
+  }
+
+  .ss-nav.active {
+    display: flex;
+  }
+
+.ss-burger { display: none; }
+@media (max-width: 900px) {
+  .ss-burger { display: block; }
+}
+
+}
+:root{
+  --panel:#ffffff;
+  --soft:#f6f6f7;
+  --line:rgba(0,0,0,0.08);
+  --text:#0e0e10;
+  --muted:rgba(14,14,16,0.62);
+  --shadow:0 18px 60px rgba(0,0,0,0.10);
+  --shadow2:0 10px 30px rgba(0,0,0,0.10);
+  --radius:18px;
+}
+
+/* OK Dark mode overrides */
+[data-theme="dark"]{
+  --panel:#121214;
+  --soft:#0b0b0d;
+  --line:rgba(255,255,255,0.10);
+  --text:#f2f2f3;
+  --muted:rgba(242,242,243,0.62);
+  --shadow:0 18px 60px rgba(0,0,0,0.45);
+  --shadow2:0 10px 30px rgba(0,0,0,0.35);
+}
+
+button{ -webkit-tap-highlight-color: transparent; }
+.app{ min-height:100vh; }
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  height:72px;
+  display:flex; align-items:center; gap:14px;
+  padding:0 18px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  text-decoration:none;
+  color:var(--text);
+font-family: 'Poppins', sans-serif;
+  font-weight:800;
+  letter-spacing:0.12em;
+  font-size:26px;
+  text-transform:lowercase;
+}
+.brand:hover{
+  opacity:0.85;
+}
+
+/* OK Hamburger morph to X */
+.iconBtn.active .hamburger{
+  background:transparent;
+}
+.iconBtn.active .hamburger::before{
+  top:0;
+  transform:rotate(45deg);
+}
+.iconBtn.active .hamburger::after{
+  top:0;
+  transform:rotate(-45deg);
+}
+.hamburger, .hamburger::before, .hamburger::after{
+  transition:transform 180ms ease, top 180ms ease, background 180ms ease;
+}
+
+.topbarRight{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+.pill{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,0.7);
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.pillDot{
+  width:8px; height:8px;
+  border-radius:999px;
+  background:#0e0e10;
+  opacity:0.9;
+}
+
+
+/* OK Topbar search */
+.topSearch{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  max-width:520px;
+}
+.topSearch .input{
+  height:42px;
+  width:260px;
+}
+@media (max-width: 900px){
+  .topSearch .input{ width:160px; }
+}
+@media (max-width: 520px){
+  .topbar{
+    flex-wrap:wrap;
+    height:auto;
+    padding:12px 14px;
+    gap:10px;
+  }
+
+  .topSearch{
+    display:flex;
+    width:100%;
+    max-width:none;
+  }
+
+  .topSearch .input{
+    width:100%;
+    flex:1;
+  }
+
+  .pill{ display:none; } /* keep hidden */
+}
+/* OK Brand banner carousel */
+.brandCarousel{
+  grid-column: 1 / -1;
+  border-radius:22px;
+  border:1px solid var(--line);
+  overflow:hidden;
+  box-shadow:var(--shadow2);
+  background:var(--panel);
+  position:relative;
+}
+
+.brandSlideBtn{
+  width:100%;
+  padding:0;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  display:block;
+}
+
+.brandSlideImg{
+  width:100%;
+  height:360px;
+  object-fit:contain;
+  display:block;
+  background:#f2f2f3;
+}
+  .brandSlideBtn:hover .brandSlideImg{
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
+
+
+@media (max-width: 900px){
+  .brandSlideImg{ height:220px; }
+}
+
+.brandDots{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+
+.brandDot{
+  width:9px; height:9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.7);
+  background:transparent;
+  cursor:pointer;
+  padding:0;
+}
+.brandDot.active{
+  background:#fff;
+}
+
+.brandHint{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:10px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.35);
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  backdrop-filter: blur(10px);
+}
+.brandLabel{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.85);
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:0.04em;
+  box-shadow:var(--shadow2);
+}
+
+.brandLabel{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:rgba(250, 250, 250, 0.41);
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:0.04em;
+  box-shadow:var(--shadow2);
+}
+
+/* Icon Button */
+.iconBtn{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.iconBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.hamburger{
+  width:18px; height:2px;
+  background:#111;
+  border-radius:999px;
+  position:relative;
+  display:block;
+}
+.hamburger::before,.hamburger::after{
+  content:"";
+  position:absolute; left:0;
+  width:18px; height:2px;
+  background:#111;
+  border-radius:999px;
+}
+.hamburger::before{ top:-5px; }
+.hamburger::after{ top:5px; }
+
+/* Auth Button (topbar) */
+.authBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  font-weight:900;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+  white-space:nowrap;
+}
+.authBtn:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+/* Cart bubble button (top-right) */
+.cartBubble{
+  height:42px;
+  width:42px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.cartBubble:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.cartBadge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#0e0e10;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Overlay */
+.overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.40);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 220ms ease;
+  z-index:60;
+}
+.overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* OK Sidebar (closed by default; opens only when hamburger is pressed) */
+.sidebar{
+  position:fixed;
+  top:72px; left:0; bottom:0;
+  width:280px;
+  background:var(--panel);
+  border-right:1px solid var(--line);
+  padding:18px;
+  z-index:70;
+  transform:translateX(-105%);
+  transition:transform 220ms ease;
+  box-shadow:var(--shadow);
+}
+.sidebar.open{ transform:translateX(0); }
+
+.sidebarHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.sidebarTitle{
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.sidebarSub{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+.closeBtn{
+  display:flex;
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+.menuList{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.menuItem{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.menuItem:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.menuItem.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+.menuText{ font-weight:800; letter-spacing:0.01em; }
+.menuArrow{ opacity:0.7; font-size:18px; }
+
+.sidebarFooter{ margin-top:16px; display:flex; flex-direction:column; gap:10px; }
+.miniCard{
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, #ffffff, #f7f7f8);
+}
+.miniCardTitle{
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.miniCardText{ margin-top:6px; font-size:12px; color:var(--muted); }
+
+.accountMini{
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.accountMiniTop{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.accountName{ font-weight:900; font-size:13px; }
+.accountEmail{ margin-top:4px; color:var(--muted); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.accountActions{ margin-top:10px; display:flex; gap:10px; }
+.smallBtn{
+  flex:1;
+  height:38px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.smallBtn.primary{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.15); }
+
+/* Main layout */
+.main{
+  display:grid;
+  grid-template-columns: 1fr ;
+  gap:18px;
+  padding:22px 22px 0;
+  max-width:1280px;
+  margin:0 auto;
+  margin-left:0;
+}
+.sectionHeader{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.h1{ margin:0; font-size:32px; letter-spacing:-0.02em; }
+.sub{ margin:8px 0 0; color:var(--muted); font-size:14px; }
+.sortHint{ font-size:13px; color:var(--muted); }
+
+.cosmeticsTabsShell{
+  margin-top:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.95), #f8f8fa);
+  padding:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.06);
+}
+.cosmeticsTabsTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.cosmeticsTabsMeta{
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+  white-space:nowrap;
+}
+.cosmeticsMainTabs,
+.cosmeticsSubTabs{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+.cosmeticsMainTabs::-webkit-scrollbar,
+.cosmeticsSubTabs::-webkit-scrollbar{
+  display:none;
+}
+.cosmeticsMainTabs{ margin-top:12px; }
+.cosmeticsSubTabs{ margin-top:10px; }
+.cosmeticsMainTab,
+.cosmeticsSubTab{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  border-radius:999px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:transform 140ms ease, box-shadow 200ms ease, border-color 200ms ease, background 200ms ease;
+}
+.cosmeticsMainTab{
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.02em;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.cosmeticsSubTab{
+  padding:8px 11px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+}
+.cosmeticsMainTab:hover,
+.cosmeticsSubTab:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+.cosmeticsMainTab.active,
+.cosmeticsSubTab.active{
+  background:#111115;
+  color:#fff;
+  border-color:#111115;
+  box-shadow:0 10px 22px rgba(0,0,0,0.18);
+}
+.cosmeticsTabCount{
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.06);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:900;
+}
+.cosmeticsMainTab.active .cosmeticsTabCount{
+  background:rgba(255,255,255,0.2);
+}
+
+.cosmeticsGrid{
+  animation:cosmeticsFadeIn 220ms ease;
+}
+@keyframes cosmeticsFadeIn{
+  from{ opacity:0; transform:translateY(6px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.tabEmptyState{
+  border:1px dashed var(--line);
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+
+@media (max-width: 620px){
+  .cosmeticsTabsShell{
+    margin-top:14px;
+    padding:12px;
+    border-radius:16px;
+  }
+  .cosmeticsMainTab{ padding:9px 12px; }
+  .cosmeticsSubTab{ padding:8px 10px; }
+}
+
+/* Products */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:16px;
+}
+.card{
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+  transition:transform 140ms ease, box-shadow 220ms ease;
+  position:relative;
+  cursor:pointer;
+}
+.card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
+.imgWrap{ background:#f2f2f3; aspect-ratio:1/1; overflow:hidden; position:relative; }
+.img{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* OK no crop */
+  display:block;
+  background:#f2f2f3;         /* OK nice backdrop for transparent/empty space */
+  padding:10px;               /* OK gives breathing room */
+  box-sizing:border-box;
+}
+.cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
+.cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.cardTitle{ margin:0; font-size:14px; font-weight:900; }
+.price{ font-weight:900; font-size:14px; }
+
+.wishBtn{
+  position:absolute;
+  top:10px; right:10px;
+  width:40px; height:40px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.92);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,0.08);
+}
+.wishBtn.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+.wishBtn:hover{ transform:translateY(-1px); }
+.wishIconSvg{
+  width:20px;
+  height:20px;
+  display:block;
+}
+
+.btnPrimary{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#0e0e10;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, opacity 180ms ease;
+}
+.btnPrimary:hover{ transform:translateY(-1px); }
+.btnPrimary:active{ transform:translateY(0px); opacity:0.92; }
+
+.btnCheckout{
+  width:100%;
+  margin-top:0;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnCheckout:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+
+.searchBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:#0e0e10;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, opacity 180ms ease;
+  white-space:nowrap;
+}
+.searchBtn:hover{ transform:translateY(-1px); }
+.searchBtn:active{ transform:translateY(0px); opacity:0.92; }
+
+/* Cart */
+.cart{
+  position:sticky;
+  top:90px;
+  height:fit-content;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  padding:16px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.06);
+}
+.cartHeader{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+.cartTitle{ font-weight:900; font-size:16px; }
+.cartCount{ color:var(--muted); font-size:12px; }
+
+.empty{
+  border:1px dashed rgba(0,0,0,0.18);
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+.emptyIcon{
+  width:22px;
+  height:22px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.emptyIconSvg{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  fill:none;
+}
+.emptyTitle{ margin-top:10px; font-weight:900; }
+.emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
+
+.cartList{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+.cartRow{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.cartRow:last-child{ border-bottom:none; }
+.cartName{ font-weight:800; font-size:13px; }
+.cartMeta{ color:var(--muted); font-size:12px; margin-top:4px; }
+.removeBtn{
+  border:none;
+  background:transparent;
+  color:#b00020;
+  cursor:pointer;
+  font-weight:800;
+}
+
+.qtyBox{
+  display:flex; align-items:center; gap:8px;
+  margin-top:8px;
+}
+.qtyBtn{
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.qtyNum{
+  min-width:24px;
+  text-align:center;
+  font-weight:900;
+}
+
+.summary{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:13px;
+}
+.sumRow{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  color:var(--muted);
+}
+.sumRow b{ color:var(--text); }
+.sumRow.total{
+  padding-top:10px;
+  margin-top:6px;
+  border-top:1px solid var(--line);
+  color:var(--text);
+  font-size:14px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.promoBox{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#fff,#fafafa);
+}
+.promoRow{
+  display:flex; gap:10px; align-items:center;
+}
+.promoRow .input{ height:42px; }
+.promoMsg{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+.promoMsg.OK{ color:#0b6b2e; font-weight:900; }
+.promoMsg.bad{ color:#b00020; font-weight:900; }
+
+.loyaltyBox{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.loyaltyHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.loyaltyTierBadge{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:11px;
+  color:var(--text);
+  font-weight:900;
+  letter-spacing:0.04em;
+}
+.loyaltyHint{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+.loyaltyActions{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:8px;
+}
+.loyaltyMiniBtn{
+  height:42px;
+  padding:0 12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:800;
+}
+.loyaltyClearBtn{
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  text-decoration:underline;
+  font-weight:700;
+  padding:0;
+  margin-left:6px;
+}
+
+.cartNote{ margin-top:10px; color:var(--muted); font-size:12px; text-align:center; }
+
+.footer{
+  margin-left:0;
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:90;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 180ms ease;
+}
+.modal.show{ opacity:1; pointer-events:auto; }
+.modalBackdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.45); }
+.modalCard{
+  position:relative;
+  width:min(760px, 100%);
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  max-height: calc(100vh - 48px);
+  overflow:auto;
+}
+.modalTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 16px 0;
+}
+.modalTitle{
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.modalClose{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.modalBody{ padding:14px 16px 16px; }
+.tabs{ display:flex; gap:10px; margin-top:10px; margin-bottom:12px; }
+.tab{
+  flex:1;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.tab.active{ background:#0e0e10; color:#fff; border-color:rgba(0,0,0,0.2); }
+.field{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+.label{ font-size:12px; color:var(--muted); font-weight:800; letter-spacing:0.02em; }
+.input{
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:0 12px;
+  outline:none;
+  background:#fff;
+  font-weight:700;
+  width:100%;
+}
+.row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+.help{ margin-top:10px; font-size:12px; color:var(--muted); }
+.authActions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+.btnGhost{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+.btnGhost:hover{ transform:translateY(-1px); box-shadow:var(--shadow2); }
+.divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:12px 0 2px;
+  color:var(--muted);
+  font-size:12px;
+}
+.divider::before, .divider::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--line);
+}
+
+/* Product Page */
+.productWrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:22px;
+  display:grid;
+  gap:18px;
+}
+.productCard{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow2);
+  overflow:hidden;
+}
+.productTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+.backLink{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  text-decoration:none;
+  font-weight:900;
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+}
+.productBody{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+  padding:16px;
+}
+.pImgWrap{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:#f2f2f3;
+  aspect-ratio: 1 / 1;        /* OK keeps a clean frame */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.pImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* OK no crop */
+  padding:12px;
+  box-sizing:border-box;
+  display:block;
+  }
+  .thumbRow{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.thumbBtn{
+  width:70px; height:70px;
+  padding:0;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  overflow:hidden;
+}
+.thumbBtn.active{ border-color:#0e0e10; }
+.thumbImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* OK no crop */
+  background:#f2f2f3;
+  padding:6px;
+  box-sizing:border-box;
+  display:block;
+}
+
+
+.sizeRow{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.sizeBtn{
+  height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.sizeBtn.active{
+  background:#0e0e10;
+  color:#fff;
+  border-color:rgba(0,0,0,0.2);
+}
+
+.pageWrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:22px;
+}
+.pageCard{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow2);
+  padding:18px;
+}
+.pageTitle{
+  margin:0;
+  font-size:26px;
+  font-weight:900;
+}
+.pageSub{
+  margin-top:8px;
+  color:var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .main{ grid-template-columns: 1fr; }
+}
+@media (max-width: 900px){
+  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .main{ grid-template-columns: 1fr; }
+  .cart{ position:relative; top:auto; }
+  .pill{ display:none; }
+  .productBody{ grid-template-columns: 1fr; }
+}
+@media (max-width: 620px){
+  .grid{
+    grid-template-columns: 1fr;   /* one product per row */
+    gap:12px;
+  }
+
+  .cardBody{ padding:14px; }
+  .cardTitle{ font-size:15px; }
+  .price{ font-size:14px; }
+  .imgWrap{ aspect-ratio: 1/1; }
+}
+@media (max-width: 520px){
+  .row2{ grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+
+  .cardBody{
+    padding:10px 12px;
+}
+.cardTitle{ font-size:13px; }
+  .price{
+    font-size:12px;
+  }
+  
+/* ===== FIX EXTRA WHITE SPACE ABOVE TRUST STRIP ===== */
+
+.trustStrip{
+  margin-top: 0 !important;
+  padding-top: 18px !important;
+}
+
+.footer{
+  margin-top: 0 !important;
+  padding-top: 12px !important;
+}
+  /* ============================= */
+/* OK FIX: Cart Drawer Styling   */
+/* ============================= */
+
+.cartDrawerOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 200ms ease;
+  z-index:95;
+}
+.cartDrawerOverlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.cartDrawer{
+  position:fixed;
+  top:0;
+  right:0;
+  height:100vh;
+  width:min(420px, 92vw);
+  background:var(--panel);
+  border-left:1px solid var(--line);
+  box-shadow:var(--shadow);
+  transform:translateX(105%);
+  transition:transform 220ms ease;
+  z-index:96;
+  display:flex;
+  flex-direction:column;
+}
+.cartDrawer.open{
+  transform:translateX(0);
+}
+
+.cartDrawerHeader{
+  padding:16px 16px 12px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.cartDrawerTitle{
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.cartDrawerSub{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:800;
+}
+
+.cartDrawerBody{
+  padding:14px 16px 16px;
+  overflow:auto;
+  flex:1;
+}
+
+/* ============================= */
+/* OK FIX: Trust Strip Styling   */
+/* ============================= */
+
+.trustStrip{
+  width:100%;
+  border-top:1px solid var(--line);
+  background:var(--panel);
+}
+
+.trustStripInner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:16px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  flex-wrap:wrap;
+}
+
+.trustItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.75);
+}
+
+[data-theme="dark"] .trustItem{
+  background:rgba(18,18,20,0.7);
+}
+
+.trustIcon{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--soft);
+}
+
+.trustImg{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  display:block;
+}
+
+.trustText{
+  font-weight:900;
+  letter-spacing:0.02em;
+  font-size:12px;
+  color:var(--text);
+}
+.trustText span{
+  font-weight:800;
+  color:var(--muted);
+  margin-left:6px;
+}
+
+/* ============================= */
+/* OK FIX: Header style conflict */
+/* ============================= */
+/* You have TWO .ss-logo blocks; keep the "luxury" one.
+   This forces the logo in the header to stay black + Playfair. */
+.ss-header .ss-logo{
+  font-family: 'Poppins', sans-serif;
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:lowercase;
+  color:#000;
+  text-decoration:none;
+}
+
+
+/* ============================= */
+/* OK MOBILE FIX PACK (AUREA)    */
+/* ============================= */
+
+@media (max-width: 900px){
+  /* Page padding smaller */
+  .main{ padding:14px 12px 0; gap:12px; }
+
+  /* Cards grid tighter */
+  .grid{ gap:12px; }
+}
+
+@media (max-width: 620px){
+  /* ---------- Header ---------- */
+  .ss-topstrip{ display:none; } /* optional: removes the tiny top bar on phone */
+
+  .ss-mainbar{
+    height:auto;
+    padding:12px 12px;
+    grid-template-columns: 1fr auto;     /* search + logo on first row */
+    grid-template-rows: auto auto;       /* icons on second row */
+    row-gap:10px;
+  }
+
+  .ss-search{
+    grid-column:1 / 2;
+    max-width:none;
+  }
+
+  .ss-search input{
+    height:40px;
+    font-size:13px;
+  }
+
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:end;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  .ss-icons{
+    grid-column:1 / -1;
+    justify-self:stretch;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* ACCOUNT / WISHLIST / FILTERS / CART */
+    gap:8px;
+    font-size:0; /* hide the words */
+  }
+
+  .ss-icon-btn{
+    justify-content:center;
+    gap:0;
+    padding:10px 0;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,0.85);
+  }
+
+  .ss-icon-btn svg{ width:18px; height:18px; }
+  .ss-cart-count{ font-size:12px; margin-left:6px; } /* still show (3) etc */
+
+  /* ---------- Hero/sections ---------- */
+  .h1{ font-size:24px; }
+  .sub{ font-size:13px; }
+
+  /* ---------- Product page ---------- */
+  .productWrap{ padding:14px; }
+  .productBody{ gap:12px; padding:12px; }
+  .pImgWrap{ border-radius:16px; }
+  .thumbBtn{ width:62px; height:62px; }
+
+  /* ---------- Modals ---------- */
+  .modalCard{
+    width:100%;
+    border-radius:18px;
+  }
+
+  /* ---------- Cart Drawer ---------- */
+  .cartDrawer{
+    width:100vw;             /* full width on phone */
+    border-left:none;
+  }
+
+  .cartDrawerHeader{ padding:14px; }
+  .cartDrawerBody{ padding:12px 14px 14px; }
+
+  /* ---------- Trust strip ---------- */
+  .trustStripInner{
+    padding:12px 12px;
+    gap:10px;
+  }
+  .trustItem{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* Ultra small phones */
+@media (max-width: 420px){
+  .ss-icons{ grid-template-columns: 1fr 1fr; } /* 2x2 icons */
+  .ss-logo{ font-size:20px; }
+}
+
+section{
+  margin-bottom: 0 !important;
+}
+/* ============================= */
+/* PREMIUM MOBILE PRODUCT STYLE  */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Bigger product image */
+  .imgWrap{
+    aspect-ratio: 1 / 1;
+    background:#f4f4f6;
+  }
+
+  .img{
+    padding:6px;           /* less padding = bigger visual */
+  }
+
+  /* Card layout cleaner */
+  .card{
+    border-radius:18px;
+    box-shadow:0 8px 28px rgba(0,0,0,0.08);
+  }
+
+  .cardBody{
+    padding:14px;
+    gap:8px;
+  }
+
+  /* Title more premium */
+  .cardTitle{
+    font-size:15px;
+    font-weight:900;
+    line-height:1.3;
+  }
+
+  /* Price stronger */
+  .price{
+    font-size:15px;
+    font-weight:900;
+  }
+
+  /* Button full width and nicer */
+  .btnPrimary{
+    height:44px;
+    font-size:14px;
+    border-radius:10px;
+  }
+
+  .btnCheckout{
+    height:42px;
+    font-size:13px;
+    border-radius:10px;
+  }
+
+  /* Wishlist heart nicer on phone */
+  .wishBtn{
+    width:38px;
+    height:38px;
+  }
+}
+@media (max-width:620px){
+
+  /* Product cards image */
+  .img{
+    object-fit:cover;     /* fills space nicely on mobile */
+    padding:4px;
+  }
+
+  /* Product page image */
+  .pImg{
+    object-fit:cover;
+    padding:6px;
+  }
+
+}
+
+@media (max-width:620px){
+  .brandSlideImg{
+    object-fit:contain;   /* OK no crop */
+    height:220px;
+    background:#f4f4f6;   /* soft backdrop */
+  }
+}
+
+.ss-icons{ justify-self:start; display:flex; align-items:center; gap:10px; }
+.ss-icons-desktop{ display:flex; align-items:center; gap:26px; }
+
+.ss-burger-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+  /* Optional polish */
+.ss-burger-btn{
+  transition:transform 120ms ease;
+}
+
+.ss-burger-btn:active{
+  transform:scale(0.92);
+}
+
+/* Burger animation */
+.ss-burger-btn.active .hamburger{
+  background:transparent;
+}
+
+.ss-burger-btn.active .hamburger::before{
+  top:0;
+  transform:rotate(45deg);
+}
+
+.ss-burger-btn.active .hamburger::after{
+  top:0;
+  transform:rotate(-45deg);
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after{
+  transition:transform 180ms ease, top 180ms ease, background 180ms ease;
+}
+
+@media (max-width:620px){
+  .ss-icons-desktop{ display:none; }  /* hide ACCOUNT/WISHLIST/CART */
+  .ss-burger-btn{ display:flex; }     /* show burger */
+}
+/* ============================= */
+/* OK Mobile Search Drop-down     */
+/* ============================= */
+
+.ss-search-desktop{ display:flex; align-items:center; gap:10px; width:100%; }
+.ss-search-mobile-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.88);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+
+.ss-mobile-searchbar{
+  position:sticky;
+  top:64px;               /* sticks under your header */
+  z-index:998;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 220ms ease;
+}
+
+.ss-mobile-searchbar.open{
+  max-height:90px;
+}
+
+.ss-mobile-search-inner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:10px 12px 12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.ss-mobile-search-input{
+  flex:1;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:0 12px;
+  outline:none;
+  font-weight:800;
+  background:#fff;
+}
+
+.ss-mobile-search-close{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.9);
+  cursor:pointer;
+  font-weight:900;
+}
+
+.mobileBackToTopBtn{
+  position:fixed;
+  right:14px;
+  bottom:16px;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#000;
+  font-size:20px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow2);
+  z-index:1006;
+  cursor:pointer;
+}
+.mobileBackToTopBtn svg{
+  width:19px;
+  height:19px;
+  stroke:currentColor;
+  fill:none;
+}
+
+.mobileCartToast{
+  position:fixed;
+  left:50%;
+  bottom:72px;
+  transform:translateX(-50%);
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(16,16,18,0.94);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.03em;
+  white-space:nowrap;
+  box-shadow:var(--shadow2);
+  z-index:1007;
+}
+
+.whatsappFloatBtn{
+  position:fixed;
+  left:16px;
+  bottom:16px;
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:#25d366;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 14px 30px rgba(0,0,0,0.2);
+  z-index:1008;
+  transition:transform 160ms ease, box-shadow 220ms ease;
+}
+.whatsappFloatBtn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 18px 34px rgba(0,0,0,0.24);
+}
+.whatsappFloatBtn:active{
+  transform:translateY(0) scale(0.98);
+}
+.whatsappFloatBtn svg{
+  width:23px;
+  height:23px;
+}
+
+@media (max-width:620px){
+  .whatsappFloatBtn{
+    width:48px;
+    height:48px;
+    left:12px;
+    bottom:14px;
+  }
+}
+
+@media (min-width:621px){
+  .mobileBackToTopBtn,
+  .mobileCartToast{
+    display:none !important;
+  }
+}
+
+/* Switch behavior on phones */
+@media (max-width:620px){
+  .ss-search-desktop{ display:none; }   /* hide desktop input */
+  .ss-search-mobile-btn{ display:flex; }/* show magnifier only */
+
+  /* Your header might be taller on phone; adjust sticky offset if needed */
+  .ss-mobile-searchbar{ top:0; }        /* safest with your sticky header */
+}
+/* ============================= */
+/* OK PHONE HEADER: LEFT ICONS + CENTER LOGO */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Make header a 3-column grid on phones */
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;   /* left / logo / right */
+    align-items:center;
+    row-gap:0;
+  }
+
+  /* Put burger + search on the left */
+  .ss-search{
+    grid-column:1 / 2;
+    justify-self:start;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:none;
+  }
+
+  /* Ensure the mobile search icon shows */
+  .ss-search-desktop{ display:none !important; }
+  .ss-search-mobile-btn{ display:flex !important; }
+
+  /* Burger on the left too */
+  .ss-burger-btn{
+    display:flex !important;
+  }
+
+  /* Center the logo */
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:center;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  /* Hide desktop icon row on phone */
+  .ss-icons-desktop{
+    display:none !important;
+  }
+
+  /* Keep the right column empty (so logo stays centered) */
+  .ss-icons{
+    grid-column:3 / 4;
+    justify-self:end;
+    gap:0;
+  }
+}
+/* ============================= */
+/* OK PHONE: LEFT ICONS + CENTER LOGO */
+/* ============================= */
+
+@media (max-width: 620px){
+
+  /* Header becomes 3 columns: left / center / right */
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+  }
+
+  /* Left group = burger + magnifier */
+  .ss-search{
+    grid-column:1 / 2;
+    justify-self:start;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:none;
+  }
+
+  /* Hide desktop search input on phone */
+  .ss-search-desktop{
+    display:none !important;
+  }
+
+  /* Show mobile search icon + burger */
+  .ss-search-mobile-btn{
+    display:flex !important;
+  }
+  .ss-burger-btn{
+    display:flex !important;
+  }
+
+  /* Center logo */
+  .ss-logo{
+    grid-column:2 / 3;
+    justify-self:center;
+    font-size:22px;
+    letter-spacing:0.12em;
+  }
+
+  /* Right side: keep empty so logo stays truly centered */
+  .ss-icons{
+    grid-column:3 / 4;
+    justify-self:end;
+  }
+
+  /* Hide desktop actions on phone (ACCOUNT/WISHLIST/CART row) */
+  .ss-icons-desktop{
+    display:none !important;
+  }
+}
+@media (max-width: 620px){
+  .ss-mainbar{
+    height:64px;
+    padding:0 12px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+  }
+
+  .ss-icons{ justify-self:end; }
+
+  .ss-icons-desktop{ display:none !important; }
+  .ss-burger-btn{ display:flex !important; }
+  .ss-search-mobile-btn{ display:flex !important; }
+  .ss-search-desktop{ display:none !important; }
+}
+/* Force header text to be black */
+.ss-header,
+.ss-header a,
+.ss-header a:visited,
+.ss-header a:hover,
+.ss-header a:active,
+.ss-header button{
+  color:#000 !important;
+  text-decoration:none;
+}
+/* OK HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
+.ss-header *{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important; /* iOS Safari can force link color */
+}
+
+/* links specifically */
+.ss-header a:link,
+.ss-header a:visited,
+.ss-header a:hover,
+.ss-header a:active{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  text-decoration:none !important;
+}
+
+/* buttons text */
+.ss-header button{
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+
+/* SVG icons were blue? force them too */
+.ss-header svg{
+  stroke:#000 !important;
+  fill:none !important;
+}
+
+/* if any icon uses fill instead of stroke */
+.ss-header svg path,
+.ss-header svg circle,
+.ss-header svg line{
+  stroke:#000 !important;
+  fill:none !important;
+}
+/* OK FIX: Sidebar (burger menu) link colors (blue/purple) */
+.sidebar a,
+.sidebar a:visited,
+.sidebar a:hover,
+.sidebar a:active {
+  color: var(--text) !important;
+  text-decoration: none !important;
+}
+
+/* Make the whole menu item always use your text color */
+.sidebar .menuItem {
+  color: var(--text) !important;
+}
+
+/* When it's the active one (Sign out etc), keep white text */
+.sidebar .menuItem.active,
+.sidebar .menuItem.active * {
+  color: #fff !important;
+}
+
+/* Prevent purple/blue from child spans inside links */
+.sidebar .menuItem * {
+  color: inherit !important;
+}
+
+/* Optional: remove weird mobile focus ring color */
+.sidebar .menuItem:focus,
+.sidebar .menuItem:focus-visible {
+  outline: none;
+}
+/* Make all burger menu items same size */
+.menuItem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  height:52px;           /* same height for all */
+  padding:0 14px;
+
+  font:inherit;
+  line-height:1;
+}
+
+/* Ensure links behave like buttons */
+.menuItem,
+.menuItem:link,
+.menuItem:visited{
+  text-decoration:none;
+  color:var(--text);
+}
+.menuItem *{
+  margin:0;
+  padding:0;
+}
+/* Force all burger menu items to be identical */
+.sidebar .menuItem{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+
+  height:52px !important;
+  padding:0 16px !important;
+
+  font:inherit !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+}
+
+/* Make links behave like buttons */
+.sidebar a.menuItem,
+.sidebar button.menuItem{
+  text-decoration:none !important;
+  color:var(--text) !important;
+  background:none !important;
+  border:none !important;
+}
+
+/* Remove extra spacing from inner elements */
+.sidebar .menuItem *{
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1 !important;
+}
+/* Make cart drawer appear above header */
+.cartDrawer{
+  z-index:1100 !important;
+}
+
+.cartDrawerOverlay{
+  z-index:1090 !important;
+}
+
+/* Header lower than cart */
+.ss-header{
+  z-index:1000;
+}
+/* Category bar under header */
+.categoryBar{
+  width:100%;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+
+.categoryInner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:10px 16px;
+  display:flex;
+  gap:24px;
+  align-items:center;
+  overflow-x:auto;
+}
+
+.categoryItem{
+  text-decoration:none;
+  color:#000;
+  font-weight:600;
+  font-size:14px;
+  white-space:nowrap;
+  padding:6px 2px;
+}
+
+.categoryItem:hover{
+  opacity:0.7;
+}
+/* Hide category bar on phones */
+@media (max-width: 620px){
+  .categoryBar{
+    display:none;
+  }
+}
+.categoryItem{
+  letter-spacing:0.05em;
+  font-weight:500;
+}
+.categoryItem{
+  font: inherit;
+  color:#000;
+  background:transparent;
+  border:none;
+  padding:10px 12px;
+  cursor:pointer;
+  text-decoration:none;
+}
+  /* ============================= */
+/* Sidebar Social Footer         */
+/* ============================= */
+
+.sidebarSocial{
+  margin-top:auto;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  gap:16px;
+}
+
+.socialBtn{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform 120ms ease, box-shadow 180ms ease;
+}
+
+.socialBtn svg{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  fill:none;
+  stroke-width:1.8;
+}
+
+.socialBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow2);
+}
+
+/* ============================= */
+/* Cosmetics Dropdown            */
+/* ============================= */
+
+.menuArrow.rotate{
+  transform: rotate(180deg);
+  transition: transform 180ms ease;
+}
+
+.submenu{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+  display: flex;
+  flex-direction: column;
+  padding-left: 14px;
+}
+
+.submenu.open{
+  max-height: 200px;
+}
+
+.submenuItem{
+  padding: 12px 14px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: 10px;
+  transition: background 120ms ease;
+}
+
+.submenuItem:hover{
+  background: rgba(0,0,0,0.05);
+}
+.socialBtn.disabled{
+  opacity:0.35;
+  cursor:default;
+  pointer-events:none;
+}
+/* OK Homepage section grid: always 3 cards max */
+.homeSectionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .homeSectionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .homeSectionGrid { grid-template-columns: 1fr; }
+}
+/* Hide footer Instagram on phone */
+@media (max-width: 620px){
+  .footer .socialLink{
+    display: none !important;
+  }
+}
+
+@media (max-width: 620px){
+  .ss-search{
+    transform: translateY(-2px);
+  }
+}
+
+.app,
+.app *:not(svg):not(path):not(circle):not(line){
+ font-family: 'Poppins', sans-serif; !important;
+}
+
+@media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+`;
+const products = [
+  // ================= FACE =================
   {
-    id: 1,
-    name: "Velvet Rouge Lip Color",
-    category: "Lips",
-    price: 48,
-    badge: "Best Seller",
-    description: "Weightless matte color with rosehip-infused hydration.",
-    image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80",
+    id: 9,
+    name: "Max Factor X 101",
+    price: 10,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-101.jpg", "/products/maxfactor-101-2.jpg"],
+    details: { subtitle: "Foundation - Shade 101 (light tone)" }
   },
   {
-    id: 2,
-    name: "Luminous Silk Foundation",
-    category: "Face",
-    price: 72,
-    badge: "New",
-    description: "Second-skin coverage with a radiant, studio-soft finish.",
-    image:
-      "https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=900&q=80",
+    id: 10,
+    name: "Max Factor X 55 Beige",
+    price: 12,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor55beige.jpg"],
+    details: { subtitle: "Foundation - Shade 55 Beige" }
   },
   {
-    id: 3,
-    name: "Noir Length Mascara",
-    category: "Eyes",
-    price: 38,
-    badge: "Best Seller",
-    description: "Long-wear volume with a lash-defining precision brush.",
-    image:
-      "https://images.unsplash.com/photo-1631730486572-2260f8f4f84d?auto=format&fit=crop&w=900&q=80",
+    id: 11,
+    name: "Max Factor SPF 20",
+    price: 11,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactorspf20.jpg"],
+    details: { subtitle: "Foundation with SPF 20" }
   },
   {
-    id: 4,
-    name: "Aura Renewal Serum",
-    category: "Skin",
-    price: 96,
-    badge: "Editor Pick",
-    description: "Brightening peptide complex for a rested luminous glow.",
-    image:
-      "https://images.unsplash.com/photo-1626784215021-2e39ccf971cd?auto=format&fit=crop&w=900&q=80",
+    id: 402,
+    name: "Max Factor Pan Stik Foundation",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-pan-stik-foundation.jpg"]
   },
   {
-    id: 5,
-    name: "Sculpted Glow Palette",
-    category: "Face",
-    price: 58,
-    badge: "Limited",
-    description: "Contour, bronze, and highlight in one refined compact.",
-    image:
-      "https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&w=900&q=80",
+    id: 407,
+    name: "Bourjois Always Fabulous Stick Foundation",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/bourjois-always-fabulous-stick-foundation.jpg"]
   },
   {
-    id: 6,
-    name: "Rose Quartz Cleansing Oil",
-    category: "Skin",
-    price: 44,
-    badge: "New",
-    description: "Melts makeup instantly while nourishing the skin barrier.",
-    image:
-      "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?auto=format&fit=crop&w=900&q=80",
+    id: 409,
+    name: "Radiance Reveal Concealer",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/radiance-reveal-concealer.jpg"]
   },
+  {
+    id: 410,
+    name: "Rimmel Lasting Finish Powder 25H",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-finish-powder.jpg"]
+  },
+  {
+    id: 301,
+    name: "Max Factor Colour Adapt Foundation 80 Bronze",
+    price: 11,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-colour-adapt-80-bronze.jpg"]
+  },
+  {
+    id: 302,
+    name: "Bourjois Blush 74 Rose Ambre",
+    price: 16,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/bourjois-blush-74-rose-ambre.jpg"]
+  },
+  {
+    id: 303,
+    name: "Bourjois Bronzing Powder 10",
+    price: 12,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/bourjois-bronzer-10-chataigne-doree.jpg"]
+  },
+  {
+    id: 304,
+    name: "Max Factor Miracle Glow Duo Illuminator",
+    price: 7,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-miracle-glow-duo.jpg"]
+  },
+  {
+    id: 306,
+    name: "Miss Sporty Sculpting Blush & Highlight",
+    price: 2.5,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/100peachy.jpg"]
+  },
+  {
+    id: 307,
+    name: "Rimmel Lasting Radiance Concealer",
+    price: 6,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/rimmel-lasting-radiance-concealer.jpg"]
+  },
+  {
+    id: 503,
+    name: "Max Factor Mastertouch Concealer",
+    price: 8.5,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/maxfactor-mastertouch-concealer.jpg"]
+  },
+  {
+    id: 504,
+    name: "Rimmel Stay Matte Liquid",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/rimmel-stay-matte-liquid.jpg"]
+  },
+  {
+    id: 508,
+    name: "L'Oreal True Match Nude Serum",
+    price: 12,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/loreal-true-match-nude-serum-2-3-light.jpg"]
+  },
+  {
+    id: 509,
+    name: "L'Oreal True Match Foundation",
+    price: 10,
+    category: "cosmetics",
+    subCategory: "face",
+    images: ["/products/loreal-true-match-super-blendable-foundation.jpg"]
+  },
+
+  // ================= EYES =================
+  {
+    id: 405,
+    name: "Bourjois Little Round Pot Eyeshadow",
+    price: 10,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-little-round-pot-eyeshadow.jpg"]
+  },
+  {
+    id: 408,
+    name: "Max Factor Eyeshadow Palette Nude",
+    price: 7,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-eyeshadow-palette-nude.jpg"]
+  },
+  {
+    id: 308,
+    name: "Max Factor Kohl Pencil Blue",
+    price: 4,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-kohl-pencil.jpg"]
+  },
+  {
+    id: 305,
+    name: "Miss Sporty Eye Palette Metal",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/miss-sporty-designer-eye-palette-metal.jpg"]
+  },
+  {
+    id: 505,
+    name: "Max Factor Masterpiece Liquid Eyeliner",
+    price: 16,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-liquid-eyeliner-002-charcoal-black.jpg"]
+  },
+  {
+    id: 506,
+    name: "Bourjois Liner Reveal Liquid Eyeliner",
+    price: 14,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/bourjois-liner-reveal-01-shiny-black.jpg"]
+  },
+  {
+    id: 507,
+    name: "Max Factor High Precision Liquid Eyeliner",
+    price: 8,
+    category: "cosmetics",
+    subCategory: "eyes",
+    images: ["/products/maxfactor-masterpiece-high-precision-eyeliner.jpg"]
+  },
+
+  // ================= LIPS =================
+  {
+    id: 401,
+    name: "Rimmel Lip Art Graphic Lipstick",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/rimmel-lip-art-graphic.jpg"]
+  },
+  {
+    id: 403,
+    name: "Max Factor Lipfinity 020 Angelic",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-020-angelic.jpg"]
+  },
+  {
+    id: 404,
+    name: "Max Factor Lipfinity Lipstick",
+    price: 5,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-lipfinity-gold.jpg"]
+  },
+  {
+    id: 501,
+    name: "Max Factor Colour Elixir 010 Starlight Coral",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-010-starlight-coral.jpg"]
+  },
+  {
+    id: 502,
+    name: "Max Factor Colour Elixir 015 Nude Glory",
+    price: 9,
+    category: "cosmetics",
+    subCategory: "lips",
+    images: ["/products/maxfactor-colour-elixir-015-nude-glory.jpg"]
+  }
+];
+const PROMOS = {
+  AUREA10: { type: "percent", value: 10, label: "10% off" },
+  AUREA15: { type: "percent", value: 15, label: "15% off" },
+  SAVE5: { type: "fixed", value: 5, label: "$5 off" },
+  FREESHIP: { type: "freeship", value: 0, label: "Free shipping" },
+};
+
+const SHIPPING_FEE = 7.99;
+const FREE_SHIPPING_THRESHOLD = 75;
+const LOYALTY_POINTS_STORAGE_KEY = "aurea_loyalty_points_by_user";
+const LOYALTY_PENDING_ORDER_KEY = "aurea_loyalty_pending_order";
+const POINTS_PER_USD = 5;
+const POINT_VALUE_USD = 0.05; // 20 points = $1
+
+const LOYALTY_TIERS = [
+  { name: "Rose", minPoints: 0, autoDiscountPct: 0, earnBoost: 1 },
+  { name: "Gold", minPoints: 500, autoDiscountPct: 3, earnBoost: 1.15 },
+  { name: "Diamond", minPoints: 1200, autoDiscountPct: 6, earnBoost: 1.3 },
 ];
 
-const LOADING_CARDS = 6;
+function getLoyaltyTier(points) {
+  if (points >= LOYALTY_TIERS[2].minPoints) return LOYALTY_TIERS[2];
+  if (points >= LOYALTY_TIERS[1].minPoints) return LOYALTY_TIERS[1];
+  return LOYALTY_TIERS[0];
+}
 
-function App() {
-  const [cartItems, setCartItems] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [isLoading, setIsLoading] = useState(true);
-  const [toastMessage, setToastMessage] = useState("");
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
+function money(n) {
+  return `$${Number(n || 0).toFixed(2)}`;
+}
 
-  useEffect(() => {
-    const loadingTimer = window.setTimeout(() => {
-      setIsLoading(false);
-    }, 900);
+function parseSizes(sizeStr) {
+  if (!sizeStr) return [];
+  // "XS / S / M / L" -> ["XS","S","M","L"]
+  return sizeStr
+    .split(/\u2022|\u00B7|,|\|/g)
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
 
-    return () => window.clearTimeout(loadingTimer);
-  }, []);
+function HeartIcon({ filled = false }) {
+  return (
+    <svg className="wishIconSvg" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M12 21s-6.38-4.26-8.9-6.77a5.36 5.36 0 0 1 0-7.6 5.36 5.36 0 0 1 7.6 0L12 7.95l1.3-1.32a5.36 5.36 0 0 1 7.6 0 5.36 5.36 0 0 1 0 7.6C18.38 16.74 12 21 12 21z"
+        fill={filled ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
-  useEffect(() => {
-    if (!toastMessage) {
-      return undefined;
-    }
+const COSMETIC_SUBCATEGORY_LABELS = {
+  face: "Face",
+  eyes: "Eyes",
+  lips: "Lips",
+};
 
-    const toastTimer = window.setTimeout(() => {
-      setToastMessage("");
-    }, 1800);
+const COSMETICS_MAIN_TABS = [
+  { key: "all", label: "All" },
+  { key: "face", label: "Face" },
+  { key: "eyes", label: "Eyes" },
+  { key: "lips", label: "Lips" },
+  { key: "tools", label: "Tools" },
+  { key: "skincare", label: "Skincare" },
+  { key: "best_sellers", label: "Best Sellers" },
+  { key: "new_arrivals", label: "New Arrivals" },
+];
 
-    return () => window.clearTimeout(toastTimer);
-  }, [toastMessage]);
+const COSMETIC_MAIN_KEYWORDS = {
+  tools: ["brush", "sponge", "applicator", "tool", "tweezer", "curler"],
+  skincare: ["cleanser", "moistur", "cream", "serum", "spf", "mask", "toner", "skin"],
+};
 
-  const categories = useMemo(
-    () => ["All", ...new Set(PRODUCTS.map((product) => product.category))],
-    [],
+const COSMETIC_SUBTAB_DEFS = {
+  face: [
+    { key: "foundation", label: "Foundation", matchers: ["foundation", "base"] },
+    { key: "primer", label: "Primer", matchers: ["primer"] },
+    { key: "powder", label: "Powder", matchers: ["powder"] },
+    { key: "blush", label: "Blush", matchers: ["blush"] },
+    { key: "concealer", label: "Concealer", matchers: ["concealer"] },
+    { key: "bronzer", label: "Bronzer", matchers: ["bronzer", "bronzing"] },
+    { key: "highlighter", label: "Highlighter", matchers: ["highlight", "illuminator", "glow"] },
+  ],
+  eyes: [
+    { key: "eyeshadow", label: "Eyeshadow", matchers: ["eyeshadow", "palette"] },
+    { key: "eyeliner", label: "Eyeliner", matchers: ["eyeliner", "kohl", "liner"] },
+    { key: "mascara", label: "Mascara", matchers: ["mascara"] },
+    { key: "brow", label: "Brows", matchers: ["brow"] },
+  ],
+  lips: [
+    { key: "lipstick", label: "Lipstick", matchers: ["lipstick", "lipfinity"] },
+    { key: "liner", label: "Lip Liner", matchers: ["lip liner", "liner"] },
+    { key: "gloss", label: "Gloss", matchers: ["gloss"] },
+    { key: "balm", label: "Balm", matchers: ["balm"] },
+  ],
+  tools: [
+    { key: "brushes", label: "Brushes", matchers: ["brush"] },
+    { key: "sponges", label: "Sponges", matchers: ["sponge"] },
+    { key: "accessories", label: "Accessories", matchers: ["tool", "curler", "tweezer", "applicator"] },
+  ],
+  skincare: [
+    { key: "cleanser", label: "Cleanser", matchers: ["cleanser", "wash"] },
+    { key: "serum", label: "Serum", matchers: ["serum"] },
+    { key: "moisturizer", label: "Moisturizer", matchers: ["moistur", "cream"] },
+    { key: "treatment", label: "Treatment", matchers: ["mask", "toner", "spf"] },
+  ],
+};
+
+function getCosmeticsTextSource(product) {
+  return `${product?.name || ""} ${product?.details?.subtitle || ""}`.toLowerCase();
+}
+
+function resolveCosmeticMainTab(product) {
+  const explicit = (product?.subCategory || "").toLowerCase();
+  if (explicit === "face" || explicit === "eyes" || explicit === "lips") return explicit;
+
+  const source = getCosmeticsTextSource(product);
+
+  if (COSMETIC_MAIN_KEYWORDS.tools.some((keyword) => source.includes(keyword))) return "tools";
+  if (COSMETIC_MAIN_KEYWORDS.skincare.some((keyword) => source.includes(keyword))) return "skincare";
+  if (source.includes("eye")) return "eyes";
+  if (source.includes("lip")) return "lips";
+  return "face";
+}
+
+function resolveCosmeticSubTab(product, mainTab) {
+  const definitions = COSMETIC_SUBTAB_DEFS[mainTab];
+  if (!definitions || definitions.length === 0) return null;
+
+  const source = getCosmeticsTextSource(product);
+  const match = definitions.find((definition) =>
+    definition.matchers.some((matcher) => source.includes(matcher))
   );
 
-  const filteredProducts = useMemo(() => {
-    if (activeCategory === "All") {
-      return PRODUCTS;
-    }
+  return match ? match.key : "more";
+}
 
-    return PRODUCTS.filter((product) => product.category === activeCategory);
-  }, [activeCategory]);
+function filterCosmeticsByMainTab(products, mainTab) {
+  if (!Array.isArray(products) || products.length === 0) return [];
+  if (mainTab === "all") return products;
 
-  const cartCount = useMemo(
-    () =>
-      cartItems.reduce((count, item) => {
-        return count + item.quantity;
-      }, 0),
-    [cartItems],
-  );
+  if (mainTab === "best_sellers") {
+    return [...products]
+      .sort((a, b) => Number(b.price || 0) - Number(a.price || 0) || Number(b.id || 0) - Number(a.id || 0))
+      .slice(0, 12);
+  }
 
-  const subtotal = useMemo(
-    () =>
-      cartItems.reduce((sum, item) => {
-        return sum + item.price * item.quantity;
-      }, 0),
-    [cartItems],
-  );
+  if (mainTab === "new_arrivals") {
+    return [...products]
+      .sort((a, b) => Number(b.id || 0) - Number(a.id || 0))
+      .slice(0, 12);
+  }
 
-  const shipping = subtotal > 0 && subtotal < 180 ? 12 : 0;
-  const total = subtotal + shipping;
+  return products.filter((product) => resolveCosmeticMainTab(product) === mainTab);
+}
 
-  const addToCart = useCallback((product) => {
-    setOrderPlaced(false);
+function getCosmeticAreaLabel(subCategory) {
+  return COSMETIC_SUBCATEGORY_LABELS[subCategory] || "Cosmetics";
+}
 
-    setCartItems((currentItems) => {
-      const existingItem = currentItems.find((item) => item.id === product.id);
+function getCosmeticUseText(product) {
+  if (product?.details?.useFor) return product.details.useFor;
 
-      if (existingItem) {
-        return currentItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
+  const source = `${product?.name || ""} ${product?.details?.subtitle || ""}`.toLowerCase();
 
-      return [...currentItems, { ...product, quantity: 1 }];
-    });
+  if (source.includes("foundation")) return "to even skin tone and create a smooth makeup base.";
+  if (source.includes("concealer")) return "to cover dark circles, spots, and brighten targeted areas.";
+  if (source.includes("powder")) return "to set makeup and reduce shine for longer wear.";
+  if (source.includes("blush")) return "to add healthy color and warmth to the cheeks.";
+  if (source.includes("bronz")) return "to warm up and softly contour the complexion.";
+  if (source.includes("illuminator") || source.includes("highlight")) {
+    return "to add glow on the high points of the face.";
+  }
+  if (source.includes("serum")) return "to give lightweight coverage with a fresh skin-like finish.";
+  if (source.includes("eyeshadow") || source.includes("palette")) {
+    return "to add color and depth to eyelids and eye looks.";
+  }
+  if (source.includes("eyeliner") || source.includes("kohl")) {
+    return "to define the lash line and shape the eyes.";
+  }
+  if (source.includes("lip")) return "to add color, definition, and finish to the lips.";
 
-    setToastMessage(`${product.name} added to bag`);
-  }, []);
+  if (product?.subCategory === "face") return "to perfect the complexion and create an even skin finish.";
+  if (product?.subCategory === "eyes") return "to define and enhance the eye area.";
+  if (product?.subCategory === "lips") return "to color and define the lips.";
 
-  const increaseQuantity = useCallback((productId) => {
-    setCartItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
+  return "to complete your beauty routine.";
+}
+
+/** OK Product page */
+function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
+  const { id } = useParams();
+  const pid = Number(id);
+  const p = products.find((x) => Number(x.id) === pid);
+
+  const [activeImage, setActiveImage] = useState("");
+  const [qty, setQty] = useState(1);
+  const [size, setSize] = useState("");
+
+ // Intentional: reset local selection state when route product changes.
+ /* eslint-disable react-hooks/set-state-in-effect */
+ useEffect(() => {
+  const first = p?.images?.[0] || p?.img || "";
+  setActiveImage(first);
+  setQty(1);
+  setSize("");
+}, [pid, p]);
+ /* eslint-enable react-hooks/set-state-in-effect */
+
+  if (!p) {
+    return (
+      <div className="pageWrap">
+        <div className="pageCard">
+          <h1 className="pageTitle">Product not found</h1>
+          <p className="pageSub">This product doesn't exist (ID: {id}).</p>
+          <div style={{ marginTop: 14 }}>
+            <Link className="backLink" to="/">Back to shop</Link>
+          </div>
+        </div>
+      </div>
     );
-  }, []);
+  }
 
-  const decreaseQuantity = useCallback((productId) => {
-    setCartItems((currentItems) =>
-      currentItems
-        .map((item) =>
-          item.id === productId ? { ...item, quantity: item.quantity - 1 } : item,
-        )
-        .filter((item) => item.quantity > 0),
-    );
-  }, []);
+  const images = p.images || (p.img ? [p.img] : []);
+  const isWished = wishlistIds.includes(p.id);
 
-  const removeFromCart = useCallback((productId) => {
-    setCartItems((currentItems) =>
-      currentItems.filter((item) => item.id !== productId),
-    );
-  }, []);
+  const sizeOptions = p.category === "clothing" ? parseSizes(p?.details?.size) : [];
+  const needsSize = p.category === "clothing" && sizeOptions.length > 0;
+  const cosmeticArea = p.category === "cosmetics" ? getCosmeticAreaLabel(p.subCategory) : "";
+  const cosmeticUse = p.category === "cosmetics" ? getCosmeticUseText(p) : "";
 
-  const openCheckout = useCallback(() => {
-    if (cartItems.length === 0) {
+  const add = () => {
+    if (needsSize && !size) {
+      alert("Please choose a size first.");
       return;
     }
-
-    setOrderPlaced(false);
-    setIsCheckoutOpen(true);
-  }, [cartItems.length]);
-
-  const completeCheckout = useCallback(
-    (event) => {
-      event.preventDefault();
-
-      if (cartItems.length === 0) {
-        return;
-      }
-
-      setCartItems([]);
-      setOrderPlaced(true);
-      setIsCheckoutOpen(false);
-      setToastMessage("Order placed. A concierge will confirm shortly.");
-    },
-    [cartItems.length],
-  );
+    addToCart(p, { qty, size: needsSize ? size : "" });
+  };
 
   return (
-    <div className="store">
-      <header className="topbar">
-        <div className="topbar-inner">
-          <a className="brand" href="#home">
-            AUREA
-          </a>
-
-          <nav className="menu" aria-label="Primary">
-            <a href="#collection">Collection</a>
-            <a href="#cart">Bag</a>
-            <a href="#ritual">Ritual</a>
-          </nav>
-
-          <button className="bag-pill" type="button" onClick={openCheckout}>
-            Bag <span>{cartCount}</span>
-          </button>
+    <div className="productWrap">
+      <div className="productCard">
+        <div className="productTop">
+          <Link className="backLink" to="/">Back to shop</Link>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <button
+              className={`smallBtn ${isWished ? "primary" : ""}`}
+              style={{ width: 44, flex: "none" }}
+              onClick={() => toggleWishlist(p.id)}
+              type="button"
+              title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <HeartIcon filled={isWished} />
+            </button>
+            <div style={{ fontWeight: 900 }}>{money(p.price)}</div>
+          </div>
         </div>
-      </header>
 
-      <main id="home">
-        <section className="hero section-shell">
-          <div className="hero-copy">
-            <p className="eyebrow">Paris Atelier Edition</p>
-            <h1>Luxury beauty crafted for modern rituals.</h1>
-            <p>
-              Curated complexion, lip, and skincare formulas inspired by couture
-              studios and made for everyday elegance.
-            </p>
-            <a className="hero-link" href="#collection">
-              Explore Collection
-            </a>
-          </div>
+        <div className="productBody">
+          <div>
+            <div className="pImgWrap">
+              <img className="pImg" src={activeImage || images[0]} alt={p.name} />
+            </div> 
+          {images.length > 1 && (
+  <div className="thumbRow">
+    {images.map((src, i) => (
+      <button
+        key={i}
+        className={`thumbBtn ${src === activeImage ? "active" : ""}`}
+        onClick={() => setActiveImage(src)}
+        type="button"
+      >
+        <img className="thumbImg" src={src} alt="" />
+      </button>
+    ))}
+  </div>
+)}
 
-          <div className="hero-stats" aria-label="Store highlights">
-            <div>
-              <p>48h</p>
-              <span>White-glove dispatch</span>
-            </div>
-            <div>
-              <p>4.9/5</p>
-              <span>Client satisfaction score</span>
-            </div>
-            <div>
-              <p>180+</p>
-              <span>Complimentary shipping threshold</span>
-            </div>
-          </div>
-        </section>
-
-        <section className="section-shell catalog-layout" id="collection">
-          <div className="catalog-panel">
-            <div className="catalog-header">
-              <h2>Signature Collection</h2>
-              <p>Precision formulas and timeless shades selected by our artists.</p>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>{p.name}</h1>
+            <div style={{ marginTop: 8, color: "var(--muted)", fontWeight: 800 }}>
+              4.8 - 120+ reviews
             </div>
 
-            <div className="filter-row" role="tablist" aria-label="Category filter">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={`filter-chip ${
-                    activeCategory === category ? "filter-chip-active" : ""
-                  }`}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+            {p.details?.subtitle && (
+              <p style={{ marginTop: 14, marginBottom: 0, color: "var(--muted)" }}>
+                <b style={{ color: "var(--text)" }}>{p.details.subtitle}</b>
+              </p>
+            )}
 
-            <div className="product-grid">
-              {isLoading
-                ? Array.from({ length: LOADING_CARDS }).map((_, index) => (
-                    <article className="product-card skeleton" key={`loading-${index}`}>
-                      <div className="skeleton-block skeleton-image" />
-                      <div className="skeleton-body">
-                        <div className="skeleton-block skeleton-line short" />
-                        <div className="skeleton-block skeleton-line" />
-                        <div className="skeleton-block skeleton-line" />
-                        <div className="skeleton-block skeleton-line button" />
-                      </div>
-                    </article>
-                  ))
-                : filteredProducts.map((product) => (
-                    <article className="product-card" key={product.id}>
-                      <div className="image-frame">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="product-image"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                        <span className="badge">{product.badge}</span>
-                      </div>
+            {p.category === "cosmetics" && (
+              <>
+                <p style={{ marginTop: 10, marginBottom: 0, color: "var(--muted)" }}>
+                  <b style={{ color: "var(--text)" }}>Area:</b> {cosmeticArea}
+                </p>
+                <p style={{ marginTop: 8, marginBottom: 0, color: "var(--muted)" }}>
+                  <b style={{ color: "var(--text)" }}>Used for:</b> {cosmeticUse}
+                </p>
+              </>
+            )}
 
-                      <div className="product-content">
-                        <p className="product-category">{product.category}</p>
-                        <h3>{product.name}</h3>
-                        <p className="product-description">{product.description}</p>
-
-                        <div className="product-bottom">
-                          <p className="price">${product.price.toFixed(2)}</p>
-                          <button
-                            type="button"
-                            className="luxe-button"
-                            onClick={() => addToCart(product)}
-                          >
-                            Add to Bag
-                          </button>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-            </div>
-          </div>
-
-          <aside className="cart-panel" id="cart">
-            <div className="cart-head">
-              <h2>Shopping Bag</h2>
-              <p>{cartCount} items</p>
-            </div>
-
-            {cartItems.length === 0 ? (
-              <div className="cart-empty">
-                <h3>Your bag is waiting.</h3>
-                <p>Add a few atelier essentials to begin your ritual.</p>
-              </div>
-            ) : (
-              <ul className="cart-list">
-                {cartItems.map((item) => (
-                  <li key={item.id} className="cart-item">
-                    <div>
-                      <h4>{item.name}</h4>
-                      <p>${item.price.toFixed(2)}</p>
-                    </div>
-
-                    <div className="quantity-control" aria-label={`Adjust ${item.name}`}>
-                      <button
-                        type="button"
-                        aria-label={`Decrease ${item.name}`}
-                        onClick={() => decreaseQuantity(item.id)}
-                      >
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        type="button"
-                        aria-label={`Increase ${item.name}`}
-                        onClick={() => increaseQuantity(item.id)}
-                      >
-                        +
-                      </button>
-                    </div>
-
+            {needsSize && (
+              <div style={{ marginTop: 14 }}>
+                <div className="label" style={{ marginBottom: 8 }}>Choose size</div>
+                <div className="sizeRow">
+                  {sizeOptions.map((s) => (
                     <button
+                      key={s}
+                      className={`sizeBtn ${size === s ? "active" : ""}`}
+                      onClick={() => setSize(s)}
                       type="button"
-                      className="text-button"
-                      onClick={() => removeFromCart(item.id)}
                     >
-                      Remove
+                      {s}
                     </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 14 }}>
+              <div className="label" style={{ marginBottom: 8 }}>Quantity</div>
+              <div className="qtyBox">
+                <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">-</button>
+                <div className="qtyNum">{qty}</div>
+                <button className="qtyBtn" onClick={() => setQty((q) => q + 1)} type="button">+</button>
+              </div>
+            </div>
+
+            {p.details?.size && (
+              <p style={{ marginTop: 10, marginBottom: 0, color: "var(--muted)" }}>
+                {p.category !== "clothing" ? (
+                  <>Size: <b style={{ color: "var(--text)" }}>{p.details.size}</b></>
+                ) : (
+                  <span style={{ color: "var(--muted)" }}>Available: {p.details.size}</span>
+                )}
+              </p>
+            )}
+
+            {Array.isArray(p.details?.features) && (
+              <ul style={{ marginTop: 14, paddingLeft: 18, color: "var(--muted)" }}>
+                {p.details.features.map((f, idx) => (
+                  <li key={idx} style={{ marginBottom: 8 }}>
+                    {f}
                   </li>
                 ))}
               </ul>
             )}
 
-            <div className="summary">
-              <div>
-                <span>Subtotal</span>
-                <strong>${subtotal.toFixed(2)}</strong>
+            {p.details?.howToUse && (
+              <div style={{ marginTop: 12, color: "var(--muted)" }}>
+                <b style={{ color: "var(--text)" }}>How to use:</b> {p.details.howToUse}
               </div>
-              <div>
-                <span>Shipping</span>
-                <strong>{shipping === 0 ? "Complimentary" : `$${shipping.toFixed(2)}`}</strong>
-              </div>
-              <div className="summary-total">
-                <span>Total</span>
-                <strong>${total.toFixed(2)}</strong>
-              </div>
+            )}
+
+            <div style={{ marginTop: 16 }}>
+              <button className="btnPrimary" onClick={add} type="button">
+                Add to Cart
+              </button>
             </div>
 
-            <button
-              className="checkout-button"
-              type="button"
-              onClick={openCheckout}
-              disabled={cartItems.length === 0}
-            >
-              Proceed to Checkout
-            </button>
-
-            {isCheckoutOpen ? (
-              <form className="checkout-form" onSubmit={completeCheckout}>
-                <h3>Express Checkout</h3>
-                <label htmlFor="email">Email</label>
-                <input id="email" type="email" required placeholder="you@example.com" />
-
-                <label htmlFor="address">Delivery Address</label>
-                <input id="address" type="text" required placeholder="12 Rue de la Paix" />
-
-                <div className="checkout-actions">
-                  <button
-                    type="button"
-                    className="text-button"
-                    onClick={() => setIsCheckoutOpen(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button type="submit" className="luxe-button">
-                    Confirm Order
-                  </button>
-                </div>
-              </form>
-            ) : null}
-
-            <p className={`checkout-note ${orderPlaced ? "checkout-success" : ""}`}>
-              {orderPlaced
-                ? "Order confirmed. Your curated parcel is being prepared."
-                : "Complimentary shipping on every order over $180."}
-            </p>
-          </aside>
-        </section>
-      </main>
-
-      <footer className="section-shell footer" id="ritual">
-        <p>Atelier support: concierge@aurea.com</p>
-        <p>Crafted for timeless beauty rituals © 2026 AUREA</p>
-      </footer>
-
-      <div
-        className={`toast ${toastMessage ? "toast-visible" : ""}`}
-        aria-live="polite"
-        role="status"
-      >
-        {toastMessage}
+            <div style={{ marginTop: 10, color: "var(--muted)", fontSize: 12, textAlign: "center" }}>
+              Secure checkout with Whish Money coming next.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default App;
+/** OK Wishlist page */
+function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
+  const navigate = useNavigate();
+  const wished = products.filter((p) => wishlistIds.includes(p.id));
+
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center" }}>
+          <div>
+            <h1 className="pageTitle">Wishlist</h1>
+            <p className="pageSub">{wished.length} item(s)</p>
+          </div>
+          <Link className="backLink" to="/">Back</Link>
+        </div>
+
+        {wished.length === 0 ? (
+          <div className="empty" style={{ marginTop: 14 }}>
+            <div className="emptyIcon" aria-hidden="true">
+              <HeartIcon />
+            </div>
+            <div className="emptyTitle">No saved items</div>
+            <div className="emptyText">Tap the heart on a product to save it here.</div>
+          </div>
+        ) : (
+          <div className="grid" style={{ marginTop: 14 }}>
+            {wished.map((p) => {
+              const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+              const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+
+              return (
+                <article
+                  key={p.id}
+                  className="card"
+                  onClick={() => navigate(`/product/${p.id}`)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="imgWrap">
+                    <img src={coverImg} alt={p.name} className="img" />
+                    <button
+                      className={`wishBtn ${wishlistIds.includes(p.id) ? "active" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(p.id);
+                      }}
+                      type="button"
+                      aria-label="Toggle wishlist"
+                    >
+                      <HeartIcon filled={wishlistIds.includes(p.id)} />
+                    </button>
+                  </div>
+
+                  <div className="cardBody">
+                    <div className="cardTop">
+                      <h3 className="cardTitle">{p.name}</h3>
+                      <div className="price">{money(p.price)}</div>
+                    </div>
+
+                    <button
+                      className="btnPrimary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (needsSize) {
+                          navigate(`/product/${p.id}`);
+                          alert("Select size on the product page.");
+                          return;
+                        }
+                        addToCart(p, { qty: 1, size: "" });
+                      }}
+                      type="button"
+                    >
+                      Add to Cart
+                    </button>
+
+                    <button
+                      className="btnCheckout"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/product/${p.id}`);
+                      }}
+                    >
+                      View Product
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** OK Success / Cancel pages */
+function SuccessPage({ clearCart, onOrderSuccess }) {
+  useEffect(() => {
+    if (onOrderSuccess) onOrderSuccess();
+
+    // In real life, clear cart only after server confirms payment (webhook).
+    clearCart();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <h1 className="pageTitle">Payment successful</h1>
+        <p className="pageSub">Thank you! Your order is being processed.</p>
+        <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link className="backLink" to="/">Continue shopping</Link>
+          <div className="badge">Secure payment via Whish Money</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CancelPage({ onOrderCancel }) {
+  useEffect(() => {
+    if (onOrderCancel) onOrderCancel();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className="pageWrap">
+      <div className="pageCard">
+        <h1 className="pageTitle">Payment canceled</h1>
+        <p className="pageSub">No worries. Your cart is still saved.</p>
+        <div style={{ marginTop: 14 }}>
+          <Link className="backLink" to="/">Back to shop</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** OK Home page */
+function HomePage({
+  products,
+  selectedCategory,
+  filteredProducts,
+  search,
+  user,
+  wishlistIds,
+  toggleWishlist,
+  addToCart,
+  applyBrandFilter,
+}) {
+  const navigate = useNavigate();
+ 
+       const categoryTitle =
+  selectedCategory === "all"
+    ? "Best Sellers"
+    : selectedCategory === "cosmetics"
+    ? "Cosmetics"
+    : "Collection";
+const [heroIndex, setHeroIndex] = useState(0);
+
+useEffect(() => {
+  if (!products.length) return;
+
+  const interval = setInterval(() => {
+    setHeroIndex((prev) => (prev + 1) % products.length);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [products]);
+  const slides = [
+    { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
+    { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
+    { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
+    { src: "/banners/loreal.jpg", brandSearch: "l'oreal", label: "L'Oreal" },
+  ];
+// OK pick first 3 products for a category (with your current filters)
+const take3 = (key) => {
+  const list = products.filter((p) => p.category === key);
+
+  return list.slice(0, 3);
+};
+
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 3500);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  const [activeCosmeticsTab, setActiveCosmeticsTab] = useState("all");
+  const [activeCosmeticsSubTab, setActiveCosmeticsSubTab] = useState("all");
+
+  const isCosmeticsView = selectedCategory === "cosmetics";
+  const normalizedSearch = (search || "").trim().toLowerCase();
+
+  const cosmeticsSearchProducts = useMemo(() => {
+    if (!isCosmeticsView) return [];
+
+    return products.filter((product) => {
+      if (product.category !== "cosmetics") return false;
+      if (!normalizedSearch) return true;
+      return product.name.toLowerCase().includes(normalizedSearch);
+    });
+  }, [isCosmeticsView, products, normalizedSearch]);
+
+  const cosmeticsProductsByTab = useMemo(() => {
+    if (!isCosmeticsView) return {};
+
+    return COSMETICS_MAIN_TABS.reduce((acc, tab) => {
+      acc[tab.key] = filterCosmeticsByMainTab(cosmeticsSearchProducts, tab.key);
+      return acc;
+    }, {});
+  }, [isCosmeticsView, cosmeticsSearchProducts]);
+
+  const activeMainTabProducts = useMemo(() => {
+    if (!isCosmeticsView) return [];
+    return cosmeticsProductsByTab[activeCosmeticsTab] || [];
+  }, [isCosmeticsView, cosmeticsProductsByTab, activeCosmeticsTab]);
+
+  const cosmeticsSubTabDefs = useMemo(
+    () => COSMETIC_SUBTAB_DEFS[activeCosmeticsTab] || [],
+    [activeCosmeticsTab]
+  );
+
+  const cosmeticsSubTabs = useMemo(() => {
+    if (!isCosmeticsView || cosmeticsSubTabDefs.length === 0) return [];
+
+    const bucketCounts = activeMainTabProducts.reduce((acc, product) => {
+      const key = resolveCosmeticSubTab(product, activeCosmeticsTab) || "more";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {});
+
+    const tabs = [{ key: "all", label: "All", count: activeMainTabProducts.length }];
+
+    cosmeticsSubTabDefs.forEach((definition) => {
+      const count = bucketCounts[definition.key] || 0;
+      if (count > 0) {
+        tabs.push({ key: definition.key, label: definition.label, count });
+      }
+    });
+
+    if ((bucketCounts.more || 0) > 0) {
+      tabs.push({ key: "more", label: "More", count: bucketCounts.more });
+    }
+
+    return tabs;
+  }, [isCosmeticsView, cosmeticsSubTabDefs, activeMainTabProducts, activeCosmeticsTab]);
+
+  const canShowSubTabs = cosmeticsSubTabs.length > 2;
+  const availableSubTabKeys = cosmeticsSubTabs.map((tab) => tab.key);
+  const effectiveCosmeticsSubTab =
+    canShowSubTabs && availableSubTabKeys.includes(activeCosmeticsSubTab)
+      ? activeCosmeticsSubTab
+      : "all";
+
+  const cosmeticsTabCounts = useMemo(() => {
+    if (!isCosmeticsView) return {};
+    return COSMETICS_MAIN_TABS.reduce((acc, tab) => {
+      acc[tab.key] = (cosmeticsProductsByTab[tab.key] || []).length;
+      return acc;
+    }, {});
+  }, [isCosmeticsView, cosmeticsProductsByTab]);
+
+  const displayedProducts = useMemo(() => {
+    if (!isCosmeticsView) return filteredProducts;
+    if (!canShowSubTabs || effectiveCosmeticsSubTab === "all") return activeMainTabProducts;
+
+    return activeMainTabProducts.filter(
+      (product) => resolveCosmeticSubTab(product, activeCosmeticsTab) === effectiveCosmeticsSubTab
+    );
+  }, [
+    isCosmeticsView,
+    filteredProducts,
+    canShowSubTabs,
+    effectiveCosmeticsSubTab,
+    activeMainTabProducts,
+    activeCosmeticsTab,
+  ]);
+
+  return (
+    <main className="main">
+            {/* OK CLICKABLE BRAND BANNERS */}
+      <section className="brandCarousel">
+        <div className="brandHint">Tap banner to shop brand</div>
+
+        <button
+          className="brandSlideBtn"
+          type="button"
+          onClick={() => applyBrandFilter(slides[slide].brandSearch)}
+          aria-label={`Shop ${slides[slide].label}`}
+        >
+          <img className="brandSlideImg" src={slides[slide].src} alt={slides[slide].label} />
+        </button>
+<div className="brandLabel">{slides[slide].label}</div>
+
+        <div className="brandDots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`brandDot ${i === slide ? "active" : ""}`}
+              onClick={() => setSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+{/* REAL HERO */}
+<section
+  className="heroSection"
+  style={{
+    gridColumn: "1 / -1",
+    minHeight: "70vh",
+    display: "flex",
+    alignItems: "center",
+    background: "#f4e9e2",
+    padding: "60px 40px",
+    borderRadius: 22,
+    marginBottom: 40,
+  }}
+>
+  <div
+    className="heroGrid"
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 50,
+      alignItems: "center",
+      width: "100%",
+    }}
+  >
+    {/* LEFT TEXT */}
+    <div>
+      <span style={{ fontSize: 12, letterSpacing: "0.3em", color: "#777" }}>
+        Collection 2026
+      </span>
+
+      <h2
+  className="heroTitle"
+  style={{
+    fontSize: "64px",
+    fontWeight: 800,
+    marginTop: 20,
+    lineHeight: 1.1,
+  }}
+>
+      
+        Your beauty starts <br />
+        <span style={{ color: "#d4af37", fontStyle: "italic" }}>
+          here
+        </span>
+      </h2>
+
+      <p style={{ marginTop: 24, color: "#555", maxWidth: 420 }}>
+        Discover authentic cosmetics at aurea.
+      </p>
+    </div>
+
+    {/* RIGHT MOVING PRODUCTS */}
+<div
+  className="heroImageWrap"
+  style={{
+    position: "relative",
+    width: "100%",
+    height: 520,
+    borderRadius: 22,
+    overflow: "hidden",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+  }}
+
+>
+  {products.length > 0 && (
+    <img
+      key={heroIndex}
+      src={products[heroIndex]?.images?.[0]}
+      alt={products[heroIndex]?.name}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        background: "#f4f4f6",
+        transition: "opacity 0.6s ease",
+      }}
+    />
+  )}
+
+  {/* Product Name Overlay */}
+  {products.length > 0 && (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 20,
+        left: 20,
+        background: "rgba(255,255,255,0.9)",
+        padding: "12px 18px",
+        borderRadius: 14,
+        fontWeight: 800,
+      }}
+      >
+         {products[heroIndex]?.name}
+    </div>
+  )}
+    </div>
+  </div>
+</section>
+      {/* HERO */}
+      <section
+        style={{
+          gridColumn: "1 / -1",
+          padding: "40px 32px",
+          borderRadius: 22,
+          background: "linear-gradient(135deg, #ffffff 0%, #f4f4f6 100%)",
+          border: "1px solid var(--line)",
+          boxShadow: "var(--shadow2)",
+          marginBottom: 24,
+        }}
+      >
+  
+        <div className="sectionHeader">
+          <div style={{ width: "100%" }}>
+            <h2 style={{ fontSize: 22, margin: 0, fontWeight: 900 }}>Best Sellers</h2>
+
+            <h1 className="h1" style={{ marginTop: 10 }}>
+              {categoryTitle}
+            </h1>
+
+            <p className="sub">Curated essentials designed to feel effortless.</p>
+
+            {user && (
+              <p className="sub" style={{ marginTop: 6 }}>
+                Shopping as <b>{user.mode === "guest" ? "Guest" : user.name}</b>
+              </p>
+            )}
+
+            <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
+              Tip: Click a product card to open the product page (sizes + quantity).
+            </div>
+            
+
+            {isCosmeticsView && (
+              <div className="cosmeticsTabsShell">
+                <div className="cosmeticsTabsTop">
+                  <div className="label">Shop by category</div>
+                  <div className="cosmeticsTabsMeta">{displayedProducts.length} visible</div>
+                </div>
+
+                <div className="cosmeticsMainTabs" role="tablist" aria-label="Cosmetics categories">
+                  {COSMETICS_MAIN_TABS.map((tab) => {
+                    const isActive = tab.key === activeCosmeticsTab;
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        className={`cosmeticsMainTab ${isActive ? "active" : ""}`}
+                        onClick={() => {
+                          setActiveCosmeticsTab(tab.key);
+                          setActiveCosmeticsSubTab("all");
+                        }}
+                      >
+                        <span>{tab.label}</span>
+                        <span className="cosmeticsTabCount">{cosmeticsTabCounts[tab.key] || 0}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {canShowSubTabs && (
+                  <div className="cosmeticsSubTabs" role="tablist" aria-label={`${activeCosmeticsTab} sub categories`}>
+                    {cosmeticsSubTabs.map((subTab) => {
+                      const isSubActive = subTab.key === effectiveCosmeticsSubTab;
+                      return (
+                        <button
+                          key={subTab.key}
+                          type="button"
+                          role="tab"
+                          aria-selected={isSubActive}
+                          className={`cosmeticsSubTab ${isSubActive ? "active" : ""}`}
+                          onClick={() => setActiveCosmeticsSubTab(subTab.key)}
+                        >
+                          {subTab.label} ({subTab.count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="sortHint">
+            Showing <b>{displayedProducts.length}</b> items
+          </div>
+        </div>
+{/* OK SkinSociety-style sections */}
+{selectedCategory === "all" && (
+<section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
+  {[
+    { key: "cosmetics", title: "Cosmetics", cta: "" },
+    { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
+  ].map((sec) => {
+    const items = take3(sec.key);
+    if (items.length === 0) return null; // OK hide categories with no products
+
+    return (
+      <div
+        key={sec.key}
+        style={{
+          border: "1px solid var(--line)",
+          borderRadius: 22,
+          background: "#fff",
+          boxShadow: "var(--shadow2)",
+          padding: 16,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 12 }}>
+          <div>
+            <h2 style={{ margin: 0, fontWeight: 900, fontSize: 18 }}>{sec.title}</h2>
+            <div style={{ marginTop: 6, color: "var(--muted)", fontWeight: 800, fontSize: 12 }}>
+              Top picks for you
+            </div>
+          </div>
+
+          
+        </div>
+
+        <div style={{ marginTop: 14 }} className="grid">
+          {items.map((p) => {
+            const coverImg =
+              p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+            const isWished = wishlistIds.includes(p.id);
+            const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+
+            return (
+              <article
+                key={p.id}
+                className="card"
+                onClick={() => navigate(`/product/${p.id}`)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="imgWrap">
+                  <img src={coverImg} alt={p.name} className="img" />
+
+                  <button
+                    className={`wishBtn ${isWished ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(p.id);
+                    }}
+                    type="button"
+                    aria-label="Toggle wishlist"
+                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    <HeartIcon filled={isWished} />
+                  </button>
+                </div>
+
+                <div className="cardBody">
+                  <div className="cardTop">
+                    <h3 className="cardTitle">{p.name}</h3>
+                    <div className="price">{money(p.price)}</div>
+                  </div>
+
+                  {p.category === "cosmetics" && (
+                    <div style={{ marginTop: 8, fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>
+                      <div>
+                        <b style={{ color: "var(--text)" }}>Area:</b> {getCosmeticAreaLabel(p.subCategory)}
+                      </div>
+                      <div style={{ marginTop: 4 }}>
+                        <b style={{ color: "var(--text)" }}>Used for:</b> {getCosmeticUseText(p)}
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    className="btnPrimary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (needsSize) {
+                        navigate(`/product/${p.id}`);
+                        alert("Select size on the product page.");
+                        return;
+                      }
+                      addToCart(p, { qty: 1, size: "" });
+                    }}
+                    type="button"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    );
+  })}
+</section>
+)}
+       {selectedCategory !== "all" && (
+         displayedProducts.length === 0 ? (
+          <div className="tabEmptyState">
+            No products are available in this tab yet. Try another category.
+          </div>
+         ) : (
+         <div className={`grid ${isCosmeticsView ? "cosmeticsGrid" : ""}`}>
+          {displayedProducts.map((p) => {
+            const coverImg = p.img || (Array.isArray(p.images) ? p.images[0] : "") || "https://via.placeholder.com/900x900";
+            const isWished = wishlistIds.includes(p.id);
+            const needsSize = p.category === "clothing" && parseSizes(p?.details?.size).length > 0;
+
+            return (
+              <article
+                key={p.id}
+                className="card"
+                onClick={() => navigate(`/product/${p.id}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") navigate(`/product/${p.id}`);
+                }}
+              >
+                <div className="imgWrap">
+                  <img src={coverImg} alt={p.name} className="img" />
+                  <button
+                    className={`wishBtn ${isWished ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(p.id);
+                    }}
+                    type="button"
+                    aria-label="Toggle wishlist"
+                    title={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                  >
+                    <HeartIcon filled={isWished} />
+                  </button>
+                </div>
+
+                <div className="cardBody">
+                  <div className="cardTop">
+                    <h3 className="cardTitle">{p.name}</h3>
+                    <div className="price">{money(p.price)}</div>
+                  </div>
+
+                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
+                    4.8 - 120+ reviews
+                  </div>
+
+                  {p.category === "cosmetics" && (
+                    <div style={{ marginTop: 8, fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>
+                      <div>
+                        <b style={{ color: "var(--text)" }}>Area:</b> {getCosmeticAreaLabel(p.subCategory)}
+                      </div>
+                      <div style={{ marginTop: 4 }}>
+                        <b style={{ color: "var(--text)" }}>Used for:</b> {getCosmeticUseText(p)}
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    className="btnPrimary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (needsSize) {
+                        navigate(`/product/${p.id}`);
+                        alert("Select size on the product page.");
+                        return;
+                      };
+                      addToCart(p, { qty: 1, size: "" });
+                    }}
+                    type="button"
+                  >
+                    Add to Cart
+                  </button>
+
+                  <button
+                    className="btnCheckout"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/product/${p.id}`);
+                    }}
+                  >
+                    View Product
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+         )
+          )}    
+      </section>
+      
+
+      {/* Right side cart panel */}
+      
+    </main>
+  );
+
+}
+/** OK Main App */
+export default function App() {
+
+  // OK State
+  const [cosmeticFilter, setCosmeticFilter] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [clothingGender, setClothingGender] = useState("women");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+const [filtersOpen, setFiltersOpen] = useState(false);
+const [sort, setSort] = useState("featured"); // featured | price_asc | price_desc | name_asc
+const [minPrice, setMinPrice] = useState("");
+const [maxPrice, setMaxPrice] = useState("");
+const [onlyWished, setOnlyWished] = useState(false);
+const [accountOpen, setAccountOpen] = useState(false);
+const [cosmeticsOpen, setCosmeticsOpen] = useState(false);
+const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+const [showBackToTop, setShowBackToTop] = useState(false);
+const [mobileCartToast, setMobileCartToast] = useState(null);
+const [accountForm, setAccountForm] = useState({
+  displayName: "",
+  currentPassword: "",
+  newPassword: "",
+});
+const saveAccount = async () => {
+  try {
+    const u = auth.currentUser;
+    if (!u) return;
+ // update display name
+    const nextName = accountForm.displayName.trim();
+    if (nextName && nextName !== (u.displayName || "")) {
+      await updateProfile(u, { displayName: nextName });
+      setUser((prev) => (prev ? { ...prev, name: nextName } : prev));
+    }
+
+    // update password (requires re-auth)
+    if (accountForm.newPassword.trim()) {
+      if (!u.email) throw new Error("No email on this account.");
+      if (!accountForm.currentPassword.trim()) {
+        alert("Enter current password to change password.");
+        return;
+      }
+
+      const cred = EmailAuthProvider.credential(u.email, accountForm.currentPassword);
+      await reauthenticateWithCredential(u, cred);
+      await updatePassword(u, accountForm.newPassword.trim());
+    }
+
+    alert("Account updated");
+    setAccountOpen(false);
+    setAccountForm({ displayName: nextName, currentPassword: "", newPassword: "" });
+  } catch (err) {
+    alert(err?.code || err?.message || "Account update failed");
+  }
+};
+
+ // user = { name, email, mode: "user" | "guest" }
+  const [user, setUser] = useState(null);
+useEffect(() => {
+  if (user?.mode === "user") {
+    setAccountForm((p) => ({ ...p, displayName: user.name || "" }));
+  }
+}, [user]);
+
+const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+const [pointsInput, setPointsInput] = useState("");
+const [pointsToRedeem, setPointsToRedeem] = useState(0);
+
+const loyaltyUserKey = useMemo(() => {
+  if (!user || user.mode !== "user") return "";
+  return (user.email || user.name || "").trim().toLowerCase();
+}, [user]);
+
+const readStoredLoyalty = () => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(LOYALTY_POINTS_STORAGE_KEY) || "{}");
+    return raw && typeof raw === "object" ? raw : {};
+  } catch {
+    return {};
+  }
+};
+
+const writeStoredLoyaltyPoints = (userKey, nextPoints) => {
+  if (!userKey) return 0;
+  const safePoints = Math.max(0, Math.floor(Number(nextPoints) || 0));
+  const map = readStoredLoyalty();
+  map[userKey] = safePoints;
+  localStorage.setItem(LOYALTY_POINTS_STORAGE_KEY, JSON.stringify(map));
+  return safePoints;
+};
+
+useEffect(() => {
+  if (!loyaltyUserKey) {
+    setLoyaltyPoints(0);
+    setPointsToRedeem(0);
+    setPointsInput("");
+    return;
+  }
+
+  try {
+    const raw = JSON.parse(localStorage.getItem(LOYALTY_POINTS_STORAGE_KEY) || "{}");
+    const map = raw && typeof raw === "object" ? raw : {};
+    const saved = Math.max(0, Math.floor(Number(map[loyaltyUserKey] || 0)));
+    setLoyaltyPoints(saved);
+  } catch {
+    setLoyaltyPoints(0);
+  }
+
+  setPointsToRedeem(0);
+  setPointsInput("");
+}, [loyaltyUserKey]);
+
+  // OK Search in topbar
+  const [search, setSearch] = useState("");
+
+  // OK Cart modal
+  const [cartOpen, setCartOpen] = useState(false);
+
+
+
+  // Auth modal
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
+  const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
+
+  // OK Wishlist
+  const [wishlistIds, setWishlistIds] = useState([]);
+
+  // OK Cart: [{id,name,price,qty,size}]
+  const [cartItems, setCartItems] = useState([]);
+
+  // OK Promo
+  const [promoCode, setPromoCode] = useState("");
+  const [promoInput, setPromoInput] = useState("");
+  const [promoMessage, setPromoMessage] = useState(null);
+
+  // Persist: wishlist + cart + promo
+  useEffect(() => {
+    try {
+      const w = JSON.parse(localStorage.getItem("aurea_wishlist") || "[]");
+      if (Array.isArray(w)) setWishlistIds(w);
+      const c = JSON.parse(localStorage.getItem("aurea_cart") || "[]");
+      if (Array.isArray(c)) setCartItems(c);
+      const p = localStorage.getItem("aurea_promo") || "";
+      setPromoCode(p);
+      setPromoInput(p);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("aurea_wishlist", JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
+
+  useEffect(() => {
+    localStorage.setItem("aurea_cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("aurea_promo", promoCode || "");
+  }, [promoCode]);
+
+  const toggleWishlist = (id) => {
+    setWishlistIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  };
+
+  const resetAuthForm = () => setAuthForm({ name: "", email: "", password: "", confirmPassword: "" });
+
+  const setMode = (mode) => {
+    setAuthMode(mode);
+    resetAuthForm();
+  };
+
+
+
+
+  // OK Firebase: keep user logged in (source of truth)
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      if (!u) {
+        setUser((prev) => (prev?.mode === "guest" ? prev : null));
+        return;
+      }
+      setUser({
+        name: u.displayName || u.email?.split("@")[0] || "User",
+        email: u.email || "",
+        mode: "user",
+      });
+    });
+    return () => unsub();
+  }, []);
+
+  // ESC closes drawer + modals
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSidebarOpen(false);
+        setAuthOpen(false);
+        setCartOpen(false);
+        setFiltersOpen(false);
+        setAccountOpen(false);
+        setMobileSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const onScrollOrResize = () => {
+      const shouldShow = window.innerWidth <= 620 && window.scrollY > 520;
+      setShowBackToTop((prev) => (prev === shouldShow ? prev : shouldShow));
+    };
+
+    onScrollOrResize();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!mobileCartToast) return undefined;
+    const timer = setTimeout(() => setMobileCartToast(null), 1600);
+    return () => clearTimeout(timer);
+  }, [mobileCartToast]);
+
+  // lock body scroll when drawer or modal open
+useEffect(() => {
+  const locked =
+    sidebarOpen || authOpen || cartOpen || filtersOpen || accountOpen;
+
+  document.body.style.overflow = locked ? "hidden" : "";
+  return () => (document.body.style.overflow = "");
+}, [sidebarOpen, authOpen, cartOpen, filtersOpen, accountOpen]);
+
+  // OK Filters
+const filteredProducts = useMemo(() => {
+  const q = search.toLowerCase().trim();
+
+  let list = products.filter((p) => {
+    const inCategory =
+      selectedCategory === "all" || p.category === selectedCategory;
+
+    const inSubCategory =
+      !cosmeticFilter || p.category !== "cosmetics" || p.subCategory === cosmeticFilter;
+
+    const matchesSearch =
+      !q || p.name.toLowerCase().includes(q);
+
+    return inCategory && inSubCategory && matchesSearch;
+  });
+
+  return list;
+}, [selectedCategory, cosmeticFilter, search]);
+
+  // OK Cart helpers (merge by product id + size)
+  const addToCart = (product, opts = { qty: 1, size: "" }) => {
+    const qty = Math.max(1, Number(opts.qty || 1));
+    const size = (opts.size || "").trim();
+
+    setCartItems((prev) => {
+      const idx = prev.findIndex((x) => x.id === product.id && (x.size || "") === size);
+      if (idx >= 0) {
+        const copy = [...prev];
+        copy[idx] = { ...copy[idx], qty: copy[idx].qty + qty };
+        return copy;
+      }
+      return [...prev, { id: product.id, name: product.name, price: Number(product.price), qty, size }];
+    });
+
+    if (typeof window !== "undefined" && window.innerWidth <= 620) {
+      setMobileCartToast({ text: "Added to cart" });
+    }
+  };
+const applyBrandFilter = (brand) => {
+  setSelectedCategory("cosmetics");
+  setSearch(brand);
+  setSort("featured");
+  setMinPrice("");
+  setMaxPrice("");
+  setOnlyWished(false);
+  window.scrollTo({ top: 520, behavior: "smooth" });
+};
+
+  const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+
+  const updateQty = (index, nextQty) => {
+    setCartItems((prev) => {
+      const q = Number(nextQty || 0);
+      if (q <= 0) return prev.filter((_, i) => i !== index);
+      return prev.map((x, i) => (i === index ? { ...x, qty: q } : x));
+    });
+  };
+
+  const clearCart = () => setCartItems([]);
+
+  // OK Promo logic
+  const applyPromo = () => {
+    const code = (promoInput || "").trim().toUpperCase();
+    if (!code) {
+      setPromoCode("");
+      setPromoMessage({ OK: true, text: "Promo removed." });
+      return;
+    }
+    if (!PROMOS[code]) {
+      setPromoMessage({ OK: false, text: "Invalid promo code." });
+      return;
+    }
+    setPromoCode(code);
+    setPromoMessage({ OK: true, text: `Applied ${code} (${PROMOS[code].label})` });
+  };
+
+  const applyPoints = () => {
+    const parsed = Math.floor(Number(pointsInput || 0));
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      setPointsToRedeem(0);
+      setPointsInput("");
+      return;
+    }
+    const clamped = Math.min(parsed, maxPointsRedeemable);
+    setPointsToRedeem(clamped);
+    setPointsInput(String(clamped));
+  };
+
+  const useMaxPoints = () => {
+    if (maxPointsRedeemable <= 0) {
+      setPointsToRedeem(0);
+      setPointsInput("");
+      return;
+    }
+    setPointsToRedeem(maxPointsRedeemable);
+    setPointsInput(String(maxPointsRedeemable));
+  };
+
+  const clearPointsRedemption = () => {
+    setPointsToRedeem(0);
+    setPointsInput("");
+  };
+
+  // OK Totals (subtotal / discount / shipping / total)
+  const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.qty, 0), [cartItems]);
+
+  const discount = useMemo(() => {
+    if (!promoCode || !PROMOS[promoCode]) return 0;
+    const promo = PROMOS[promoCode];
+    if (promo.type === "percent") return (subtotal * promo.value) / 100;
+    if (promo.type === "fixed") return Math.min(subtotal, promo.value);
+    return 0;
+  }, [promoCode, subtotal]);
+
+  const loyaltyTier = useMemo(() => getLoyaltyTier(loyaltyPoints), [loyaltyPoints]);
+
+  const loyaltyTierDiscount = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    if (!loyaltyTier.autoDiscountPct) return 0;
+    const eligible = Math.max(0, subtotal - discount);
+    return (eligible * loyaltyTier.autoDiscountPct) / 100;
+  }, [user, loyaltyTier, subtotal, discount]);
+
+  const shipping = useMemo(() => {
+    if (cartItems.length === 0) return 0;
+
+    // Promo freeship overrides
+    if (promoCode && PROMOS[promoCode]?.type === "freeship") return 0;
+
+    // Free over threshold (based on subtotal BEFORE discount)
+    if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+
+    return SHIPPING_FEE;
+  }, [cartItems.length, promoCode, subtotal]);
+
+  const maxPointsRedeemable = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    const dueBeforePoints = Math.max(0, subtotal - discount - loyaltyTierDiscount + shipping);
+    return Math.max(0, Math.min(loyaltyPoints, Math.floor(dueBeforePoints / POINT_VALUE_USD)));
+  }, [user, subtotal, discount, loyaltyTierDiscount, shipping, loyaltyPoints]);
+
+  const pointsDiscount = useMemo(() => {
+    const safePoints = Math.max(0, Math.min(pointsToRedeem, maxPointsRedeemable));
+    return safePoints * POINT_VALUE_USD;
+  }, [pointsToRedeem, maxPointsRedeemable]);
+
+  const totalDiscount = useMemo(
+    () => discount + loyaltyTierDiscount + pointsDiscount,
+    [discount, loyaltyTierDiscount, pointsDiscount]
+  );
+
+  const total = useMemo(() => Math.max(0, subtotal - totalDiscount + shipping), [subtotal, totalDiscount, shipping]);
+
+  const estimatedPointsToEarn = useMemo(() => {
+    if (!user || user.mode !== "user") return 0;
+    const earnBase = Math.max(0, subtotal - totalDiscount);
+    return Math.floor(earnBase * POINTS_PER_USD * loyaltyTier.earnBoost);
+  }, [user, subtotal, totalDiscount, loyaltyTier]);
+
+  useEffect(() => {
+    if (pointsToRedeem <= maxPointsRedeemable) return;
+    setPointsToRedeem(maxPointsRedeemable);
+    setPointsInput(maxPointsRedeemable ? String(maxPointsRedeemable) : "");
+  }, [pointsToRedeem, maxPointsRedeemable]);
+
+  // OK Checkout (Whish Money) - frontend calls your backend, backend returns a secure payment URL
+  const checkout = async () => {
+    try {
+      if (cartItems.length === 0) return;
+
+      const redeemedPoints = Math.max(0, Math.min(pointsToRedeem, maxPointsRedeemable));
+      const loyaltySnapshot = {
+        userMode: user?.mode || "guest",
+        userKey: loyaltyUserKey,
+        pointsUsed: redeemedPoints,
+        pointsEarned: estimatedPointsToEarn,
+        tierName: loyaltyTier.name,
+      };
+
+      localStorage.setItem(LOYALTY_PENDING_ORDER_KEY, JSON.stringify(loyaltySnapshot));
+
+      // You must implement this endpoint on your backend:
+      // POST /create-whish-checkout  -> returns { url: "https://..." }
+      const res = await fetch("http://localhost:4242/create-whish-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currency: "USD",
+          promoCode: promoCode || "",
+          cartItems,
+          loyalty: loyaltySnapshot,
+          totals: {
+            subtotal,
+            discount,
+            loyaltyDiscount: loyaltyTierDiscount + pointsDiscount,
+            shipping,
+            total,
+          },
+          customer: user ? { name: user.name, email: user.email, mode: user.mode } : null,
+          // recommended URLs for your backend to use:
+          successUrl: `${window.location.origin}/success`,
+          cancelUrl: `${window.location.origin}/cancel`,
+        }),
+      });
+
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url; // redirect to Whish secure hosted payment page
+      } else {
+        localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+        alert(data?.error || "Checkout failed. Check your backend.");
+      }
+    } catch {
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+      alert("Checkout error. Make sure your backend is running on port 4242.");
+    }
+  };
+
+  const finalizeLoyaltyFromPendingOrder = () => {
+    const empty = {
+      applied: false,
+      pointsUsed: 0,
+      pointsEarned: 0,
+      newBalance: loyaltyPoints,
+      tierName: getLoyaltyTier(loyaltyPoints).name,
+    };
+
+    try {
+      const raw = localStorage.getItem(LOYALTY_PENDING_ORDER_KEY);
+      if (!raw) return empty;
+
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+      const pending = JSON.parse(raw);
+
+      if (!pending || pending.userMode !== "user" || !pending.userKey) return empty;
+
+      const used = Math.max(0, Math.floor(Number(pending.pointsUsed) || 0));
+      const earned = Math.max(0, Math.floor(Number(pending.pointsEarned) || 0));
+
+      const map = readStoredLoyalty();
+      const current = Math.max(0, Math.floor(Number(map[pending.userKey] || 0)));
+      const next = Math.max(0, current - used + earned);
+      writeStoredLoyaltyPoints(pending.userKey, next);
+
+      if (pending.userKey === loyaltyUserKey) {
+        setLoyaltyPoints(next);
+        setPointsToRedeem(0);
+        setPointsInput("");
+      }
+
+      return {
+        applied: used > 0 || earned > 0,
+        pointsUsed: used,
+        pointsEarned: earned,
+        newBalance: next,
+        tierName: getLoyaltyTier(next).name,
+      };
+    } catch {
+      localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+      return empty;
+    }
+  };
+
+  const clearPendingLoyaltyOrder = () => {
+    localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
+  };
+
+  // OK Firebase Email/Password sign in
+  const signIn = async () => {
+    if (!authForm.email.trim() || !authForm.password.trim()) return;
+    try {
+      await signInWithEmailAndPassword(auth, authForm.email.trim(), authForm.password);
+      setAuthOpen(false);
+      resetAuthForm();
+    } catch (err) {
+      alert(err?.code || err?.message || "Sign in failed");
+    }
+  };
+
+  // OK Firebase Email/Password sign up
+  const signUp = async () => {
+    if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
+    if (authForm.password !== authForm.confirmPassword) return;
+
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, authForm.email.trim(), authForm.password);
+      await updateProfile(cred.user, { displayName: authForm.name.trim() });
+
+      setAuthOpen(false);
+      resetAuthForm();
+    } catch (err) {
+      alert(err?.code || err?.message || "Sign up failed");
+    }
+  };
+
+  // OK Google popup sign in
+  const signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      setAuthOpen(false);
+      resetAuthForm();
+    } catch (err) {
+      alert(err?.code || err?.message || "Google sign-in failed");
+    }
+  };
+
+  const continueAsGuest = () => {
+    setUser({ name: "Guest", email: "", mode: "guest" });
+    setAuthOpen(false);
+    resetAuthForm();
+  };
+
+  const signOut = async () => {
+    try {
+      await firebaseSignOut(auth);
+      setUser(null);
+    } catch (err) {
+      alert(err?.code || err?.message || "Sign out failed");
+    }
+  };
+
+  return (
+    <BrowserRouter>
+      <div className="app">
+        <style>{styles}</style>
+
+        {/* Top Bar */}
+   <header className="ss-header">
+  <div className="ss-mainbar">
+
+    {/* LEFT: desktop actions */}
+    <div className="ss-icons">
+      <div className="ss-icons-desktop">
+
+        {/* ACCOUNT */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => {
+            if (user) setAccountOpen(true);
+            else { setAuthOpen(true); setMode("signin"); }
+          }}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+          ACCOUNT
+        </button>
+
+        {/* WISHLIST */}
+        <Link className="ss-icon-btn" to="/wishlist">
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <path d="M20.8 4.6c-1.9-1.8-5-1.5-6.8.6L12 7.1l-2-1.9c-1.8-2.1-4.9-2.4-6.8-.6-2.2 2.1-2.2 5.6 0 7.7l8.8 8.6 8.8-8.6c2.2-2.1 2.2-5.6 0-7.7z" />
+          </svg>
+          WISHLIST
+        </Link>
+
+        {/* FILTERS */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => setFiltersOpen(true)}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <path d="M3 5h18M6 12h12M10 19h4" />
+          </svg>
+          FILTERS
+        </button>
+
+        {/* CART */}
+        <button
+          className="ss-icon-btn"
+          onClick={() => setCartOpen(true)}
+          type="button"
+        >
+          <svg className="ss-icon" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
+          </svg>
+          CART <span className="ss-cart-count">({cartItems.reduce((s, x) => s + x.qty, 0)})</span>
+        </button>
+
+      </div>
+
+      {user?.mode === "user" && (
+        <button
+          className="ss-mobile-user"
+          onClick={() => setAccountOpen(true)}
+          type="button"
+        >
+          {user.name}
+        </button>
+      )}
+    </div>
+
+    {/* CENTER: logo */}
+    <Link to="/" className="ss-logo">
+      aurea
+    </Link>
+
+    {/* RIGHT: burger + mobile search icon + desktop search input */}
+    <div className="ss-search">
+
+      {/* Burger (mobile only) */}
+      <button
+  className={`ss-burger-btn ${sidebarOpen ? "active" : ""}`}
+  type="button"
+  onClick={() => setSidebarOpen((v) => !v)}
+  aria-label="Open menu"
+>
+  <span className="hamburger" />
+</button>
+      {/* Mobile search icon (mobile only) */}
+      <button
+        className="ss-search-mobile-btn"
+        type="button"
+        onClick={() => setMobileSearchOpen((v) => !v)}
+        aria-label="Open search"
+      >
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
+      </button>
+
+      {/* Desktop search (desktop only) */}
+      <div className="ss-search-desktop">
+        <svg className="ss-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="16.65" y1="16.65" x2="21" y2="21" />
+        </svg>
+
+        <input
+          placeholder="SEARCH"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+    </div>
+
+  </div>
+</header>
+
+{/* Category navigation */}
+<div className="categoryBar">
+  <div className="categoryInner">
+
+    <Link to="/" className="categoryItem">Home</Link>
+    <Link to="/cosmetics" className="categoryItem">Cosmetics</Link>
+
+  </div>
+</div>
+
+{/* OK Mobile dropdown search bar */}
+<div className={`ss-mobile-searchbar ${mobileSearchOpen ? "open" : ""}`}>
+  <div className="ss-mobile-search-inner">
+    <input
+      autoFocus={mobileSearchOpen}
+      className="ss-mobile-search-input"
+      placeholder="Search products..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <button
+      className="ss-mobile-search-close"
+      type="button"
+      onClick={() => setMobileSearchOpen(false)}
+      aria-label="Close search"
+    >
+      X
+    </button>
+  </div>
+</div>
+
+{showBackToTop && (
+  <button
+    className="mobileBackToTopBtn"
+    type="button"
+    aria-label="Back to top"
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 18V6m0 0-4 4m4-4 4 4" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </button>
+)}
+
+{mobileCartToast && (
+  <div className="mobileCartToast" role="status" aria-live="polite">
+    {mobileCartToast.text}
+  </div>
+)}
+
+<a
+  className="whatsappFloatBtn"
+  href="https://wa.me/0096176186340"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat with us on WhatsApp"
+  title="Chat with us on WhatsApp"
+>
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+    <path d="M16.04 4C9.48 4 4.15 9.2 4.15 15.62c0 2.06.55 4.09 1.6 5.88L4 28l6.7-1.73a12.05 12.05 0 0 0 5.34 1.25h.01c6.56 0 11.89-5.2 11.89-11.62C27.94 9.2 22.61 4 16.04 4zm6.93 16.4c-.29.8-1.45 1.5-1.98 1.58-.53.08-1.17.12-1.88-.11-.43-.14-.97-.32-1.66-.61-2.92-1.22-4.82-4.09-4.97-4.3-.16-.2-1.2-1.56-1.2-2.98 0-1.42.75-2.11 1.01-2.4.26-.28.57-.35.76-.35.2 0 .39 0 .56.01.18 0 .42-.07.66.49.24.56.81 1.93.88 2.07.07.14.12.3.02.49-.1.18-.15.3-.3.45-.15.16-.31.35-.44.46-.15.12-.31.26-.13.51.18.25.8 1.3 1.71 2.11 1.18 1.05 2.18 1.37 2.5 1.52.31.16.5.13.68-.08.18-.2.77-.88.98-1.18.21-.3.42-.24.7-.14.29.1 1.82.84 2.13 1 .31.15.52.23.6.36.07.13.07.75-.22 1.55z" />
+  </svg>
+</a>
+
+{/* OK Mobile Sidebar Overlay */}
+<div
+  className={`overlay ${sidebarOpen ? "show" : ""}`}
+  onClick={() => setSidebarOpen(false)}
+/>
+
+{/* OK Mobile Sidebar */}
+<aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+  <div className="sidebarHeader">
+    <div>
+      <div className="sidebarTitle">Menu</div>
+      <div className="sidebarSub">
+        {user ? `Signed in as ${user.name}` : "Not signed in"}
+      </div>
+    </div>
+
+    <button className="closeBtn" onClick={() => setSidebarOpen(false)} type="button">
+      X
+    </button>
+  </div>
+
+  <ul className="menuList">
+  <li>
+  <Link
+    className="menuItem"
+    to="/"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <span className="menuText">Home</span>
+    <span className="menuArrow">&gt;</span>
+  </Link>
+</li>
+<li>
+  <button
+    className="menuItem"
+    type="button"
+    onClick={() => setCosmeticsOpen((v) => !v)}
+  >
+    <span className="menuText">Cosmetics</span>
+    <span className={`menuArrow ${cosmeticsOpen ? "rotate" : ""}`}>
+      v
+    </span>
+  </button>
+
+  <div className={`submenu ${cosmeticsOpen ? "open" : ""}`}>
+    
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Face
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Eyes
+    </Link>
+
+    <Link
+      to="/cosmetics"
+      className="submenuItem"
+      onClick={() => setSidebarOpen(false)}
+    >
+      Lips
+    </Link>
+
+  </div>
+</li>
+<li>
+      <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
+        <span className="menuText">Wishlist</span>
+        <span className="menuArrow">&gt;</span>
+      </Link>
+    </li>
+<li>
+  <button
+    className="menuItem"
+    type="button"
+    onClick={() => {
+      setSidebarOpen(false);
+      setFiltersOpen(true);
+    }}
+  >
+    <span className="menuText">Filters</span>
+    <span className="menuArrow">&gt;</span>
+  </button>
+</li>
+
+    <li>
+      <button
+        className="menuItem"
+        type="button"
+        onClick={() => {
+          setSidebarOpen(false);
+          if (user) setAccountOpen(true);
+          else { setAuthOpen(true); setMode("signin"); }
+        }}
+      >
+        <span className="menuText">Manage account</span>
+        <span className="menuArrow">&gt;</span>
+      </button>
+    </li>
+
+    <li>
+      <button
+        className="menuItem"
+        type="button"
+        onClick={() => { setSidebarOpen(false); setCartOpen(true); }}
+      >
+        <span className="menuText">Cart</span>
+        <span className="menuArrow">&gt;</span>
+      </button>
+    
+</li>
+    {user && user.mode === "user" && (
+      <li>
+        <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
+          <span className="menuText">Sign out</span>
+          <span className="menuArrow">&gt;</span>
+        </button>
+      </li>
+    )}
+  </ul>
+  {/* SOCIAL FOOTER (SkinSociety style) */}
+<div className="sidebarSocial">
+
+  {/* Instagram (clickable) */}
+  <a
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="socialBtn"
+    onClick={() => setSidebarOpen(false)}
+    aria-label="Instagram"
+  >
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+
+  {/* Facebook (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v7h3v-7h2.5l.5-3H14V9z"/>
+    </svg>
+  </div>
+
+  {/* WhatsApp (disabled for now) */}
+  <div className="socialBtn disabled">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 12a8 8 0 1 1-2.3-5.7L20 4v6z"/>
+    </svg>
+  </div>
+
+</div>
+</aside>
+
+
+    
+
+        {/* Sidebar */}
+
+<div className={`modal ${accountOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setAccountOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">My Account</div>
+        <div className="help">Edit username + password.</div>
+      </div>
+      <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">X</button>
+    </div>
+
+    <div className="modalBody">
+      {!user || user.mode !== "user" ? (
+        <div className="empty">
+          <div className="emptyIcon" aria-hidden="true">
+            <svg className="emptyIconSvg" viewBox="0 0 24 24">
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </div>
+          <div className="emptyTitle">Sign in required</div>
+          <div className="emptyText">Only signed-in users can edit account details.</div>
+        </div>
+      ) : (
+        <>
+          <div className="field">
+            <div className="label">Username</div>
+            <input
+              className="input"
+              value={accountForm.displayName}
+              onChange={(e) => setAccountForm((p) => ({ ...p, displayName: e.target.value }))}
+              placeholder="Your name"
+            />
+          </div>
+
+          <div className="divider">Change password (optional)</div>
+
+          <div className="field">
+            <div className="label">Current password</div>
+            <input
+              className="input"
+              type="password"
+              value={accountForm.currentPassword}
+              onChange={(e) => setAccountForm((p) => ({ ...p, currentPassword: e.target.value }))}
+              placeholder="********"
+            />
+          </div>
+
+          <div className="field">
+            <div className="label">New password</div>
+            <input
+              className="input"
+              type="password"
+              value={accountForm.newPassword}
+              onChange={(e) => setAccountForm((p) => ({ ...p, newPassword: e.target.value }))}
+              placeholder="********"
+            />
+          </div>
+
+          <div className="authActions">
+            <button className="btnPrimary" type="button" onClick={saveAccount}>
+              Save changes
+            </button>
+            <button className="btnGhost" type="button" onClick={() => setAccountOpen(false)}>
+              Cancel
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>
+ 
+
+ <div className={`modal ${filtersOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+  <div className="modalBackdrop" onClick={() => setFiltersOpen(false)} />
+  <div className="modalCard">
+    <div className="modalTop">
+      <div>
+        <div className="modalTitle">Filters</div>
+        <div className="help">Sort and filter products.</div>
+      </div>
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">X</button>
+    </div>
+
+    <div className="modalBody">
+      <div className="field">
+        <div className="label">Sort</div>
+        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="name_asc">Name: A to Z</option>
+        </select>
+      </div>
+
+      <div className="row2">
+        <div className="field">
+          <div className="label">Min price</div>
+          <input className="input" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="0" inputMode="decimal" />
+        </div>
+        <div className="field">
+          <div className="label">Max price</div>
+          <input className="input" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="999" inputMode="decimal" />
+        </div>
+      </div>
+
+      <div className="field" style={{ marginTop: 14 }}>
+        <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 900 }}>
+          <input type="checkbox" checked={onlyWished} onChange={(e) => setOnlyWished(e.target.checked)} />
+          Only wishlist items
+        </label>
+      </div>
+
+      <div className="authActions">
+        <button
+          className="btnGhost"
+          type="button"
+          onClick={() => {
+            setSort("featured");
+            setMinPrice("");
+            setMaxPrice("");
+            setOnlyWished(false);
+          }}
+        >
+          Reset
+        </button>
+        <button className="btnPrimary" type="button" onClick={() => setFiltersOpen(false)}>
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {/* Auth Modal */}
+        <div className={`modal ${authOpen ? "show" : ""}`} role="dialog" aria-modal="true">
+          <div className="modalBackdrop" onClick={() => setAuthOpen(false)} aria-label="Close auth modal" />
+          <div className="modalCard">
+            <div className="modalTop">
+              <div>
+                <div className="modalTitle">Account</div>
+                <div className="help">Sign in, create an account, or continue as a guest.</div>
+              </div>
+              <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close" type="button">
+                X
+              </button>
+            </div>
+
+            <div className="modalBody">
+              <div className="tabs" role="tablist" aria-label="Auth tabs">
+                <button className={`tab ${authMode === "signin" ? "active" : ""}`} onClick={() => setMode("signin")} type="button">
+                  Sign in
+                </button>
+                <button className={`tab ${authMode === "signup" ? "active" : ""}`} onClick={() => setMode("signup")} type="button">
+                  Sign up
+                </button>
+              </div>
+
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Full name</div>
+                  <input
+                    className="input"
+                    value={authForm.name}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, name: e.target.value }))}
+                    placeholder="Your name"
+                  />
+                </div>
+              )}
+
+              <div className="row2">
+                <div className="field">
+                  <div className="label">Email</div>
+                  <input
+                    className="input"
+                    value={authForm.email}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, email: e.target.value }))}
+                    placeholder="you@email.com"
+                    type="email"
+                  />
+                </div>
+
+                <div className="field">
+                  <div className="label">Password</div>
+                  <input
+                    className="input"
+                    value={authForm.password}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
+                    placeholder="********"
+                    type="password"
+                  />
+                </div>
+              </div>
+
+              {authMode === "signup" && (
+                <div className="field">
+                  <div className="label">Confirm password</div>
+                  <input
+                    className="input"
+                    value={authForm.confirmPassword}
+                    onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
+                    placeholder="********"
+                    type="password"
+                  />
+                  {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
+                    <div className="help" style={{ color: "#b00020", fontWeight: 800 }}>
+                      Passwords do not match.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="authActions">
+                {authMode === "signin" ? (
+                  <button
+                    className="btnPrimary"
+                    onClick={signIn}
+                    disabled={!authForm.email.trim() || !authForm.password.trim()}
+                    style={{
+                      opacity: !authForm.email.trim() || !authForm.password.trim() ? 0.6 : 1,
+                      cursor: !authForm.email.trim() || !authForm.password.trim() ? "not-allowed" : "pointer",
+                    }}
+                    type="button"
+                  >
+                    Sign in
+                  </button>
+                ) : (
+                  <button
+                    className="btnPrimary"
+                    onClick={signUp}
+                    disabled={
+                      !authForm.name.trim() ||
+                      !authForm.email.trim() ||
+                      !authForm.password.trim() ||
+                      authForm.password !== authForm.confirmPassword
+                    }
+                    style={{
+                      opacity:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? 0.6
+                          : 1,
+                      cursor:
+                        !authForm.name.trim() ||
+                        !authForm.email.trim() ||
+                        !authForm.password.trim() ||
+                        authForm.password !== authForm.confirmPassword
+                          ? "not-allowed"
+                          : "pointer",
+                    }}
+                    type="button"
+                  >
+                    Create account
+                  </button>
+                )}
+
+                <div className="divider">or</div>
+
+                <button className="btnGhost" onClick={signInWithGoogle} type="button">
+                  Continue with Google
+                </button>
+
+                <button className="btnGhost" onClick={continueAsGuest} type="button">
+                  Continue as guest
+                </button>
+
+                <div className="help">(Firebase Auth is real. Guest mode is UI-only.)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {/* CART DRAWER OVERLAY */}
+<div
+  className={`cartDrawerOverlay ${cartOpen ? "show" : ""}`}
+  onClick={() => setCartOpen(false)}
+  aria-hidden={!cartOpen}
+/>
+
+{/* CART DRAWER */}
+<aside className={`cartDrawer ${cartOpen ? "open" : ""}`} aria-hidden={!cartOpen}>
+  <div className="cartDrawerHeader">
+    <div>
+      <div className="cartDrawerTitle">Your Cart</div>
+      <div className="cartDrawerSub">{cartItems.reduce((s, x) => s + x.qty, 0)} item(s)</div>
+    </div>
+
+    <button className="modalClose" onClick={() => setCartOpen(false)} type="button" aria-label="Close cart">
+      X
+    </button>
+  </div>
+
+  <div className="cartDrawerBody">
+    {cartItems.length === 0 ? (
+      <div className="empty">
+        <div className="emptyIcon" aria-hidden="true">
+          <svg className="emptyIconSvg" viewBox="0 0 24 24">
+            <path d="M4 8h16l-1.5 11h-13z" />
+            <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+          </svg>
+        </div>
+        <div className="emptyTitle">Your cart is empty</div>
+        <div className="emptyText">Add something you love.</div>
+      </div>
+    ) : (
+      <>
+        <ul className="cartList">
+          {cartItems.map((item, i) => (
+            <li key={`${item.id}-${item.size || "nosize"}-${i}`} className="cartRow">
+              <div style={{ minWidth: 0 }}>
+                <div className="cartName">{item.name}</div>
+                <div className="cartMeta">
+                  {money(item.price)}{item.size ? ` - Size ${item.size}` : ""} - Line:{" "}
+                  <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
+                </div>
+                <div className="qtyBox">
+                  <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">-</button>
+                  <div className="qtyNum">{item.qty}</div>
+                  <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
+                </div>
+              </div>
+              <button className="removeBtn" onClick={() => removeFromCart(i)} type="button">
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* Promo */}
+        <div className="promoBox">
+          <div className="label" style={{ marginBottom: 8 }}>Promo code</div>
+          <div className="promoRow">
+            <input
+              className="input"
+              value={promoInput}
+              onChange={(e) => setPromoInput(e.target.value)}
+              placeholder="AUREA10, SAVE5, FREESHIP..."
+            />
+            <button className="searchBtn" type="button" onClick={applyPromo}>
+              Apply
+            </button>
+          </div>
+
+          {promoMessage && (
+            <div className={`promoMsg ${promoMessage.OK ? "OK" : "bad"}`}>
+              {promoMessage.text}
+            </div>
+          )}
+          {promoCode && PROMOS[promoCode] && (
+            <div className="promoMsg OK">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
+          )}
+
+          {user?.mode === "user" ? (
+            <div className="loyaltyBox">
+              <div className="loyaltyHead">
+                <div>
+                  <div className="label">Aurea Loyalty</div>
+                  <div className="loyaltyHint">
+                    Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> - Balance{" "}
+                    <b style={{ color: "var(--text)" }}>{loyaltyPoints} pts</b>
+                  </div>
+                </div>
+
+                <div className="loyaltyTierBadge">{loyaltyTier.name} tier</div>
+              </div>
+
+              <div className="loyaltyActions">
+                <input
+                  className="input"
+                  value={pointsInput}
+                  onChange={(e) => setPointsInput(e.target.value.replace(/[^0-9]/g, ""))}
+                  placeholder={`Points to use (max ${maxPointsRedeemable})`}
+                  inputMode="numeric"
+                />
+                <button className="searchBtn" type="button" onClick={applyPoints}>
+                  Use
+                </button>
+                <button className="loyaltyMiniBtn" type="button" onClick={useMaxPoints}>
+                  Max
+                </button>
+              </div>
+
+              <div className="loyaltyHint">
+                20 pts = $1. {loyaltyTier.autoDiscountPct > 0 ? `${loyaltyTier.autoDiscountPct}% tier discount is active.` : "Reach Gold tier for automatic discounts."}
+              </div>
+              <div className="loyaltyHint">Estimated points after this order: {estimatedPointsToEarn} pts</div>
+
+              {pointsToRedeem > 0 && (
+                <div className="promoMsg OK">
+                  Redeeming {pointsToRedeem} pts (-{money(pointsDiscount)})
+                  <button className="loyaltyClearBtn" type="button" onClick={clearPointsRedemption}>
+                    Remove
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="promoMsg">Sign in to earn points and pay with points on future orders.</div>
+          )}
+        </div>
+
+        {/* Summary */}
+        <div className="summary">
+          <div className="sumRow"><span>Subtotal</span><b>{money(subtotal)}</b></div>
+          <div className="sumRow"><span>Promo discount</span><b>-{money(discount)}</b></div>
+          {loyaltyTierDiscount > 0 && (
+            <div className="sumRow"><span>{loyaltyTier.name} tier discount</span><b>-{money(loyaltyTierDiscount)}</b></div>
+          )}
+          {pointsDiscount > 0 && (
+            <div className="sumRow"><span>Pay with points ({pointsToRedeem} pts)</span><b>-{money(pointsDiscount)}</b></div>
+          )}
+          <div className="sumRow"><span>Shipping</span><b>{shipping === 0 ? "Free" : money(shipping)}</b></div>
+          <div className="sumRow total"><span>Total</span><b>{money(total)}</b></div>
+        </div>
+
+        <button
+          className="btnCheckout"
+          onClick={() => {
+            if (!user) {
+              setCartOpen(false);
+              setAuthOpen(true);
+              setMode("signin");
+            } else {
+              setCartOpen(false);
+              checkout();
+            }
+          }}
+          type="button"
+        >
+          Checkout (Whish Money)
+        </button>
+
+        <div className="cartNote">
+          {user ? "You'll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
+        </div>
+      </>
+    )}
+  </div>
+</aside>
+
+
+        {/* OK ROUTES */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+              products={products}
+               setSearch={setSearch}
+               search={search}
+                selectedCategory={selectedCategory}
+                cosmeticFilter={cosmeticFilter}
+                setCosmeticFilter={setCosmeticFilter}
+                setSelectedCategory={setSelectedCategory}
+                clothingGender={clothingGender}
+                 
+              setMinPrice={setMinPrice}
+              setMaxPrice={setMaxPrice}
+                setClothingGender={setClothingGender}
+                filteredProducts={filteredProducts}
+                user={user}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
+                applyBrandFilter={applyBrandFilter}
+                cartItems={cartItems}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+                updateQty={updateQty}
+                subtotal={subtotal}
+                promoCode={promoCode}
+                promoInput={promoInput}
+                setPromoInput={setPromoInput}
+                promoMessage={promoMessage}
+                applyPromo={applyPromo}
+                discount={discount}
+                shipping={shipping}
+                total={total}
+                checkout={checkout}
+                setAuthOpen={setAuthOpen}
+                setMode={setMode}
+              />
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductPage
+                products={products}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
+                addToCart={addToCart}
+              />
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <WishlistPage
+                products={products}
+                wishlistIds={wishlistIds}
+                toggleWishlist={toggleWishlist}
+                addToCart={addToCart}
+              />
+            }
+          />
+       <Route
+  path="/cosmetics"
+  element={
+    <HomePage
+      products={products}
+      search={search}
+      selectedCategory="cosmetics"
+      cosmeticFilter={cosmeticFilter}
+      setCosmeticFilter={setCosmeticFilter}
+      clothingGender={clothingGender}
+      filteredProducts={products.filter(
+        (p) =>
+          p.category === "cosmetics" &&
+          (!cosmeticFilter || p.subCategory === cosmeticFilter) &&
+          (!search.trim() || p.name.toLowerCase().includes(search.toLowerCase().trim()))
+      )}
+      user={user}
+      wishlistIds={wishlistIds}
+      toggleWishlist={toggleWishlist}
+      applyBrandFilter={applyBrandFilter}
+      cartItems={cartItems}
+      addToCart={addToCart}
+      removeFromCart={removeFromCart}
+      updateQty={updateQty}
+      subtotal={subtotal}
+      promoCode={promoCode}
+      promoInput={promoInput}
+      setPromoInput={setPromoInput}
+      promoMessage={promoMessage}
+      applyPromo={applyPromo}
+      discount={discount}
+      shipping={shipping}
+      total={total}
+      checkout={checkout}
+      setAuthOpen={setAuthOpen}
+      setMode={setMode}
+    />
+  }
+/>
+
+          <Route
+            path="/success"
+            element={<SuccessPage clearCart={clearCart} onOrderSuccess={finalizeLoyaltyFromPendingOrder} />}
+          />
+          <Route path="/cancel" element={<CancelPage onOrderCancel={clearPendingLoyaltyOrder} />} />
+        </Routes>
+{/* OK TRUST STRIP (SKINSOCIETY STYLE) */}
+<section className="trustStrip">
+  <div className="trustStripInner">
+    
+   <div className="trustItem">
+  <div className="trustIcon">
+    <img
+      src="/icons/authentic-products.svg"
+      alt="100% Authentic Products"
+      className="trustImg"
+    />
+  </div>
+  <div className="trustText">
+    100% <span>Authentic Products</span>
+  </div>
+</div>
+
+<div className="trustItem">
+  <div className="trustIcon">
+    <img
+      src="/icons/secure-shopping.svg"
+      alt="Secure Shopping"
+      className="trustImg"
+    />
+  </div>
+  <div className="trustText">
+    Secure <span>Shopping</span>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<footer className="footer">
+  <span>(c) 2026 aurea - Authentic products - Secure checkout - Easy returns</span>
+
+  <a
+    className="socialLink"
+    href="https://www.instagram.com/aurea_cosmetics.lb?igsh=ZmlqbDN5NnlxZGF6"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Visit our Instagram page"
+    title="Instagram"
+  >
+    <svg
+      className="socialIcon"
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  </a>
+</footer>
+
+      </div>
+    </BrowserRouter>
+  );
+}
+
+/*
+OK IMPORTANT FOR FEATURE #5 (Whish Money checkout)
+
+This frontend expects your BACKEND endpoint:
+
+POST http://localhost:4242/create-whish-checkout
+Body: { cartItems, currency:"USD", totals:{...}, successUrl, cancelUrl, customer }
+
+Response: { url: "https://whish-hosted-payment-page/..." }
+
+Your backend must create the Whish payment request and return the collect/checkout URL.
+Then set Whish redirect to:
+  successUrl = http://your-site/success
+  cancelUrl  = http://your-site/cancel
+*/
+
+
+
+
+
