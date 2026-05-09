@@ -19,7 +19,7 @@ import {
 } from "firebase/auth";
 /** OK CSS (one file) */
 const styles = `
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -30,7 +30,6 @@ body {
 .bg-gold {
   background-color: #d4af37;
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 /* ============================= */
 /*   AUREA LUXURY HEADER LAYOUT  */
@@ -101,7 +100,7 @@ body {
   flex-shrink:0;
 }
 .ss-header{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+font-family: 'Poppins', sans-serif;
   color:#000;
 }
 .ss-header a,
