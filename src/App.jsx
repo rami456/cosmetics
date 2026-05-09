@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿import { useEffect, useMemo, useState } from "react";
+=======
+import { useEffect, useMemo, useState } from "react";
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 import { BrowserRouter, Routes, Route, useNavigate, useParams, Link} from "react-router-dom";
 import {
   EmailAuthProvider,
@@ -17,6 +21,7 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
+<<<<<<< HEAD
 /** OK CSS (one file) */
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -24,12 +29,22 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+=======
+/** âœ… CSS (one file) */
+const styles = `
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
+
+.ar-home {
+  font-family: 'Cairo', sans-serif;
+}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .gold-accent {
   color: #d4af37;
 }
 .bg-gold {
   background-color: #d4af37;
 }
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 /* ============================= */
@@ -37,6 +52,15 @@ body {
 /* ============================= */
 /* ============================= */
 /* OK HERO MOBILE FIX            */
+=======
+@import url('https://fonts.cdnfonts.com/css/handmade-cupcakes');
+@import url('https://fonts.cdnfonts.com/css/cupcakes');
+/* ============================= */
+/*   AURÃ‰A LUXURY HEADER LAYOUT  */
+/* ============================= */
+/* ============================= */
+/* âœ… HERO MOBILE FIX            */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 @media (max-width: 900px){
@@ -177,7 +201,11 @@ body {
 /* Center logo */
 .ss-logo{
   justify-self:center;
+<<<<<<< HEAD
  font-family: 'Poppins', sans-serif;
+=======
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   font-size:30px;
   font-weight:800;
   letter-spacing:0.18em;
@@ -204,7 +232,11 @@ body {
   border:none;
   font:inherit;
   color:#000;
+<<<<<<< HEAD
   text-decoration:none; /* OK important for Link */
+=======
+  text-decoration:none; /* âœ… important for Link */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 }
 /* cleaner header text */
 .ss-icon-btn{
@@ -343,9 +375,15 @@ body {
 }
 
 .ss-register {
+<<<<<<< HEAD
   background: #ffffff;      /* OK white */
   border: none;
   color: #000000;           /* OK black text */
+=======
+  background: #ffffff;      /* âœ… white */
+  border: none;
+  color: #000000;           /* âœ… black text */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   padding: 8px 18px;
   border-radius: 8px;
   font-weight: 800;
@@ -403,7 +441,11 @@ body {
   --radius:18px;
 }
 
+<<<<<<< HEAD
 /* OK Dark mode overrides */
+=======
+/* âœ… Dark mode overrides */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 [data-theme="dark"]{
   --panel:#121214;
   --soft:#0b0b0d;
@@ -430,7 +472,11 @@ button{ -webkit-tap-highlight-color: transparent; }
 .brand{
   text-decoration:none;
   color:var(--text);
+<<<<<<< HEAD
 font-family: 'Poppins', sans-serif;
+=======
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   font-weight:800;
   letter-spacing:0.12em;
   font-size:26px;
@@ -440,7 +486,11 @@ font-family: 'Poppins', sans-serif;
   opacity:0.85;
 }
 
+<<<<<<< HEAD
 /* OK Hamburger morph to X */
+=======
+/* âœ… Hamburger morph to X */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .iconBtn.active .hamburger{
   background:transparent;
 }
@@ -476,7 +526,11 @@ font-family: 'Poppins', sans-serif;
 }
 
 
+<<<<<<< HEAD
 /* OK Topbar search */
+=======
+/* âœ… Topbar search */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .topSearch{
   display:flex;
   gap:10px;
@@ -511,7 +565,11 @@ font-family: 'Poppins', sans-serif;
 
   .pill{ display:none; } /* keep hidden */
 }
+<<<<<<< HEAD
 /* OK Brand banner carousel */
+=======
+/* âœ… Brand banner carousel */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .brandCarousel{
   grid-column: 1 / -1;
   border-radius:22px;
@@ -701,7 +759,11 @@ font-family: 'Poppins', sans-serif;
   pointer-events:auto;
 }
 
+<<<<<<< HEAD
 /* OK Sidebar (closed by default; opens only when hamburger is pressed) */
+=======
+/* âœ… Sidebar (closed by default; opens only when hamburger is pressed) */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .sidebar{
   position:fixed;
   top:72px; left:0; bottom:0;
@@ -972,10 +1034,17 @@ font-family: 'Poppins', sans-serif;
 .img{
   width:100%;
   height:100%;
+<<<<<<< HEAD
   object-fit:contain;         /* OK no crop */
   display:block;
   background:#f2f2f3;         /* OK nice backdrop for transparent/empty space */
   padding:10px;               /* OK gives breathing room */
+=======
+  object-fit:contain;         /* âœ… no crop */
+  display:block;
+  background:#f2f2f3;         /* âœ… nice backdrop for transparent/empty space */
+  padding:10px;               /* âœ… gives breathing room */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   box-sizing:border-box;
 }
 .cardBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
@@ -1000,11 +1069,14 @@ font-family: 'Poppins', sans-serif;
   border-color:rgba(0,0,0,0.2);
 }
 .wishBtn:hover{ transform:translateY(-1px); }
+<<<<<<< HEAD
 .wishIconSvg{
   width:20px;
   height:20px;
   display:block;
 }
+=======
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
 .btnPrimary{
   width:100%;
@@ -1070,6 +1142,7 @@ font-family: 'Poppins', sans-serif;
   text-align:center;
   background:linear-gradient(180deg,#fff,#fafafa);
 }
+<<<<<<< HEAD
 .emptyIcon{
   width:22px;
   height:22px;
@@ -1084,6 +1157,9 @@ font-family: 'Poppins', sans-serif;
   stroke:currentColor;
   fill:none;
 }
+=======
+.emptyIcon{ font-size:22px; }
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .emptyTitle{ margin-top:10px; font-weight:900; }
 .emptyText{ margin-top:6px; color:var(--muted); font-size:12px; }
 
@@ -1167,7 +1243,11 @@ font-family: 'Poppins', sans-serif;
   font-size:12px;
   color:var(--muted);
 }
+<<<<<<< HEAD
 .promoMsg.OK{ color:#0b6b2e; font-weight:900; }
+=======
+.promoMsg.ok{ color:#0b6b2e; font-weight:900; }
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .promoMsg.bad{ color:#b00020; font-weight:900; }
 
 .loyaltyBox{
@@ -1379,7 +1459,11 @@ font-family: 'Poppins', sans-serif;
   border-radius:18px;
   overflow:hidden;
   background:#f2f2f3;
+<<<<<<< HEAD
   aspect-ratio: 1 / 1;        /* OK keeps a clean frame */
+=======
+  aspect-ratio: 1 / 1;        /* âœ… keeps a clean frame */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1388,7 +1472,11 @@ font-family: 'Poppins', sans-serif;
 .pImg{
   width:100%;
   height:100%;
+<<<<<<< HEAD
   object-fit:contain;         /* OK no crop */
+=======
+  object-fit:contain;         /* âœ… no crop */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   padding:12px;
   box-sizing:border-box;
   display:block;
@@ -1412,7 +1500,11 @@ font-family: 'Poppins', sans-serif;
 .thumbImg{
   width:100%;
   height:100%;
+<<<<<<< HEAD
   object-fit:contain;         /* OK no crop */
+=======
+  object-fit:contain;         /* âœ… no crop */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   background:#f2f2f3;
   padding:6px;
   box-sizing:border-box;
@@ -1514,7 +1606,11 @@ font-family: 'Poppins', sans-serif;
   padding-top: 12px !important;
 }
   /* ============================= */
+<<<<<<< HEAD
 /* OK FIX: Cart Drawer Styling   */
+=======
+/* âœ… FIX: Cart Drawer Styling   */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 .cartDrawerOverlay{
@@ -1579,7 +1675,11 @@ font-family: 'Poppins', sans-serif;
 }
 
 /* ============================= */
+<<<<<<< HEAD
 /* OK FIX: Trust Strip Styling   */
+=======
+/* âœ… FIX: Trust Strip Styling   */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 .trustStrip{
@@ -1644,12 +1744,20 @@ font-family: 'Poppins', sans-serif;
 }
 
 /* ============================= */
+<<<<<<< HEAD
 /* OK FIX: Header style conflict */
+=======
+/* âœ… FIX: Header style conflict */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 /* You have TWO .ss-logo blocks; keep the "luxury" one.
    This forces the logo in the header to stay black + Playfair. */
 .ss-header .ss-logo{
+<<<<<<< HEAD
   font-family: 'Poppins', sans-serif;
+=======
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive;
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   font-size:26px;
   font-weight:700;
   letter-spacing:0.08em;
@@ -1660,7 +1768,11 @@ font-family: 'Poppins', sans-serif;
 
 
 /* ============================= */
+<<<<<<< HEAD
 /* OK MOBILE FIX PACK (AUREA)    */
+=======
+/* âœ… MOBILE FIX PACK (AURÃ‰A)    */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 @media (max-width: 900px){
@@ -1843,7 +1955,11 @@ section{
 
 @media (max-width:620px){
   .brandSlideImg{
+<<<<<<< HEAD
     object-fit:contain;   /* OK no crop */
+=======
+    object-fit:contain;   /* âœ… no crop */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     height:220px;
     background:#f4f4f6;   /* soft backdrop */
   }
@@ -1898,7 +2014,11 @@ section{
   .ss-burger-btn{ display:flex; }     /* show burger */
 }
 /* ============================= */
+<<<<<<< HEAD
 /* OK Mobile Search Drop-down     */
+=======
+/* âœ… Mobile Search Drop-down     */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 .ss-search-desktop{ display:flex; align-items:center; gap:10px; width:100%; }
@@ -1980,12 +2100,15 @@ section{
   z-index:1006;
   cursor:pointer;
 }
+<<<<<<< HEAD
 .mobileBackToTopBtn svg{
   width:19px;
   height:19px;
   stroke:currentColor;
   fill:none;
 }
+=======
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
 .mobileCartToast{
   position:fixed;
@@ -2059,7 +2182,11 @@ section{
   .ss-mobile-searchbar{ top:0; }        /* safest with your sticky header */
 }
 /* ============================= */
+<<<<<<< HEAD
 /* OK PHONE HEADER: LEFT ICONS + CENTER LOGO */
+=======
+/* âœ… PHONE HEADER: LEFT ICONS + CENTER LOGO */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 @media (max-width: 620px){
@@ -2114,7 +2241,11 @@ section{
   }
 }
 /* ============================= */
+<<<<<<< HEAD
 /* OK PHONE: LEFT ICONS + CENTER LOGO */
+=======
+/* âœ… PHONE: LEFT ICONS + CENTER LOGO */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 /* ============================= */
 
 @media (max-width: 620px){
@@ -2196,7 +2327,11 @@ section{
   color:#000 !important;
   text-decoration:none;
 }
+<<<<<<< HEAD
 /* OK HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
+=======
+/* âœ… HARD OVERRIDE: stop blue links in header (iOS/visited/global styles) */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .ss-header *{
   color:#000 !important;
   -webkit-text-fill-color:#000 !important; /* iOS Safari can force link color */
@@ -2231,7 +2366,11 @@ section{
   stroke:#000 !important;
   fill:none !important;
 }
+<<<<<<< HEAD
 /* OK FIX: Sidebar (burger menu) link colors (blue/purple) */
+=======
+/* âœ… FIX: Sidebar (burger menu) link colors (blue/purple) */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .sidebar a,
 .sidebar a:visited,
 .sidebar a:hover,
@@ -2453,7 +2592,11 @@ section{
   cursor:default;
   pointer-events:none;
 }
+<<<<<<< HEAD
 /* OK Homepage section grid: always 3 cards max */
+=======
+/* âœ… Homepage section grid: always 3 cards max */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 .homeSectionGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2480,7 +2623,11 @@ section{
 
 .app,
 .app *:not(svg):not(path):not(circle):not(line){
+<<<<<<< HEAD
  font-family: 'Poppins', sans-serif; !important;
+=======
+  font-family:'Handmade Cupcakes', 'CupCakes', 'Cupcake', cursive !important;
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 }
 
 @media (max-width: 520px){ .row2{ grid-template-columns: 1fr; } }
@@ -2495,7 +2642,11 @@ const products = [
     category: "cosmetics",
     subCategory: "face",
     images: ["/products/maxfactor-101.jpg", "/products/maxfactor-101-2.jpg"],
+<<<<<<< HEAD
     details: { subtitle: "Foundation - Shade 101 (light tone)" }
+=======
+    details: { subtitle: "Foundation â€” Shade 101 (light tone)" }
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   },
   {
     id: 10,
@@ -2504,7 +2655,11 @@ const products = [
     category: "cosmetics",
     subCategory: "face",
     images: ["/products/maxfactor55beige.jpg"],
+<<<<<<< HEAD
     details: { subtitle: "Foundation - Shade 55 Beige" }
+=======
+    details: { subtitle: "Foundation â€” Shade 55 Beige" }
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   },
   {
     id: 11,
@@ -2557,7 +2712,11 @@ const products = [
   },
   {
     id: 302,
+<<<<<<< HEAD
     name: "Bourjois Blush 74 Rose Ambre",
+=======
+    name: "Bourjois Blush 74 Rose AmbrÃ©",
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     price: 16,
     category: "cosmetics",
     subCategory: "face",
@@ -2613,7 +2772,11 @@ const products = [
   },
   {
     id: 508,
+<<<<<<< HEAD
     name: "L'Oreal True Match Nude Serum",
+=======
+    name: "L'OrÃ©al True Match Nude Serum",
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     price: 12,
     category: "cosmetics",
     subCategory: "face",
@@ -2621,7 +2784,11 @@ const products = [
   },
   {
     id: 509,
+<<<<<<< HEAD
     name: "L'Oreal True Match Foundation",
+=======
+    name: "L'OrÃ©al True Match Foundation",
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     price: 10,
     category: "cosmetics",
     subCategory: "face",
@@ -2760,13 +2927,20 @@ function money(n) {
 
 function parseSizes(sizeStr) {
   if (!sizeStr) return [];
+<<<<<<< HEAD
   // "XS / S / M / L" -> ["XS","S","M","L"]
   return sizeStr
     .split(/\u2022|\u00B7|,|\|/g)
+=======
+  // "XS â€¢ S â€¢ M â€¢ L" -> ["XS","S","M","L"]
+  return sizeStr
+    .split(/â€¢|Â·|,|\|/g)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     .map((x) => x.trim())
     .filter(Boolean);
 }
 
+<<<<<<< HEAD
 function HeartIcon({ filled = false }) {
   return (
     <svg className="wishIconSvg" viewBox="0 0 24 24" aria-hidden="true">
@@ -2782,6 +2956,8 @@ function HeartIcon({ filled = false }) {
   );
 }
 
+=======
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 const COSMETIC_SUBCATEGORY_LABELS = {
   face: "Face",
   eyes: "Eyes",
@@ -2920,7 +3096,11 @@ function getCosmeticUseText(product) {
   return "to complete your beauty routine.";
 }
 
+<<<<<<< HEAD
 /** OK Product page */
+=======
+/** âœ… Product page */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const { id } = useParams();
   const pid = Number(id);
@@ -2945,9 +3125,15 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
       <div className="pageWrap">
         <div className="pageCard">
           <h1 className="pageTitle">Product not found</h1>
+<<<<<<< HEAD
           <p className="pageSub">This product doesn't exist (ID: {id}).</p>
           <div style={{ marginTop: 14 }}>
             <Link className="backLink" to="/">Back to shop</Link>
+=======
+          <p className="pageSub">This product doesnâ€™t exist (ID: {id}).</p>
+          <div style={{ marginTop: 14 }}>
+            <Link className="backLink" to="/">â† Back to shop</Link>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
           </div>
         </div>
       </div>
@@ -2974,7 +3160,11 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
     <div className="productWrap">
       <div className="productCard">
         <div className="productTop">
+<<<<<<< HEAD
           <Link className="backLink" to="/">Back to shop</Link>
+=======
+          <Link className="backLink" to="/">â† Back to shop</Link>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             <button
               className={`smallBtn ${isWished ? "primary" : ""}`}
@@ -2983,7 +3173,11 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
               type="button"
               title={isWished ? "Remove from wishlist" : "Add to wishlist"}
             >
+<<<<<<< HEAD
               <HeartIcon filled={isWished} />
+=======
+              {isWished ? "â™¥" : "â™¡"}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             </button>
             <div style={{ fontWeight: 900 }}>{money(p.price)}</div>
           </div>
@@ -3011,7 +3205,11 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
 
             <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900 }}>{p.name}</h1>
             <div style={{ marginTop: 8, color: "var(--muted)", fontWeight: 800 }}>
+<<<<<<< HEAD
               4.8 - 120+ reviews
+=======
+              â­ 4.8 Â· 120+ reviews
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             </div>
 
             {p.details?.subtitle && (
@@ -3052,7 +3250,11 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
             <div style={{ marginTop: 14 }}>
               <div className="label" style={{ marginBottom: 8 }}>Quantity</div>
               <div className="qtyBox">
+<<<<<<< HEAD
                 <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">-</button>
+=======
+                <button className="qtyBtn" onClick={() => setQty((q) => Math.max(1, q - 1))} type="button">âˆ’</button>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                 <div className="qtyNum">{qty}</div>
                 <button className="qtyBtn" onClick={() => setQty((q) => q + 1)} type="button">+</button>
               </div>
@@ -3100,7 +3302,11 @@ function ProductPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   );
 }
 
+<<<<<<< HEAD
 /** OK Wishlist page */
+=======
+/** âœ… Wishlist page */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   const navigate = useNavigate();
   const wished = products.filter((p) => wishlistIds.includes(p.id));
@@ -3113,14 +3319,22 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
             <h1 className="pageTitle">Wishlist</h1>
             <p className="pageSub">{wished.length} item(s)</p>
           </div>
+<<<<<<< HEAD
           <Link className="backLink" to="/">Back</Link>
+=======
+          <Link className="backLink" to="/">â† Back</Link>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         </div>
 
         {wished.length === 0 ? (
           <div className="empty" style={{ marginTop: 14 }}>
+<<<<<<< HEAD
             <div className="emptyIcon" aria-hidden="true">
               <HeartIcon />
             </div>
+=======
+            <div className="emptyIcon">â™¡</div>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             <div className="emptyTitle">No saved items</div>
             <div className="emptyText">Tap the heart on a product to save it here.</div>
           </div>
@@ -3149,7 +3363,11 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
                       type="button"
                       aria-label="Toggle wishlist"
                     >
+<<<<<<< HEAD
                       <HeartIcon filled={wishlistIds.includes(p.id)} />
+=======
+                      {wishlistIds.includes(p.id) ? "â™¥" : "â™¡"}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                     </button>
                   </div>
 
@@ -3196,7 +3414,11 @@ function WishlistPage({ products, wishlistIds, toggleWishlist, addToCart }) {
   );
 }
 
+<<<<<<< HEAD
 /** OK Success / Cancel pages */
+=======
+/** âœ… Success / Cancel pages */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 function SuccessPage({ clearCart, onOrderSuccess }) {
   useEffect(() => {
     if (onOrderSuccess) onOrderSuccess();
@@ -3208,7 +3430,11 @@ function SuccessPage({ clearCart, onOrderSuccess }) {
   return (
     <div className="pageWrap">
       <div className="pageCard">
+<<<<<<< HEAD
         <h1 className="pageTitle">Payment successful</h1>
+=======
+        <h1 className="pageTitle">Payment successful âœ…</h1>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         <p className="pageSub">Thank you! Your order is being processed.</p>
         <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Link className="backLink" to="/">Continue shopping</Link>
@@ -3230,14 +3456,22 @@ function CancelPage({ onOrderCancel }) {
         <h1 className="pageTitle">Payment canceled</h1>
         <p className="pageSub">No worries. Your cart is still saved.</p>
         <div style={{ marginTop: 14 }}>
+<<<<<<< HEAD
           <Link className="backLink" to="/">Back to shop</Link>
+=======
+          <Link className="backLink" to="/">â† Back to shop</Link>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         </div>
       </div>
     </div>
   );
 }
 
+<<<<<<< HEAD
 /** OK Home page */
+=======
+/** âœ… Home page */
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 function HomePage({
   products,
   selectedCategory,
@@ -3272,9 +3506,15 @@ useEffect(() => {
     { src: "/banners/rimmel.jpg", brandSearch: "rimmel", label: "Rimmel London" },
     { src: "/banners/maxfactor.jpg", brandSearch: "max factor", label: "Max Factor" },
     { src: "/banners/bourjois.jpg", brandSearch: "bourjois", label: "Bourjois" },
+<<<<<<< HEAD
     { src: "/banners/loreal.jpg", brandSearch: "l'oreal", label: "L'Oreal" },
   ];
 // OK pick first 3 products for a category (with your current filters)
+=======
+    { src: "/banners/loreal.jpg", brandSearch: "l'orÃ©al", label: "L'OrÃ©al" },
+  ];
+// âœ… pick first 3 products for a category (with your current filters)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 const take3 = (key) => {
   const list = products.filter((p) => p.category === key);
 
@@ -3381,7 +3621,11 @@ const take3 = (key) => {
 
   return (
     <main className="main">
+<<<<<<< HEAD
             {/* OK CLICKABLE BRAND BANNERS */}
+=======
+            {/* âœ… CLICKABLE BRAND BANNERS */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       <section className="brandCarousel">
         <div className="brandHint">Tap banner to shop brand</div>
 
@@ -3454,7 +3698,11 @@ const take3 = (key) => {
       </h2>
 
       <p style={{ marginTop: 24, color: "#555", maxWidth: 420 }}>
+<<<<<<< HEAD
         Discover authentic cosmetics at aurea.
+=======
+        Discover authentic cosmetics at aurÃ©a.
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       </p>
     </div>
 
@@ -3535,9 +3783,14 @@ const take3 = (key) => {
             )}
 
             <div style={{ marginTop: 12, color: "var(--muted)", fontSize: 12 }}>
+<<<<<<< HEAD
               Tip: Click a product card to open the product page (sizes + quantity).
             </div>
             
+=======
+              ðŸ’¡ Tip: Click a product card to open the product page (sizes + quantity).
+            </div>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
             {isCosmeticsView && (
               <div className="cosmeticsTabsShell">
@@ -3595,7 +3848,11 @@ const take3 = (key) => {
             Showing <b>{displayedProducts.length}</b> items
           </div>
         </div>
+<<<<<<< HEAD
 {/* OK SkinSociety-style sections */}
+=======
+{/* âœ… SkinSociety-style sections */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 {selectedCategory === "all" && (
 <section style={{ gridColumn: "1 / -1", display: "grid", gap: 18, marginBottom: 18 }}>
   {[
@@ -3603,7 +3860,11 @@ const take3 = (key) => {
     { key: "fragrances", title: "Fragrances", cta: "Browse Fragrances" }, // will auto-hide if none
   ].map((sec) => {
     const items = take3(sec.key);
+<<<<<<< HEAD
     if (items.length === 0) return null; // OK hide categories with no products
+=======
+    if (items.length === 0) return null; // âœ… hide categories with no products
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
     return (
       <div
@@ -3655,7 +3916,11 @@ const take3 = (key) => {
                     aria-label="Toggle wishlist"
                     title={isWished ? "Remove from wishlist" : "Add to wishlist"}
                   >
+<<<<<<< HEAD
                     <HeartIcon filled={isWished} />
+=======
+                    {isWished ? "â™¥" : "â™¡"}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                   </button>
                 </div>
 
@@ -3736,7 +4001,11 @@ const take3 = (key) => {
                     aria-label="Toggle wishlist"
                     title={isWished ? "Remove from wishlist" : "Add to wishlist"}
                   >
+<<<<<<< HEAD
                     <HeartIcon filled={isWished} />
+=======
+                    {isWished ? "â™¥" : "â™¡"}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                   </button>
                 </div>
 
@@ -3747,7 +4016,11 @@ const take3 = (key) => {
                   </div>
 
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: -6 }}>
+<<<<<<< HEAD
                     4.8 - 120+ reviews
+=======
+                    â­ 4.8 Â· 120+ reviews
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                   </div>
 
                   {p.category === "cosmetics" && (
@@ -3803,10 +4076,17 @@ const take3 = (key) => {
   );
 
 }
+<<<<<<< HEAD
 /** OK Main App */
 export default function App() {
 
   // OK State
+=======
+/** âœ… Main App */
+export default function App() {
+
+  // âœ… State
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const [cosmeticFilter, setCosmeticFilter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [clothingGender, setClothingGender] = useState("women");
@@ -3850,7 +4130,11 @@ const saveAccount = async () => {
       await updatePassword(u, accountForm.newPassword.trim());
     }
 
+<<<<<<< HEAD
     alert("Account updated");
+=======
+    alert("Account updated âœ…");
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     setAccountOpen(false);
     setAccountForm({ displayName: nextName, currentPassword: "", newPassword: "" });
   } catch (err) {
@@ -3914,10 +4198,17 @@ useEffect(() => {
   setPointsInput("");
 }, [loyaltyUserKey]);
 
+<<<<<<< HEAD
   // OK Search in topbar
   const [search, setSearch] = useState("");
 
   // OK Cart modal
+=======
+  // âœ… Search in topbar
+  const [search, setSearch] = useState("");
+
+  // âœ… Cart modal
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const [cartOpen, setCartOpen] = useState(false);
 
 
@@ -3927,6 +4218,7 @@ useEffect(() => {
   const [authMode, setAuthMode] = useState("signin"); // "signin" | "signup"
   const [authForm, setAuthForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
+<<<<<<< HEAD
   // OK Wishlist
   const [wishlistIds, setWishlistIds] = useState([]);
 
@@ -3934,6 +4226,15 @@ useEffect(() => {
   const [cartItems, setCartItems] = useState([]);
 
   // OK Promo
+=======
+  // âœ… Wishlist
+  const [wishlistIds, setWishlistIds] = useState([]);
+
+  // âœ… Cart: [{id,name,price,qty,size}]
+  const [cartItems, setCartItems] = useState([]);
+
+  // âœ… Promo
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const [promoCode, setPromoCode] = useState("");
   const [promoInput, setPromoInput] = useState("");
   const [promoMessage, setPromoMessage] = useState(null);
@@ -3979,7 +4280,11 @@ useEffect(() => {
 
 
 
+<<<<<<< HEAD
   // OK Firebase: keep user logged in (source of truth)
+=======
+  // âœ… Firebase: keep user logged in (source of truth)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) {
@@ -4041,7 +4346,11 @@ useEffect(() => {
   return () => (document.body.style.overflow = "");
 }, [sidebarOpen, authOpen, cartOpen, filtersOpen, accountOpen]);
 
+<<<<<<< HEAD
   // OK Filters
+=======
+  // âœ… Filters
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 const filteredProducts = useMemo(() => {
   const q = search.toLowerCase().trim();
 
@@ -4061,7 +4370,11 @@ const filteredProducts = useMemo(() => {
   return list;
 }, [selectedCategory, cosmeticFilter, search]);
 
+<<<<<<< HEAD
   // OK Cart helpers (merge by product id + size)
+=======
+  // âœ… Cart helpers (merge by product id + size)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const addToCart = (product, opts = { qty: 1, size: "" }) => {
     const qty = Math.max(1, Number(opts.qty || 1));
     const size = (opts.size || "").trim();
@@ -4102,11 +4415,16 @@ const applyBrandFilter = (brand) => {
 
   const clearCart = () => setCartItems([]);
 
+<<<<<<< HEAD
   // OK Promo logic
+=======
+  // âœ… Promo logic
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const applyPromo = () => {
     const code = (promoInput || "").trim().toUpperCase();
     if (!code) {
       setPromoCode("");
+<<<<<<< HEAD
       setPromoMessage({ OK: true, text: "Promo removed." });
       return;
     }
@@ -4116,6 +4434,17 @@ const applyBrandFilter = (brand) => {
     }
     setPromoCode(code);
     setPromoMessage({ OK: true, text: `Applied ${code} (${PROMOS[code].label})` });
+=======
+      setPromoMessage({ ok: true, text: "Promo removed." });
+      return;
+    }
+    if (!PROMOS[code]) {
+      setPromoMessage({ ok: false, text: "Invalid promo code." });
+      return;
+    }
+    setPromoCode(code);
+    setPromoMessage({ ok: true, text: `Applied ${code} (${PROMOS[code].label})` });
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   };
 
   const applyPoints = () => {
@@ -4145,7 +4474,11 @@ const applyBrandFilter = (brand) => {
     setPointsInput("");
   };
 
+<<<<<<< HEAD
   // OK Totals (subtotal / discount / shipping / total)
+=======
+  // âœ… Totals (subtotal / discount / shipping / total)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.qty, 0), [cartItems]);
 
   const discount = useMemo(() => {
@@ -4207,7 +4540,11 @@ const applyBrandFilter = (brand) => {
     setPointsInput(maxPointsRedeemable ? String(maxPointsRedeemable) : "");
   }, [pointsToRedeem, maxPointsRedeemable]);
 
+<<<<<<< HEAD
   // OK Checkout (Whish Money) - frontend calls your backend, backend returns a secure payment URL
+=======
+  // âœ… Checkout (Whish Money) â€“ frontend calls your backend, backend returns a secure payment URL
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const checkout = async () => {
     try {
       if (cartItems.length === 0) return;
@@ -4309,7 +4646,11 @@ const applyBrandFilter = (brand) => {
     localStorage.removeItem(LOYALTY_PENDING_ORDER_KEY);
   };
 
+<<<<<<< HEAD
   // OK Firebase Email/Password sign in
+=======
+  // âœ… Firebase Email/Password sign in
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const signIn = async () => {
     if (!authForm.email.trim() || !authForm.password.trim()) return;
     try {
@@ -4321,7 +4662,11 @@ const applyBrandFilter = (brand) => {
     }
   };
 
+<<<<<<< HEAD
   // OK Firebase Email/Password sign up
+=======
+  // âœ… Firebase Email/Password sign up
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const signUp = async () => {
     if (!authForm.name.trim() || !authForm.email.trim() || !authForm.password.trim()) return;
     if (authForm.password !== authForm.confirmPassword) return;
@@ -4337,7 +4682,11 @@ const applyBrandFilter = (brand) => {
     }
   };
 
+<<<<<<< HEAD
   // OK Google popup sign in
+=======
+  // âœ… Google popup sign in
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -4442,7 +4791,11 @@ const applyBrandFilter = (brand) => {
 
     {/* CENTER: logo */}
     <Link to="/" className="ss-logo">
+<<<<<<< HEAD
       aurea
+=======
+      aurÃ©a
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </Link>
 
     {/* RIGHT: burger + mobile search icon + desktop search input */}
@@ -4498,13 +4851,21 @@ const applyBrandFilter = (brand) => {
   </div>
 </div>
 
+<<<<<<< HEAD
 {/* OK Mobile dropdown search bar */}
+=======
+{/* âœ… Mobile dropdown search bar */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 <div className={`ss-mobile-searchbar ${mobileSearchOpen ? "open" : ""}`}>
   <div className="ss-mobile-search-inner">
     <input
       autoFocus={mobileSearchOpen}
       className="ss-mobile-search-input"
+<<<<<<< HEAD
       placeholder="Search products..."
+=======
+      placeholder="Search productsâ€¦"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       value={search}
       onChange={(e) => setSearch(e.target.value)}
     />
@@ -4514,7 +4875,11 @@ const applyBrandFilter = (brand) => {
       onClick={() => setMobileSearchOpen(false)}
       aria-label="Close search"
     >
+<<<<<<< HEAD
       X
+=======
+      âœ•
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </button>
   </div>
 </div>
@@ -4526,9 +4891,13 @@ const applyBrandFilter = (brand) => {
     aria-label="Back to top"
     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
   >
+<<<<<<< HEAD
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 18V6m0 0-4 4m4-4 4 4" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+=======
+    â†‘
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   </button>
 )}
 
@@ -4551,13 +4920,21 @@ const applyBrandFilter = (brand) => {
   </svg>
 </a>
 
+<<<<<<< HEAD
 {/* OK Mobile Sidebar Overlay */}
+=======
+{/* âœ… Mobile Sidebar Overlay */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 <div
   className={`overlay ${sidebarOpen ? "show" : ""}`}
   onClick={() => setSidebarOpen(false)}
 />
 
+<<<<<<< HEAD
 {/* OK Mobile Sidebar */}
+=======
+{/* âœ… Mobile Sidebar */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
   <div className="sidebarHeader">
     <div>
@@ -4568,7 +4945,11 @@ const applyBrandFilter = (brand) => {
     </div>
 
     <button className="closeBtn" onClick={() => setSidebarOpen(false)} type="button">
+<<<<<<< HEAD
       X
+=======
+      âœ•
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </button>
   </div>
 
@@ -4580,7 +4961,11 @@ const applyBrandFilter = (brand) => {
     onClick={() => setSidebarOpen(false)}
   >
     <span className="menuText">Home</span>
+<<<<<<< HEAD
     <span className="menuArrow">&gt;</span>
+=======
+    <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   </Link>
 </li>
 <li>
@@ -4591,7 +4976,11 @@ const applyBrandFilter = (brand) => {
   >
     <span className="menuText">Cosmetics</span>
     <span className={`menuArrow ${cosmeticsOpen ? "rotate" : ""}`}>
+<<<<<<< HEAD
       v
+=======
+      â–¾
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </span>
   </button>
 
@@ -4626,7 +5015,11 @@ const applyBrandFilter = (brand) => {
 <li>
       <Link className="menuItem" to="/wishlist" onClick={() => setSidebarOpen(false)}>
         <span className="menuText">Wishlist</span>
+<<<<<<< HEAD
         <span className="menuArrow">&gt;</span>
+=======
+        <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       </Link>
     </li>
 <li>
@@ -4639,7 +5032,11 @@ const applyBrandFilter = (brand) => {
     }}
   >
     <span className="menuText">Filters</span>
+<<<<<<< HEAD
     <span className="menuArrow">&gt;</span>
+=======
+    <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
   </button>
 </li>
 
@@ -4654,7 +5051,11 @@ const applyBrandFilter = (brand) => {
         }}
       >
         <span className="menuText">Manage account</span>
+<<<<<<< HEAD
         <span className="menuArrow">&gt;</span>
+=======
+        <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       </button>
     </li>
 
@@ -4665,7 +5066,11 @@ const applyBrandFilter = (brand) => {
         onClick={() => { setSidebarOpen(false); setCartOpen(true); }}
       >
         <span className="menuText">Cart</span>
+<<<<<<< HEAD
         <span className="menuArrow">&gt;</span>
+=======
+        <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
       </button>
     
 </li>
@@ -4673,7 +5078,11 @@ const applyBrandFilter = (brand) => {
       <li>
         <button className="menuItem active" type="button" onClick={() => { setSidebarOpen(false); signOut(); }}>
           <span className="menuText">Sign out</span>
+<<<<<<< HEAD
           <span className="menuArrow">&gt;</span>
+=======
+          <span className="menuArrow">â†’</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         </button>
       </li>
     )}
@@ -4727,18 +5136,26 @@ const applyBrandFilter = (brand) => {
         <div className="modalTitle">My Account</div>
         <div className="help">Edit username + password.</div>
       </div>
+<<<<<<< HEAD
       <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">X</button>
+=======
+      <button className="modalClose" onClick={() => setAccountOpen(false)} type="button">âœ•</button>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </div>
 
     <div className="modalBody">
       {!user || user.mode !== "user" ? (
         <div className="empty">
+<<<<<<< HEAD
           <div className="emptyIcon" aria-hidden="true">
             <svg className="emptyIconSvg" viewBox="0 0 24 24">
               <rect x="5" y="11" width="14" height="10" rx="2" />
               <path d="M8 11V8a4 4 0 0 1 8 0v3" />
             </svg>
           </div>
+=======
+          <div className="emptyIcon">ðŸ”’</div>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
           <div className="emptyTitle">Sign in required</div>
           <div className="emptyText">Only signed-in users can edit account details.</div>
         </div>
@@ -4763,7 +5180,11 @@ const applyBrandFilter = (brand) => {
               type="password"
               value={accountForm.currentPassword}
               onChange={(e) => setAccountForm((p) => ({ ...p, currentPassword: e.target.value }))}
+<<<<<<< HEAD
               placeholder="********"
+=======
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             />
           </div>
 
@@ -4774,7 +5195,11 @@ const applyBrandFilter = (brand) => {
               type="password"
               value={accountForm.newPassword}
               onChange={(e) => setAccountForm((p) => ({ ...p, newPassword: e.target.value }))}
+<<<<<<< HEAD
               placeholder="********"
+=======
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             />
           </div>
 
@@ -4801,7 +5226,11 @@ const applyBrandFilter = (brand) => {
         <div className="modalTitle">Filters</div>
         <div className="help">Sort and filter products.</div>
       </div>
+<<<<<<< HEAD
       <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">X</button>
+=======
+      <button className="modalClose" onClick={() => setFiltersOpen(false)} type="button">âœ•</button>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </div>
 
     <div className="modalBody">
@@ -4809,9 +5238,15 @@ const applyBrandFilter = (brand) => {
         <div className="label">Sort</div>
         <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="featured">Featured</option>
+<<<<<<< HEAD
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
           <option value="name_asc">Name: A to Z</option>
+=======
+          <option value="price_asc">Price: Low â†’ High</option>
+          <option value="price_desc">Price: High â†’ Low</option>
+          <option value="name_asc">Name: A â†’ Z</option>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         </select>
       </div>
 
@@ -4864,7 +5299,11 @@ const applyBrandFilter = (brand) => {
                 <div className="help">Sign in, create an account, or continue as a guest.</div>
               </div>
               <button className="modalClose" onClick={() => setAuthOpen(false)} aria-label="Close" type="button">
+<<<<<<< HEAD
                 X
+=======
+                âœ•
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
               </button>
             </div>
 
@@ -4908,7 +5347,11 @@ const applyBrandFilter = (brand) => {
                     className="input"
                     value={authForm.password}
                     onChange={(e) => setAuthForm((p) => ({ ...p, password: e.target.value }))}
+<<<<<<< HEAD
                     placeholder="********"
+=======
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                     type="password"
                   />
                 </div>
@@ -4921,7 +5364,11 @@ const applyBrandFilter = (brand) => {
                     className="input"
                     value={authForm.confirmPassword}
                     onChange={(e) => setAuthForm((p) => ({ ...p, confirmPassword: e.target.value }))}
+<<<<<<< HEAD
                     placeholder="********"
+=======
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                     type="password"
                   />
                   {authForm.password && authForm.confirmPassword && authForm.password !== authForm.confirmPassword && (
@@ -5010,19 +5457,27 @@ const applyBrandFilter = (brand) => {
     </div>
 
     <button className="modalClose" onClick={() => setCartOpen(false)} type="button" aria-label="Close cart">
+<<<<<<< HEAD
       X
+=======
+      âœ•
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
     </button>
   </div>
 
   <div className="cartDrawerBody">
     {cartItems.length === 0 ? (
       <div className="empty">
+<<<<<<< HEAD
         <div className="emptyIcon" aria-hidden="true">
           <svg className="emptyIconSvg" viewBox="0 0 24 24">
             <path d="M4 8h16l-1.5 11h-13z" />
             <path d="M9 8V6a3 3 0 0 1 6 0v2" />
           </svg>
         </div>
+=======
+        <div className="emptyIcon">ðŸ›ï¸</div>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         <div className="emptyTitle">Your cart is empty</div>
         <div className="emptyText">Add something you love.</div>
       </div>
@@ -5034,11 +5489,19 @@ const applyBrandFilter = (brand) => {
               <div style={{ minWidth: 0 }}>
                 <div className="cartName">{item.name}</div>
                 <div className="cartMeta">
+<<<<<<< HEAD
                   {money(item.price)}{item.size ? ` - Size ${item.size}` : ""} - Line:{" "}
                   <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
                 </div>
                 <div className="qtyBox">
                   <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">-</button>
+=======
+                  {money(item.price)} {item.size ? `â€¢ Size ${item.size}` : ""} â€¢ Line:{" "}
+                  <b style={{ color: "var(--text)" }}>{money(item.price * item.qty)}</b>
+                </div>
+                <div className="qtyBox">
+                  <button className="qtyBtn" onClick={() => updateQty(i, item.qty - 1)} type="button">âˆ’</button>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                   <div className="qtyNum">{item.qty}</div>
                   <button className="qtyBtn" onClick={() => updateQty(i, item.qty + 1)} type="button">+</button>
                 </div>
@@ -5058,7 +5521,11 @@ const applyBrandFilter = (brand) => {
               className="input"
               value={promoInput}
               onChange={(e) => setPromoInput(e.target.value)}
+<<<<<<< HEAD
               placeholder="AUREA10, SAVE5, FREESHIP..."
+=======
+              placeholder="AUREA10, SAVE5, FREESHIPâ€¦"
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
             />
             <button className="searchBtn" type="button" onClick={applyPromo}>
               Apply
@@ -5066,12 +5533,20 @@ const applyBrandFilter = (brand) => {
           </div>
 
           {promoMessage && (
+<<<<<<< HEAD
             <div className={`promoMsg ${promoMessage.OK ? "OK" : "bad"}`}>
+=======
+            <div className={`promoMsg ${promoMessage.ok ? "ok" : "bad"}`}>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
               {promoMessage.text}
             </div>
           )}
           {promoCode && PROMOS[promoCode] && (
+<<<<<<< HEAD
             <div className="promoMsg OK">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
+=======
+            <div className="promoMsg ok">Applied: {promoCode} ({PROMOS[promoCode].label})</div>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
           )}
 
           {user?.mode === "user" ? (
@@ -5080,7 +5555,11 @@ const applyBrandFilter = (brand) => {
                 <div>
                   <div className="label">Aurea Loyalty</div>
                   <div className="loyaltyHint">
+<<<<<<< HEAD
                     Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> - Balance{" "}
+=======
+                    Tier <b style={{ color: "var(--text)" }}>{loyaltyTier.name}</b> Â· Balance{" "}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                     <b style={{ color: "var(--text)" }}>{loyaltyPoints} pts</b>
                   </div>
                 </div>
@@ -5110,7 +5589,11 @@ const applyBrandFilter = (brand) => {
               <div className="loyaltyHint">Estimated points after this order: {estimatedPointsToEarn} pts</div>
 
               {pointsToRedeem > 0 && (
+<<<<<<< HEAD
                 <div className="promoMsg OK">
+=======
+                <div className="promoMsg ok">
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
                   Redeeming {pointsToRedeem} pts (-{money(pointsDiscount)})
                   <button className="loyaltyClearBtn" type="button" onClick={clearPointsRedemption}>
                     Remove
@@ -5155,7 +5638,11 @@ const applyBrandFilter = (brand) => {
         </button>
 
         <div className="cartNote">
+<<<<<<< HEAD
           {user ? "You'll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
+=======
+          {user ? "Youâ€™ll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         </div>
       </>
     )}
@@ -5163,7 +5650,11 @@ const applyBrandFilter = (brand) => {
 </aside>
 
 
+<<<<<<< HEAD
         {/* OK ROUTES */}
+=======
+        {/* âœ… ROUTES */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
         <Routes>
           <Route
             path="/"
@@ -5273,7 +5764,11 @@ const applyBrandFilter = (brand) => {
           />
           <Route path="/cancel" element={<CancelPage onOrderCancel={clearPendingLoyaltyOrder} />} />
         </Routes>
+<<<<<<< HEAD
 {/* OK TRUST STRIP (SKINSOCIETY STYLE) */}
+=======
+{/* âœ… TRUST STRIP (SKINSOCIETY STYLE) */}
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 <section className="trustStrip">
   <div className="trustStripInner">
     
@@ -5307,7 +5802,11 @@ const applyBrandFilter = (brand) => {
 </section>
 
 <footer className="footer">
+<<<<<<< HEAD
   <span>(c) 2026 aurea - Authentic products - Secure checkout - Easy returns</span>
+=======
+  <span>Â© 2026 aurÃ©a Â· Authentic products Â· Secure checkout Â· Easy returns</span>
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
   <a
     className="socialLink"
@@ -5341,7 +5840,11 @@ const applyBrandFilter = (brand) => {
 }
 
 /*
+<<<<<<< HEAD
 OK IMPORTANT FOR FEATURE #5 (Whish Money checkout)
+=======
+âœ… IMPORTANT FOR FEATURE #5 (Whish Money checkout)
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 
 This frontend expects your BACKEND endpoint:
 
@@ -5356,7 +5859,10 @@ Then set Whish redirect to:
   cancelUrl  = http://your-site/cancel
 */
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d

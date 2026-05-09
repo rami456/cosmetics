@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap");
 
 :root {
@@ -37,4 +38,40 @@ input {
 
 #root {
   min-height: 100vh;
+=======
+/* ===== FIX: stop buttons turning black on click/focus ===== */
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+/* keep white buttons white */
+.authBtn,
+.btnCheckout,
+.btnGhost {
+  background: #fff !important;
+  color: #0e0e10 !important;
+}
+
+/* prevent black flash on click */
+.authBtn:active,
+.btnCheckout:active,
+.btnGhost:active {
+  background: #fff !important;
+  color: #0e0e10 !important;
+}
+
+/* primary stays black */
+.btnPrimary {
+  background: #0e0e10 !important;
+  color: #fff !important;
+}
+
+.btnPrimary:active {
+  background: #0e0e10 !important;
+  color: #fff !important;
+>>>>>>> 719a28b2d2885946db04f7d7363e2aa6d3798b1d
 }
