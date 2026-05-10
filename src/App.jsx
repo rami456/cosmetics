@@ -391,15 +391,12 @@ font-family: 'Poppins', sans-serif;
 }
 
 }
-:root{
-  --panel:#ffffff;
-  --soft:#f6f6f7;
-  --line:rgba(0,0,0,0.08);
-  --text:#0e0e10;
-  --muted:rgba(14,14,16,0.62);
-  --shadow:0 18px 60px rgba(0,0,0,0.10);
-  --shadow2:0 10px 30px rgba(0,0,0,0.10);
-  --radius:18px;
+/* استبدل قيم الألوان القديمة بهذه القيم في ملفك */
+:root {
+    --main-color: #ff007f; /* اللون النيوني الأساسي */
+    --accent-color: #7000ff;
+    --background-dark: #0a0a0c;
+    --card-bg: rgba(255, 255, 255, 0.03);
 }
 
 /* OK Dark mode overrides */
