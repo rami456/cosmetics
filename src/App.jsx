@@ -2570,86 +2570,7 @@ section{
     transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), filter 0.5s ease;
     border-radius: 15px;
 }
-/* تصميم السلة المنزلقة */
-.cart-drawer {
-    position: fixed;
-    top: 0;
-    right: -400px; /* مخفية في البداية */
-    width: 350px;
-    height: 100%;
-    background: rgba(15, 15, 20, 0.95);
-    backdrop-filter: blur(25px);
-    border-left: 1px solid rgba(255, 0, 127, 0.2);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-    z-index: 10000;
-    transition: right 0.5s cubic-bezier(0.82, 0.01, 0.77, 1);
-    display: flex;
-    flex-direction: column;
-}
 
-.cart-drawer.open {
-    right: 0; /* تظهر عند إضافة كلاس open */
-}
-
-.cart-header {
-    padding: 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-header h3 {
-    margin: 0;
-    color: #ff007f;
-    letter-spacing: 1px;
-}
-
-#close-cart {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-.cart-content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.cart-footer {
-    padding: 25px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.checkout-btn {
-    width: 100%;
-    margin-top: 15px;
-    background: linear-gradient(45deg, #ff007f, #7000ff);
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-/* طبقة التعتيم */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-    z-index: 9999;
-}
-
-.overlay.active {
-    display: block;
-}
 .product-card:hover img {
     transform: scale(1.1); /* زووم هادئ */
     filter: brightness(1.1) contrast(1.1);
@@ -5329,23 +5250,6 @@ const applyBrandFilter = (brand) => {
           Checkout (Whish Money)
         </button>
 
-<div id="side-cart" class="cart-drawer">
-    <div class="cart-header">
-        <h3>حقيبة الجمال</h3>
-        <button id="close-cart">×</button>
-    </div>
-    <div class="cart-content">
-       
-        
-    </div>
-    <div class="cart-footer">
-        
-        <button class="checkout-btn">confirm order </button>
-    </div>
-</div>
-
-
-<div id="cart-overlay" class="overlay"></div>
         <div className="cartNote">
           {user ? "You'll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
         </div>
