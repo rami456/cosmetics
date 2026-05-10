@@ -5250,6 +5250,23 @@ const applyBrandFilter = (brand) => {
           Checkout (Whish Money)
         </button>
 
+<div id="side-cart" class="cart-drawer">
+    <div class="cart-header">
+        <h3>حقيبة الجمال</h3>
+        <button id="close-cart">×</button>
+    </div>
+    <div class="cart-content">
+       
+        <p class="empty-msg">السلة فارغة حالياً..</p>
+    </div>
+    <div class="cart-footer">
+        <div class="total-price">الإجمالي: <span>$0.00</span></div>
+        <button class="checkout-btn">إتمام الطلب</button>
+    </div>
+</div>
+
+
+<div id="cart-overlay" class="overlay"></div>
         <div className="cartNote">
           {user ? "You'll be redirected to a secure Whish payment page." : "Sign in / sign up or continue as guest to proceed."}
         </div>
