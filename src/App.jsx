@@ -2570,7 +2570,50 @@ section{
     transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), filter 0.5s ease;
     border-radius: 15px;
 }
+/* بروتوكول الخلفية المتحركة - The Architect */
 
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-dark); /* التأكد من تباين الخلفية */
+}
+
+/* إنشاء العنصر العائم */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    width: 300px; /* التحكم في الحجم */
+    height: 300px;
+    right: 10%;
+    top: 20%;
+    background-image: url'https://www.bing.com/images/search?view=detailV2&ccid=TlRnhe9f&id=C2143FFBCEA05B12CEC99B3123FB20F66E8475F1&thid=OIP.TlRnhe9fxd9BRBNdInREYgHaFR&mediaurl=https%3a%2f%2fstatic-ca-cdn.eporner.com%2fphotos%2f6160.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.4e546785ef5fc5df4144135d22744462%3frik%3d8XWEbvYg%252byMxmw%26pid%3dImgRaw%26r%3d0&exph=570&expw=800&q=woman+sucking+a+dick&FORM=IRPRST&ck=BFF08E97D872BE7AF8805F4150A2F35D&selectedIndex=0&itb=0&adtq=1'; /* ضع رابط الصورة الكرتونية هنا */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6; /* شفافية لتندمج مع التصميم */
+    filter: drop-shadow(0 0 20px var(--primary-glow));
+    animation: floating-motion 6s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none; /* لضمان عدم إعاقة النقر على الأزرار */
+}
+
+/* حركة انسيابية ميكانيكية */
+@keyframes floating-motion {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-30px) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+/* ضمان بقاء المحتوى فوق الخلفية */
+.hero-section h1, .hero-section p, .hero-section button {
+    position: relative;
+    z-index: 2;
+}
 .product-card:hover img {
     transform: scale(1.1); /* زووم هادئ */
     filter: brightness(1.1) contrast(1.1);
