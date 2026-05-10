@@ -391,12 +391,15 @@ font-family: 'Poppins', sans-serif;
 }
 
 }
-/* استبدل قيم الألوان القديمة بهذه القيم في ملفك */
-:root {
-    --main-color: #ff007f; /* اللون النيوني الأساسي */
-    --accent-color: #7000ff;
-    --background-dark: #0a0a0c;
-    --card-bg: rgba(255, 255, 255, 0.03);
+:root{
+  --panel:#ffffff;
+  --soft:#f6f6f7;
+  --line:rgba(0,0,0,0.08);
+  --text:#0e0e10;
+  --muted:rgba(14,14,16,0.62);
+  --shadow:0 18px 60px rgba(0,0,0,0.10);
+  --shadow2:0 10px 30px rgba(0,0,0,0.10);
+  --radius:18px;
 }
 
 /* OK Dark mode overrides */
@@ -2519,7 +2522,59 @@ section{
   input {
     font-size: 14px !important;
   }
+/* طبق هذا الكلاس على بطاقات المنتجات */
+.product-card {
+    position: relative;
+    overflow: hidden;
+}
 
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: 0.6s;
+    opacity: 0;
+}
+
+.product-card:hover::before {
+    left: 100%;
+    top: 100%;
+    opacity: 1;
+}
+    nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 100px; /* شكل كبسولة */
+    padding: 10px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 10, 12, 0.8);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+}
+    .product-card img {
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), filter 0.5s ease;
+    border-radius: 15px;
+}
+
+.product-card:hover img {
+    transform: scale(1.1); /* زووم هادئ */
+    filter: brightness(1.1) contrast(1.1);
+}
   .container, .main {
     padding: 12px !important;
   }
